@@ -45,6 +45,13 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #1A0B2E; }
     ::-webkit-scrollbar-thumb { background: #7C3AED; border-radius: 10px; }
+
+    .skills-toolbar { display:flex; gap:8px; margin-bottom:12px; }
+    .skills-toolbar input, .skills-toolbar select { flex:1; min-width:0; background:rgba(255,255,255,.08); color:white; border:1px solid rgba(124,58,237,.45); border-radius:10px; padding:9px; }
+    .skill-card { border:1px solid rgba(124,58,237,.35); border-radius:12px; padding:11px; margin:8px 0; background:rgba(255,255,255,.04); }
+    .skill-card h3 { color:#facc15; font-size:14px; margin:0 0 4px; }
+    .skill-card p { font-size:12px; margin:3px 0; color:#ddd6fe; }
+    .skill-card button { margin-top:7px; border:0; border-radius:8px; padding:6px 9px; background:#7c3aed; color:white; cursor:pointer; }
   </style>
 </head>
 <body class="bg-gradient-to-br from-[#1A0B2E] via-purple-950/50 to-[#1A0B2E] text-white min-h-screen font-sans">
@@ -131,6 +138,7 @@
           <span class="text-sm text-purple-300">จดจำบทสนทนา</span>
           <input type="checkbox" id="memoryToggle" checked class="accent-yellow-400 w-5 h-5" />
         </div>
+        <button id="skillsBtn" class="w-full py-2 bg-indigo-500/20 text-indigo-300 rounded-lg hover:bg-indigo-500/30 transition text-sm">🧠 ทักษะ AI 400 รายการ</button>
         <button id="clearChatBtn" class="w-full py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition text-sm">
           🗑️ ล้างประวัติ
         </button>
@@ -142,9 +150,21 @@
     </div>
   </div>
 
+
+  <div id="skillsModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+    <div class="glass rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <h2 class="text-xl font-bold text-yellow-400 mb-2">🧠 คลังทักษะ AI และพัฒนาตัวเอง 400 รายการ</h2>
+      <p class="text-xs text-purple-200 mb-3">เลือกทักษะเพื่อส่งเป็นโจทย์ฝึกให้ Agent หรือค้นหาตามหมวดหมู่</p>
+      <div class="skills-toolbar"><input id="skillsSearch" type="search" placeholder="ค้นหาทักษะ..." /><select id="skillsCategory"><option value="">ทุกหมวดหมู่</option></select></div>
+      <div id="skillsCount" class="text-xs text-purple-300 mb-2"></div><div id="skillsList"></div>
+      <button id="closeSkills" class="w-full mt-4 py-2 bg-purple-500/30 rounded-lg">ปิด</button>
+    </div>
+  </div>
+
   <!-- ============================================================ -->
   <!-- ===== JAVASCRIPT — ALL IN ONE ===== -->
   <!-- ============================================================ -->
+  <script src="skills.js"></script>
   <script>
     // =============================================================
     //  CONFIG
@@ -179,6 +199,7 @@
         this.isProcessing = false;
         this.initUI();
         this.initVoice();
+        this.initSkills();
       }
 
       // --- MEMORY ---
@@ -255,6 +276,34 @@
         this.modelSelect.addEventListener('change', () => {
           this.currentModel = this.modelSelect.value;
         });
+      }
+
+
+      initSkills() {
+        this.skillsBtn = document.getElementById('skillsBtn');
+        this.skillsModal = document.getElementById('skillsModal');
+        this.skillsList = document.getElementById('skillsList');
+        this.skillsSearch = document.getElementById('skillsSearch');
+        this.skillsCategory = document.getElementById('skillsCategory');
+        this.skillsCount = document.getElementById('skillsCount');
+        [...new Set(SKILLS_400.map(s => s.category))].forEach(c => this.skillsCategory.add(new Option(c,c)));
+        this.skillsBtn.addEventListener('click', () => { this.skillsModal.classList.remove('hidden'); this.renderSkills(); });
+        document.getElementById('closeSkills').addEventListener('click', () => this.skillsModal.classList.add('hidden'));
+        this.skillsSearch.addEventListener('input', () => this.renderSkills());
+        this.skillsCategory.addEventListener('change', () => this.renderSkills());
+      }
+
+      renderSkills() {
+        const q = this.skillsSearch.value.trim().toLowerCase();
+        const cat = this.skillsCategory.value;
+        const found = SKILLS_400.filter(s => (!cat || s.category === cat) && (!q || `${s.title} ${s.category} ${s.benefit} ${s.practice}`.toLowerCase().includes(q)));
+        this.skillsCount.textContent = `แสดง ${found.length} จาก ${SKILLS_400.length} ทักษะ`;
+        this.skillsList.innerHTML = found.slice(0, 80).map(s => `<article class="skill-card"><h3>#${s.id} · ${s.category} — ${s.title}</h3><p><b>เป้าหมาย:</b> ${s.benefit}</p><p><b>ฝึกปฏิบัติ:</b> ${s.practice}</p><button data-skill="${s.id}">ใช้ทักษะนี้กับ Agent</button></article>`).join('') || '<p class="text-sm text-purple-200">ไม่พบทักษะที่ค้นหา</p>';
+        this.skillsList.querySelectorAll('[data-skill]').forEach(b => b.addEventListener('click', () => {
+          const s = SKILLS_400.find(x => x.id === Number(b.dataset.skill));
+          this.input.value = `ช่วยฝึกทักษะ #${s.id} ${s.category}: ${s.title}\nเป้าหมาย: ${s.benefit}\nภารกิจ: ${s.practice}`;
+          this.skillsModal.classList.add('hidden'); this.input.focus();
+        }));
       }
 
       // --- VOICE ---
