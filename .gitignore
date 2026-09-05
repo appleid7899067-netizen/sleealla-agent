@@ -1,0 +1,50 @@
+# Credentials and environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+secrets/
+credentials/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Logs and runtime output
+*.log
+logs/
+
+# Dependencies and build output
+node_modules/
+dist/
+build/
+.cache/
+coverage/
+
+# Local test/export data
+*.local
+*.bak
+*.tmp
+exports/
+uploads/
+
+# Python tooling (if a backend is added later)
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Static-site tooling caches
+.parcel-cache/
+.next/
+.nuxt/
+
+# Local project metadata
+.DS_Store

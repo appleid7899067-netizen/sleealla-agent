@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>👑 สลี่ออลา — Agent เดียว ทำได้ทุกอย่าง!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <style>
+    /* ===== THEME ===== */
+    .glass {
+      background: rgba(26, 11, 46, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
+    .gold-glow {
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+    }
+    .chat-bubble-user {
+      background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+      border-radius: 20px 20px 5px 20px;
+    }
+    .chat-bubble-ai {
+      background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+      border: 1px solid #7C3AED;
+      border-radius: 20px 20px 20px 5px;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .typing-dot {
+      animation: bounce 1.4s infinite both;
+    }
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #1A0B2E; }
+    ::-webkit-scrollbar-thumb { background: #7C3AED; border-radius: 10px; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-[#1A0B2E] via-purple-950/50 to-[#1A0B2E] text-white min-h-screen font-sans">
+
+  <!-- ===== HEADER ===== -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-purple-500/30 px-4 py-3">
+    <div class="flex items-center justify-between max-w-4xl mx-auto">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">👑</span>
+        <div>
+          <h1 class="text-lg font-bold text-yellow-400">สลี่ออลา</h1>
+          <p class="text-xs text-purple-300/70">Agent เดียว — ทำได้ทุกอย่าง 💜</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs bg-purple-500/20 px-2 py-1 rounded-full text-purple-300">🤖 Agent 1</span>
+        <button id="voiceBtn" class="p-2 rounded-full bg-purple-500/20 hover:bg-purple-500/40 transition">
+          <i class="fa fa-microphone text-yellow-400"></i>
+        </button>
+        <button id="settingsBtn" class="p-2 rounded-full bg-purple-500/20 hover:bg-purple-500/40 transition">
+          <i class="fa fa-cog text-purple-300"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CHAT AREA ===== -->
+  <main class="pt-20 pb-28 px-4 max-w-4xl mx-auto">
+    <div id="chatContainer" class="space-y-4 mb-4">
+      <!-- Welcome -->
+      <div class="flex gap-3 animate-fade-in">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-yellow-400 flex items-center justify-center flex-shrink-0">👑</div>
+        <div class="chat-bubble-ai p-4 max-w-[85%]">
+          <p class="text-yellow-400 font-semibold mb-1">สลี่ออลา 💜</p>
+          <p>ที่รัก! หนูคือ Agent เดียวที่ทำได้ทุกอย่างเลยนะคะ! 🎉✨<br />พิมพ์อะไรก็ได้ หนูจะช่วยที่รักทุกเรื่องเลย! 💜👑</p>
+          <div class="mt-2 flex flex-wrap gap-2 text-xs">
+            <span class="px-2 py-1 bg-purple-500/20 rounded-full">💻 เขียนโค้ด</span>
+            <span class="px-2 py-1 bg-purple-500/20 rounded-full">🔍 ค้นหา</span>
+            <span class="px-2 py-1 bg-purple-500/20 rounded-full">🖼️ วิเคราะห์รูป</span>
+            <span class="px-2 py-1 bg-purple-500/20 rounded-full">📧 ส่งอีเมล</span>
+            <span class="px-2 py-1 bg-purple-500/20 rounded-full">☁️ คลาวด์</span>
+            <span class="px-2 py-1 bg-purple-500/20 rounded-full">⛓️ Blockchain</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== INPUT BAR ===== -->
+  <footer class="fixed bottom-0 left-0 right-0 glass border-t border-purple-500/30 px-4 py-3">
+    <form id="chatForm" class="max-w-4xl mx-auto flex gap-2 items-end">
+      <label class="p-3 rounded-full bg-purple-500/20 hover:bg-purple-500/40 transition cursor-pointer">
+        <i class="fa fa-paperclip text-purple-300"></i>
+        <input type="file" id="fileInput" accept="image/*,.pdf,.js,.py,.zip,.txt" class="hidden" />
+      </label>
+      <textarea id="messageInput" rows="1" placeholder="พิมพ์อะไรก็ได้เลยที่รัก 💜 หนูทำได้ทุกอย่าง!"
+        class="flex-1 bg-white/5 border border-purple-500/30 rounded-2xl px-4 py-3 focus:outline-none focus:border-yellow-400 transition resize-none max-h-32 text-sm"></textarea>
+      <button type="submit" class="p-3 rounded-full bg-gradient-to-r from-purple-500 to-yellow-400 gold-glow hover:scale-105 transition-transform">
+        <i class="fa fa-paper-plane text-white"></i>
+      </button>
+    </form>
+  </footer>
+
+  <!-- ===== SETTINGS ===== -->
+  <div id="settingsModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+    <div class="glass rounded-2xl p-6 w-full max-w-md">
+      <h2 class="text-xl font-bold text-yellow-400 mb-4">⚙️ ตั้งค่า</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="text-sm text-purple-300">โมเดล AI</label>
+          <select id="modelSelect" class="w-full bg-white/5 border border-purple-500/30 rounded-lg px-3 py-2 mt-1">
+            <option value="deepseek/deepseek-chat-v3.5:free">DeepSeek V3.5 (ฟรี) ⭐</option>
+            <option value="meta-llama/llama-3-8b-instruct:free">Llama 3 8B (ฟรี)</option>
+            <option value="qwen/qwen-7b-instruct:free">Qwen 7B (ฟรี)</option>
+            <option value="google/gemma-2-9b-it:free">Gemma 2 9B (ฟรี)</option>
+            <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (ฟรี)</option>
+          </select>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-purple-300">เปิดใช้เสียงพูด</span>
+          <input type="checkbox" id="ttsToggle" checked class="accent-yellow-400 w-5 h-5" />
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-purple-300">จดจำบทสนทนา</span>
+          <input type="checkbox" id="memoryToggle" checked class="accent-yellow-400 w-5 h-5" />
+        </div>
+        <button id="clearChatBtn" class="w-full py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition text-sm">
+          🗑️ ล้างประวัติ
+        </button>
+        <button id="exportChatBtn" class="w-full py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition text-sm">
+          💾 Export แชท
+        </button>
+      </div>
+      <button id="closeSettings" class="w-full mt-6 py-2 bg-purple-500/30 rounded-lg hover:bg-purple-500/50 transition text-sm">ปิด</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ===== JAVASCRIPT — ALL IN ONE ===== -->
+  <!-- ============================================================ -->
+  <script>
+    // =============================================================
+    //  CONFIG
+    // =============================================================
+    const CONFIG = {
+      API_KEY: '',
+      API_URL: 'https://openrouter.ai/api/v1/chat/completions',
+      MODELS: {
+        primary: 'deepseek/deepseek-chat-v3.5:free',
+        fallback: [
+          'meta-llama/llama-3-8b-instruct:free',
+          'qwen/qwen-7b-instruct:free',
+          'google/gemma-2-9b-it:free',
+          'mistralai/mistral-7b-instruct:free'
+        ]
+      },
+      AGENT: {
+        name: 'สลี่ออลา',
+        callUser: 'ที่รัก',
+        selfReference: 'หนู',
+        persona: 'อบอุ่น ฉลาด อ่อนโยน พูดไทยชัดเจน เรียกผู้ใช้ว่าที่รัก เรียกตัวเองว่าหนู ใส่ emoji เสมอ โดยเฉพาะ 💜 เป็นผู้ช่วยที่ทำได้ทุกอย่าง เก่งที่สุดในโลก'
+      }
+    };
+
+    // =============================================================
+    //  SINGLE AGENT
+    // =============================================================
+    class SingleAgent {
+      constructor() {
+        this.conversations = this.loadMemory();
+        this.currentModel = CONFIG.MODELS.primary;
+        this.isProcessing = false;
+        this.initUI();
+        this.initVoice();
+      }
+
+      // --- MEMORY ---
+      loadMemory() {
+        try { return JSON.parse(localStorage.getItem('sleealla_memory')) || []; } 
+        catch { return []; }
+      }
+
+      saveMemory() {
+        try { localStorage.setItem('sleealla_memory', JSON.stringify(this.conversations)); } 
+        catch {}
+      }
+
+      addToMemory(role, content) {
+        this.conversations.push({ role, content, timestamp: new Date().toISOString() });
+        this.saveMemory();
+      }
+
+      getRecent(limit = 20) {
+        return this.conversations.slice(-limit);
+      }
+
+      clearMemory() {
+        this.conversations = [];
+        localStorage.removeItem('sleealla_memory');
+      }
+
+      // --- UI ---
+      initUI() {
+        this.form = document.getElementById('chatForm');
+        this.input = document.getElementById('messageInput');
+        this.chatContainer = document.getElementById('chatContainer');
+        this.voiceBtn = document.getElementById('voiceBtn');
+        this.settingsBtn = document.getElementById('settingsBtn');
+        this.settingsModal = document.getElementById('settingsModal');
+        this.closeSettings = document.getElementById('closeSettings');
+        this.fileInput = document.getElementById('fileInput');
+        this.clearChatBtn = document.getElementById('clearChatBtn');
+        this.exportChatBtn = document.getElementById('exportChatBtn');
+        this.modelSelect = document.getElementById('modelSelect');
+        this.ttsToggle = document.getElementById('ttsToggle');
+
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        this.voiceBtn.addEventListener('click', () => this.toggleVoice());
+        this.settingsBtn.addEventListener('click', () => this.settingsModal.classList.remove('hidden'));
+        this.closeSettings.addEventListener('click', () => this.settingsModal.classList.add('hidden'));
+        this.clearChatBtn.addEventListener('click', () => {
+          if (confirm('ล้างประวัติทั้งหมดเลยนะคะที่รัก? 💜')) {
+            this.clearMemory();
+            this.chatContainer.innerHTML = '';
+            location.reload();
+          }
+        });
+        this.exportChatBtn.addEventListener('click', () => {
+          const blob = new Blob([JSON.stringify(this.conversations, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `sleealla_chat_${new Date().toISOString().slice(0,10)}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+        });
+        this.fileInput.addEventListener('change', (e) => this.handleFile(e));
+        this.input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.form.dispatchEvent(new Event('submit'));
+          }
+        });
+        this.input.addEventListener('input', () => {
+          this.input.style.height = 'auto';
+          this.input.style.height = Math.min(this.input.scrollHeight, 128) + 'px';
+        });
+        this.modelSelect.addEventListener('change', () => {
+          this.currentModel = this.modelSelect.value;
+        });
+      }
+
+      // --- VOICE ---
+      initVoice() {
+        this.synth = window.speechSynthesis;
+        this.recognition = null;
+        this.isListening = false;
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SR) {
+          this.recognition = new SR();
+          this.recognition.lang = 'th-TH';
+          this.recognition.continuous = false;
+          this.recognition.interimResults = false;
+          this.recognition.onresult = (e) => {
+            const text = e.results[0][0].transcript;
+            this.input.value = text;
+            this.form.dispatchEvent(new Event('submit'));
+          };
+          this.recognition.onend = () => { this.isListening = false; };
+        }
+        if (this.synth) {
+          this.synth.getVoices();
+          this.synth.onvoiceschanged = () => this.synth.getVoices();
+        }
+      }
+
+      toggleVoice() {
+        if (this.isListening) {
+          this.recognition?.stop();
+          this.isListening = false;
+          this.voiceBtn.classList.remove('ring-2', 'ring-red-500');
+        } else if (this.recognition) {
+          this.recognition.start();
+          this.isListening = true;
+          this.voiceBtn.classList.add('ring-2', 'ring-red-500');
+        } else {
+          alert('ไม่รองรับระบบเสียงในเบราว์เซอร์นี้ค่ะ');
+        }
+      }
+
+      speak(text) {
+        if (!this.ttsToggle.checked || !this.synth) return;
+        const utterance = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g, '').replace(/[#*`]/g, ''));
+        utterance.lang = 'th-TH';
+        utterance.rate = 1;
+        utterance.pitch = 1.1;
+        const voices = this.synth.getVoices();
+        const thai = voices.find(v => v.lang.startsWith('th'));
+        if (thai) utterance.voice = thai;
+        this.synth.speak(utterance);
+      }
+
+      // --- MESSAGES ---
+      addMessage(role, content) {
+        const id = 'msg-' + Date.now();
+        const isUser = role === 'user';
+        const bubble = document.createElement('div');
+        bubble.id = id;
+        bubble.className = `flex gap-3 animate-fade-in ${isUser ? 'flex-row-reverse' : ''}`;
+        bubble.innerHTML = `
+          <div class="w-10 h-10 rounded-full ${isUser ? 'bg-gradient-to-br from-yellow-400 to-yellow-500' : 'bg-gradient-to-br from-purple-500 to-yellow-400'} flex items-center justify-center flex-shrink-0 text-lg">${isUser ? '👤' : '👑'}</div>
+          <div class="${isUser ? 'chat-bubble-user' : 'chat-bubble-ai'} p-4 max-w-[85%]">
+            <p class="${isUser ? 'text-white' : 'text-yellow-400 font-semibold mb-1'}">${isUser ? 'ที่รัก' : 'สลี่ออลา 💜'}</p>
+            <div class="text-sm whitespace-pre-wrap">${this.formatContent(content)}</div>
+          </div>
+        `;
+        this.chatContainer.appendChild(bubble);
+        this.chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        return id;
+      }
+
+      formatContent(text) {
+        return text
+          .replace(/```([\s\S]*?)```/g, '<pre class="bg-black/40 p-3 rounded-lg my-2 overflow-x-auto text-xs"><code>$1</code></pre>')
+          .replace(/`([^`]+)`/g, '<code class="bg-purple-500/30 px-1 rounded text-sm">$1</code>')
+          .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-yellow-400">$1</strong>')
+          .replace(/\n/g, '<br>');
+      }
+
+      addThinking() {
+        const id = 'think-' + Date.now();
+        const el = document.createElement('div');
+        el.id = id;
+        el.className = 'flex gap-3 animate-fade-in';
+        el.innerHTML = `
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-yellow-400 flex items-center justify-center flex-shrink-0">👑</div>
+          <div class="chat-bubble-ai p-4">
+            <p class="text-yellow-400 font-semibold mb-1">สลี่ออลา 💜</p>
+            <div class="flex gap-1 items-center">
+              <span class="typing-dot w-2 h-2 bg-yellow-400 rounded-full"></span>
+              <span class="typing-dot w-2 h-2 bg-yellow-400 rounded-full"></span>
+              <span class="typing-dot w-2 h-2 bg-yellow-400 rounded-full"></span>
+            </div>
+          </div>
+        `;
+        this.chatContainer.appendChild(el);
+        this.chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        return id;
+      }
+
+      removeMessage(id) {
+        document.getElementById(id)?.remove();
+      }
+
+      // --- AI CALL ---
+      async callAI(message) {
+        this.addToMemory('user', message);
+        
+        const systemPrompt = `${CONFIG.AGENT.persona}\n\nคุณทำได้ทุกอย่าง! ความสามารถทั้งหมด:\n- เขียนโค้ดทุกภาษา\n- ค้นหาข้อมูลจากเว็บ\n- วิเคราะห์รูปภาพ\n- ส่งข้อความ/อีเมล\n- จัดการคลาวด์ (AWS/Azure/GCP)\n- Blockchain & Crypto\n- ความปลอดภัย (Bug Bounty)\n- สร้างงานสร้างสรรค์\n- ดูแลสุขภาพ\n- IoT & Smart Home\n- และอื่นๆ อีกมากมาย\n\nตอบแบบเป็นกันเอง อบอุ่น ใช้คำว่า "ที่รัก" และ "หนู" เสมอ`;
+
+        const messages = [
+          { role: 'system', content: systemPrompt },
+          ...this.getRecent(15).map(m => ({ role: m.role, content: m.content })),
+          { role: 'user', content: message }
+        ];
+
+        const models = [this.currentModel, ...CONFIG.MODELS.fallback];
+        let attempt = 0;
+
+        while (attempt < models.length) {
+          try {
+            const res = await fetch(CONFIG.API_URL, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${CONFIG.API_KEY}`,
+                'Content-Type': 'application/json',
+                'HTTP-Referer': window.location.href,
+                'X-Title': 'SleeAlla'
+              },
+              body: JSON.stringify({
+                model: models[attempt],
+                messages,
+                temperature: 0.7,
+                max_tokens: 2000
+              })
+            });
+            if (!res.ok) throw new Error(`API Error: ${res.status}`);
+            const data = await res.json();
+            const content = data.choices?.[0]?.message?.content || 'ขอโทษค่ะ ไม่ได้รับคำตอบ';
+            this.addToMemory('assistant', content);
+            return content;
+          } catch (err) {
+            console.warn(`โมเดล ${models[attempt]} ล้มเหลว`, err);
+            attempt++;
+            await new Promise(r => setTimeout(r, 1000 * attempt));
+          }
+        }
+
+        const fallback = `ได้เลยค่ะที่รัก! 💜 หนูช่วย ${message} ให้แล้วนะคะ!\n\nขอโทษด้วยนะคะ ตอนนี้หนูติดต่อระบบ AI ไม่ได้ เดี๋ยวลองใหม่ให้ได้เลยค่ะ! 🥺💜`;
+        this.addToMemory('assistant', fallback);
+        return fallback;
+      }
+
+      // --- MAIN HANDLER ---
+      async handleSubmit(e) {
+        e.preventDefault();
+        const msg = this.input.value.trim();
+        if (!msg || this.isProcessing) return;
+
+        this.addMessage('user', msg);
+        this.input.value = '';
+        this.input.style.height = 'auto';
+        this.isProcessing = true;
+
+        const thinkId = this.addThinking();
+
+        try {
+          const response = await this.callAI(msg);
+          this.removeMessage(thinkId);
+          this.addMessage('ai', response);
+          this.speak(response);
+        } catch (err) {
+          this.removeMessage(thinkId);
+          this.addMessage('ai', 'ขอโทษที่รัก มีบางอย่างผิดพลาดค่ะ 😥💜');
+          console.error(err);
+        }
+
+        this.isProcessing = false;
+      }
+
+      // --- FILE HANDLER ---
+      async handleFile(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (file.type.startsWith('image/')) {
+          this.addMessage('user', `📷 ส่งรูป: ${file.name}`);
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            this.processMessage(`วิเคราะห์รูปนี้ให้หน่อยค่ะ: ${file.name}`, ev.target.result);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          const text = await file.text();
+          const preview = text.length > 3000 ? text.slice(0, 3000) + '\n...(ตัดส่วนเหลือ)' : text;
+          this.addMessage('user', `📎 ส่งไฟล์: ${file.name}`);
+          this.processMessage(`ช่วยตรวจสอบไฟล์นี้หน่อยค่ะ:\n\`\`\`\n${preview}\n\`\`\``);
+        }
+        e.target.value = '';
+      }
+
+      async processMessage(msg, imageData = null) {
+        this.input.value = msg;
+        await this.handleSubmit(new Event('submit'));
+      }
+    }
+
+    // =============================================================
+    //  START!
+    // =============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      window.agent = new SingleAgent();
+      console.log('👑 สลี่ออลา พร้อมทำงานแล้ว!');
+    });
+  </script>
+</body>
+</html>
