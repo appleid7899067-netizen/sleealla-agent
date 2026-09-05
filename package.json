@@ -4,7 +4,7 @@
   "private": true,
   "description": "Static Thai AI agent with 400 AI and self-development skills",
   "scripts": {
-    "start": "python3 -m http.server ${PORT:-10000} --directory ."
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=18"
