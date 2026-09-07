@@ -1,3 +1,111 @@
+// skills.js - Skill Definitions
+
+module.exports = {
+  SKILLS_400: {
+    skills: [
+      // Development
+      {
+        id: 'python-dev',
+        category: 'developer',
+        title: 'Python Development',
+        description: 'พัฒนาแอปพลิเคชัน Python, Web Scraping, Data Analysis',
+        keywords: ['python', 'code', 'programming', 'script', 'automation'],
+        practice: 'เขียนโค้ด Python สำหรับงานที่คุณต้องการ'
+      },
+      {
+        id: 'web-dev',
+        category: 'developer',
+        title: 'Web Development',
+        description: 'สร้างเว็บไซต์ด้วย HTML, CSS, JavaScript, React',
+        keywords: ['web', 'html', 'css', 'javascript', 'react', 'frontend'],
+        practice: 'อธิบายโปรเจกต์เว็บที่คุณต้องการสร้าง'
+      },
+      {
+        id: 'api-integration',
+        category: 'developer',
+        title: 'API Integration',
+        description: 'เชื่อมต่อและใช้งาน REST APIs, GraphQL',
+        keywords: ['api', 'rest', 'graphql', 'integration', 'http'],
+        practice: 'ระบุ API ที่คุณต้องการเชื่อมต่อ'
+      },
+      
+      // Business
+      {
+        id: 'swot-analysis',
+        category: 'business',
+        title: 'SWOT Analysis',
+        description: 'วิเคราะห์จุดแข็ง จุดอ่อน โอกาส อุปสรรค',
+        keywords: ['swot', 'analysis', 'strategy', 'business'],
+        practice: 'อธิบายธุรกิจหรือโปรเจกต์ที่ต้องการวิเคราะห์'
+      },
+      {
+        id: 'market-research',
+        category: 'business',
+        title: 'Market Research',
+        description: 'วิจัยตลาด คู่แข่ง แนวโน้มอุตสาหกรรม',
+        keywords: ['market', 'research', 'competitor', 'trend'],
+        practice: 'ระบุตลาดหรืออุตสาหกรรมที่ต้องการวิจัย'
+      },
+      
+      // Communication
+      {
+        id: 'email-writing',
+        category: 'communication',
+        title: 'Professional Email Writing',
+        description: 'เขียนอีเมลธุรกิจ ทางการ和专业',
+        keywords: ['email', 'writing', 'business', 'communication'],
+        practice: 'ระบุวัตถุประสงค์และ收件人ของอีเมล'
+      },
+      {
+        id: 'presentation',
+        category: 'communication',
+        title: 'Presentation Creation',
+        description: 'สร้างสไลด์นำเสนอ โครงสร้างเนื้อหา',
+        keywords: ['presentation', 'slide', 'powerpoint', 'pitch'],
+        practice: 'อธิบายหัวข้อและกลุ่มเป้าหมาย'
+      },
+      
+      // Data & Analysis
+      {
+        id: 'data-analysis',
+        category: 'productivity',
+        title: 'Data Analysis',
+        description: 'วิเคราะห์ข้อมูล สถิติ สร้าง visualization',
+        keywords: ['data', 'analysis', 'statistics', 'visualization'],
+        practice: 'อธิบายข้อมูลที่คุณมีและต้องการวิเคราะห์'
+      },
+      {
+        id: 'document-review',
+        category: 'productivity',
+        title: 'Document Review',
+        description: 'ตรวจสอบเอกสาร สรุปเนื้อหา แก้ไข',
+        keywords: ['document', 'review', 'summary', 'edit'],
+        practice: 'อัปโหลดเอกสารหรือวางเนื้อหา'
+      },
+      
+      // Design
+      {
+        id: 'ui-design',
+        category: 'productivity',
+        title: 'UI/UX Design',
+        description: 'ออกแบบ interface, user experience',
+        keywords: ['ui', 'ux', 'design', 'interface', 'figma'],
+        practice: 'อธิบายแอปหรือเว็บที่ต้องการออกแบบ'
+      }
+    ],
+    categories: [
+      'developer',
+      'business',
+      'communication',
+      'productivity',
+      'design',
+      'marketing',
+      'security',
+      'research'
+    ]
+  }
+};
+
 // คลังทักษะพัฒนาการ AI และพัฒนาตัวเอง 400 รายการ
 // Generated deterministically: 20 หมวด x 20 ทักษะ
 const SKILLS_400 = [
