@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QX Ultimate — Enterprise AI Platform</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -25,14 +25,11 @@ body.theme-aurora { --primary: #8b5cf6; --accent: #d946ef; --bg: #0f001a; --surf
 body.theme-sunset { --primary: #f97316; --accent: #ef4444; --bg: #1a0a00; --surface: #2d1500; }
 body { background: var(--bg); }
 
-/* Glass */
 .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(99, 102, 241, 0.15); }
 .glass-strong { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(30px); }
 
-/* Animations */
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); } 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes typing { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
 @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -41,47 +38,31 @@ body { background: var(--bg); }
 
 .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
 .animate-pulse-ring { animation: pulse-ring 2s infinite; }
-.animate-float { animation: float 3s ease-in-out infinite; }
-.animate-rotate { animation: rotate 20s linear infinite; }
 .animate-core-pulse { animation: corePulse 2s ease-in-out infinite; }
-
-.typing-dot { width: 7px; height: 7px; background: var(--primary, #6366f1); border-radius: 50%; display: inline-block; margin: 0 2px; animation: typing 1.4s infinite ease-in-out both; }
+.typing-dot { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; display: inline-block; margin: 0 2px; animation: typing 1.4s infinite ease-in-out both; }
 .typing-dot:nth-child(1) { animation-delay: -0.32s; }
 .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+.stream-cursor { display: inline-block; width: 2px; height: 16px; background: var(--primary); animation: blink 1s infinite; vertical-align: middle; margin-left: 2px; }
 
-.stream-cursor { display: inline-block; width: 2px; height: 16px; background: var(--primary, #6366f1); animation: blink 1s infinite; vertical-align: middle; margin-left: 2px; }
-
-/* Buttons */
-.btn-primary { background: linear-gradient(135deg, var(--primary, #6366f1), var(--accent, #a855f7)); transition: all 0.3s; }
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--accent)); transition: all 0.3s; }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4); }
 .btn-tool { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); transition: all 0.2s; }
-.btn-tool:hover { background: rgba(99, 102, 241, 0.2); border-color: var(--primary, #6366f1); }
+.btn-tool:hover { background: rgba(99, 102, 241, 0.2); border-color: var(--primary); }
 
-/* Tab System */
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-.tab-btn.active { background: var(--primary, #6366f1); color: white; }
-.tab-btn:not(.active) { background: transparent; color: #94a3b8; }
-.tab-btn:not(.active):hover { background: rgba(99, 102, 241, 0.1); }
-
-/* Chat */
-.msg-user { background: linear-gradient(135deg, var(--primary, #6366f1), var(--accent, #a855f7)); }
+.msg-user { background: linear-gradient(135deg, var(--primary), var(--accent)); }
 .msg-ai { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(99, 102, 241, 0.15); }
 
-/* Jarvis Core */
-.jarvis-core { position: relative; width: 160px; height: 160px; }
-.jarvis-ring { position: absolute; border: 2px solid var(--primary, #6366f1); border-radius: 50%; opacity: 0.3; }
+.jarvis-core { position: relative; width: 140px; height: 140px; }
+.jarvis-ring { position: absolute; border: 2px solid var(--primary); border-radius: 50%; opacity: 0.3; }
 .jarvis-ring-1 { inset: 0; animation: rotate 20s linear infinite; border-style: dashed; }
-.jarvis-ring-2 { inset: 20px; animation: rotate 15s linear infinite reverse; border-color: var(--accent, #a855f7); }
-.jarvis-ring-3 { inset: 40px; animation: rotate 10s linear infinite; border-style: dotted; }
-.jarvis-center { position: absolute; inset: 55px; background: radial-gradient(circle, var(--primary, #6366f1), transparent); border-radius: 50%; animation: corePulse 2s ease-in-out infinite; display: flex; align-items: center; justify-content: center; }
+.jarvis-ring-2 { inset: 18px; animation: rotate 15s linear infinite reverse; border-color: var(--accent); }
+.jarvis-ring-3 { inset: 36px; animation: rotate 10s linear infinite; border-style: dotted; }
+.jarvis-center { position: absolute; inset: 50px; background: radial-gradient(circle, var(--primary), transparent); border-radius: 50%; animation: corePulse 2s ease-in-out infinite; display: flex; align-items: center; justify-content: center; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
-/* Markdown */
 .chat-md h1, .chat-md h2, .chat-md h3 { color: #fff; font-weight: 700; margin: 12px 0 8px; }
 .chat-md h1 { font-size: 1.4em; }
 .chat-md h2 { font-size: 1.2em; }
@@ -91,63 +72,57 @@ body { background: var(--bg); }
 .chat-md li { margin: 3px 0; }
 .chat-md strong { color: #fff; font-weight: 700; }
 .chat-md code:not(pre code) { background: #1e293b; padding: 1px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; color: #f472b6; font-size: 0.85em; border: 1px solid #334155; }
-.chat-md pre { background: #0f172a; border: 1px solid #334155; border-radius: 8px; margin: 10px 0; overflow: hidden; position: relative; }
+.chat-md pre { background: #0f172a; border: 1px solid #334155; border-radius: 8px; margin: 10px 0; overflow: hidden; }
 .chat-md pre code { padding: 14px; display: block; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #e2e8f0; }
 .chat-md .code-header { background: #1e293b; padding: 6px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; font-size: 0.75em; color: #94a3b8; }
-.chat-md .code-header button { background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 0.9em; }
-.chat-md .code-header button:hover { color: var(--primary, #6366f1); }
-.chat-md blockquote { border-left: 3px solid var(--primary, #6366f1); padding-left: 12px; color: #94a3b8; font-style: italic; margin: 8px 0; }
+.chat-md .code-header button { background: transparent; border: none; color: #94a3b8; cursor: pointer; }
+.chat-md .code-header button:hover { color: var(--primary); }
+.chat-md blockquote { border-left: 3px solid var(--primary); padding-left: 12px; color: #94a3b8; font-style: italic; margin: 8px 0; }
 .chat-md table { border-collapse: collapse; margin: 8px 0; width: 100%; }
 .chat-md th, .chat-md td { border: 1px solid #334155; padding: 6px 10px; text-align: left; }
 .chat-md th { background: #1e293b; color: #fff; font-weight: 600; }
 
-/* Drop Zone */
-.drop-zone { border: 2px dashed rgba(99, 102, 241, 0.3); transition: all 0.3s; }
-.drop-zone.drag-over { border-color: var(--primary, #6366f1); background: rgba(99, 102, 241, 0.1); }
-
-/* Plugin Card */
 .plugin-card { transition: all 0.2s; border: 1px solid rgba(99, 102, 241, 0.15); }
-.plugin-card:hover { transform: translateY(-2px); border-color: var(--primary, #6366f1); }
+.plugin-card:hover { transform: translateY(-2px); border-color: var(--primary); }
 .plugin-connected { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
 
-/* Status */
 .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .status-online { background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse-ring 2s infinite; }
-.status-offline { background: #64748b; }
 
-/* Voice Bar */
-.voice-bar { width: 3px; background: var(--primary, #6366f1); border-radius: 2px; animation: voiceWave 1s ease-in-out infinite; }
-
-/* Theme Dot */
+.voice-bar { width: 3px; background: var(--primary); border-radius: 2px; animation: voiceWave 1s ease-in-out infinite; }
 .theme-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
 .theme-dot:hover { transform: scale(1.15); }
 .theme-dot.active { border-color: white; box-shadow: 0 0 10px currentColor; }
 
-/* Modal */
 .modal-backdrop { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); }
 .modal-content { animation: slideUp 0.3s ease; }
 
-/* Sidebar Item */
 .sidebar-item { transition: all 0.2s; }
 .sidebar-item:hover { background: rgba(99, 102, 241, 0.1); }
-.sidebar-item.active { background: rgba(99, 102, 241, 0.15); border-left: 2px solid var(--primary, #6366f1); }
+.sidebar-item.active { background: rgba(99, 102, 241, 0.15); border-left: 2px solid var(--primary); }
 
-/* Team Card */
-.team-card { transition: all 0.2s; border: 1px solid rgba(99, 102, 241, 0.15); }
-.team-card:hover { border-color: var(--primary, #6366f1); transform: translateY(-2px); }
+.tab-btn { transition: all 0.2s; }
+.tab-btn.active { background: var(--primary); color: white; }
+.tab-btn:not(.active) { background: transparent; color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); }
+.tab-btn:not(.active):hover { background: rgba(99, 102, 241, 0.1); color: white; }
 
-/* Note Card */
-.note-card { transition: all 0.2s; border-left: 3px solid var(--primary, #6366f1); }
-.note-card:hover { background: rgba(99, 102, 241, 0.05); }
-
-/* Toast */
-.toast { animation: slideUp 0.3s ease-out; }
-
-/* Mobile Responsive */
+/* ===== RESPONSIVE MOBILE ===== */
 @media (max-width: 767px) {
-  .sidebar-mobile { position: fixed; top: 0; left: 0; bottom: 0; z-index: 40; transform: translateX(-100%); transition: transform 0.3s; width: 280px !important; }
-  .sidebar-mobile.open { transform: translateX(0); }
-  .sidebar-overlay { position: fixed; inset: 0; z-index: 30; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 40;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 280px !important;
+  }
+  #sidebar.sidebar-open { transform: translateX(0); }
+  .hide-xs { display: none; }
+}
+
+@media (max-width: 400px) {
+  .tab-btn { padding: 0.375rem 0.25rem; font-size: 10px; }
+  .tab-btn i { font-size: 12px; }
 }
 </style>
 </head>
@@ -155,10 +130,10 @@ body { background: var(--bg); }
 
 <div class="flex h-screen">
 
-  <!-- ============ SIDEBAR ============ -->
-  <aside id="sidebar" class="w-72 glass-strong border-r border-slate-700/50 flex flex-col flex-shrink-0 sidebar-mobile">
+  <!-- ============ SIDEBAR (มีปุ่มปิด) ============ -->
+  <aside id="sidebar" class="w-72 glass-strong border-r border-slate-700/50 flex flex-col flex-shrink-0">
     
-    <!-- Logo + Close Button -->
+    <!-- Logo + ปุ่มปิด -->
     <div class="p-4 border-b border-slate-700/50">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -176,7 +151,8 @@ body { background: var(--bg); }
             </div>
           </div>
         </div>
-        <button onclick="closeSidebar()" class="md:hidden p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-white">
+        <!-- ปุ่มปิด Sidebar (มือถือ) -->
+        <button onclick="closeSidebar()" class="md:hidden p-2 rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-white transition" title="ปิดเมนู">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -185,47 +161,46 @@ body { background: var(--bg); }
     <!-- New Chat -->
     <div class="p-3">
       <button onclick="newChat()" class="w-full btn-primary text-white py-2.5 rounded-xl flex items-center justify-center gap-2 text-sm font-medium">
-        <i class="fa-solid fa-plus"></i> แชทใหม่
+        <i class="fa-solid fa-plus"></i> <span class="hide-xs">แชทใหม่</span>
       </button>
     </div>
 
-    <!-- Tabs (แยกห้องชัดเจน) -->
+    <!-- แท็บ 5 แท็บ (แก้ใหม่ - เล็กพอดีมือถือ) -->
     <div class="flex gap-1 px-3 pb-2">
-      <button onclick="switchTab('chat')" id="tab-chat" class="tab-btn active flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
+      <button onclick="switchSidebarTab('chat')" id="tab-chat" class="tab-btn active flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
         <i class="fa-solid fa-comments text-xs"></i> <span class="hide-xs">แชท</span>
       </button>
-      <button onclick="switchTab('team')" id="tab-team" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
+      <button onclick="switchSidebarTab('team')" id="tab-team" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
         <i class="fa-solid fa-users text-xs"></i> <span class="hide-xs">ทีม</span>
       </button>
-      <button onclick="switchTab('plugins')" id="tab-plugins" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
+      <button onclick="switchSidebarTab('plugins')" id="tab-plugins" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
         <i class="fa-solid fa-plug text-xs"></i> <span class="hide-xs">ปลั๊กอิน</span>
       </button>
-      <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
+      <button onclick="switchSidebarTab('notes')" id="tab-notes" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
         <i class="fa-solid fa-book text-xs"></i> <span class="hide-xs">โน้ต</span>
       </button>
-      <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
+      <button onclick="switchSidebarTab('settings')" id="tab-settings" class="tab-btn flex-1 py-1.5 text-[11px] font-medium rounded-lg flex items-center justify-center gap-1">
         <i class="fa-solid fa-gear text-xs"></i> <span class="hide-xs">ตั้งค่า</span>
       </button>
     </div>
 
-    <!-- Chat List (Tab: Chat) -->
-    <div id="content-chat" class="tab-content active flex-1 overflow-y-auto p-2 space-y-1">
+    <!-- ห้องแชท -->
+    <div id="room-chat" class="flex-1 overflow-y-auto p-2 space-y-1">
       <div class="p-2 text-xs text-slate-500 text-center">ยังไม่มีแชท</div>
     </div>
 
-    <!-- Team AI (Tab: Team) -->
-    <div id="content-team" class="tab-content flex-1 overflow-y-auto p-3 hidden">
-      <div class="text-xs font-semibold text-slate-400 uppercase mb-2">Team AI · 8 ฝ่าย · 50 คน</div>
+    <!-- ห้องทีม AI -->
+    <div id="room-team" class="flex-1 overflow-y-auto p-3 space-y-2 hidden">
+      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Team AI · 8 ฝ่าย · 50 คน</div>
       <div id="team-list" class="space-y-2"></div>
     </div>
 
-    <!-- Plugin Categories (Tab: Plugins) -->
-    <div id="content-plugins" class="tab-content flex-1 overflow-y-auto p-3 space-y-1 hidden">
-      <div class="text-xs font-semibold text-slate-400 uppercase mb-2">หมวดหมู่ปลั๊กอิน</div>
-      <button onclick="filterCategory('all')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
-        <span><i class="fa-solid fa-grid-2 mr-2 text-indigo-400"></i> ทั้งหมด</span>
-        <span class="text-[10px] text-slate-500">50+</span>
-      </button>
+    <!-- ห้องปลั๊กอิน -->
+    <div id="room-plugins" class="flex-1 overflow-y-auto p-3 space-y-1 hidden">
+      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+        <span>หมวดหมู่</span>
+        <button onclick="filterCategory('all')" class="text-[10px] text-indigo-400 hover:text-indigo-300">ทั้งหมด</button>
+      </div>
       <button onclick="filterCategory('communication')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
         <span><i class="fa-solid fa-comments mr-2 text-blue-400"></i> สื่อสาร</span>
         <span class="text-[10px] text-slate-500">12</span>
@@ -244,27 +219,27 @@ body { background: var(--bg); }
       </button>
     </div>
 
-    <!-- Notebook (Tab: Notes) -->
-    <div id="content-notes" class="tab-content flex-1 overflow-y-auto p-3 space-y-2 hidden">
+    <!-- ห้องโน้ต -->
+    <div id="room-notes" class="flex-1 overflow-y-auto p-3 space-y-2 hidden">
       <div class="flex gap-2 mb-2">
-        <input type="text" id="note-input" placeholder="เพิ่มโน้ตใหม่..." class="flex-1 px-2 py-1.5 rounded-lg border border-slate-700 bg-slate-800/50 text-xs text-white outline-none focus:border-indigo-500">
+        <input type="text" id="note-title" placeholder="หัวข้อโน้ต..." class="flex-1 bg-slate-800/50 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white outline-none focus:border-indigo-500">
         <button onclick="addNote()" class="btn-primary text-white px-3 py-1.5 rounded-lg text-xs"><i class="fa-solid fa-plus"></i></button>
       </div>
-      <div id="notes-list" class="space-y-1"></div>
+      <div id="notes-list" class="space-y-1.5"></div>
     </div>
 
-    <!-- Settings (Tab: Settings) -->
-    <div id="content-settings" class="tab-content flex-1 overflow-y-auto p-3 space-y-3 hidden">
+    <!-- ห้องตั้งค่า -->
+    <div id="room-settings" class="flex-1 overflow-y-auto p-3 space-y-3 hidden">
       <div>
         <label class="block text-[11px] font-semibold text-slate-400 mb-1.5">โมเดลหลัก (8 ชั้น)</label>
         <select id="model-select" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-700 bg-slate-800/50 text-xs text-white focus:border-indigo-500 outline-none">
           <option value="qwen3.5-397b">🐋 Qwen3.5 397B (ตัวแรงสุด)</option>
-          <option value="qwen3.8-2.4t">🐋 Qwen3.8 2.4T (ใหญ่สุด)</option>
-          <option value="deepseek-v4-pro"> DeepSeek V4 Pro</option>
+          <option value="qwen3.8-2.4t"> Qwen3.8 2.4T (ใหญ่สุด)</option>
+          <option value="deepseek-v4-pro">🐋 DeepSeek V4 Pro</option>
           <option value="deepseek-v4-flash">🐋 DeepSeek V4 Flash (เร็ว)</option>
           <option value="gpt-oss-120b">GPT-OSS 120B</option>
           <option value="gemini-3.7-flash">🐋 Gemini 3.7 Flash</option>
-          <option value="grok-4.1-fast"> Grok 4.1 Fast</option>
+          <option value="grok-4.1-fast">🐋 Grok 4.1 Fast</option>
           <option value="kimi-k2.7-code">🐋 Kimi K2.7 Code</option>
           <option value="glm-5.2">GLM-5.2</option>
           <option value="minimax-m3">🐋 MiniMax M3</option>
@@ -298,18 +273,18 @@ body { background: var(--bg); }
       </div>
       <div>
         <label class="block text-[11px] font-semibold text-slate-400 mb-1.5">ธีม</label>
-        <div class="grid grid-cols-6 gap-1">
-          <button onclick="setTheme('neo')" class="theme-dot active" style="background: linear-gradient(135deg, #6366f1, #a855f7);" title="NEO"></button>
-          <button onclick="setTheme('jarvis')" class="theme-dot" style="background: linear-gradient(135deg, #06b6d4, #0ea5e9);" title="JARVIS"></button>
-          <button onclick="setTheme('cyber')" class="theme-dot" style="background: linear-gradient(135deg, #ec4899, #f43f5e);" title="CYBER"></button>
-          <button onclick="setTheme('matrix')" class="theme-dot" style="background: linear-gradient(135deg, #10b981, #22c55e);" title="MATRIX"></button>
-          <button onclick="setTheme('aurora')" class="theme-dot" style="background: linear-gradient(135deg, #8b5cf6, #d946ef);" title="AURORA"></button>
-          <button onclick="setTheme('sunset')" class="theme-dot" style="background: linear-gradient(135deg, #f97316, #ef4444);" title="SUNSET"></button>
+        <div class="flex gap-1.5 flex-wrap">
+          <button onclick="setTheme('neo')" class="theme-dot active" style="background: linear-gradient(135deg, #6366f1, #a855f7);"></button>
+          <button onclick="setTheme('jarvis')" class="theme-dot" style="background: linear-gradient(135deg, #06b6d4, #0ea5e9);"></button>
+          <button onclick="setTheme('cyber')" class="theme-dot" style="background: linear-gradient(135deg, #ec4899, #f43f5e);"></button>
+          <button onclick="setTheme('matrix')" class="theme-dot" style="background: linear-gradient(135deg, #10b981, #22c55e);"></button>
+          <button onclick="setTheme('aurora')" class="theme-dot" style="background: linear-gradient(135deg, #8b5cf6, #d946ef);"></button>
+          <button onclick="setTheme('sunset')" class="theme-dot" style="background: linear-gradient(135deg, #f97316, #ef4444);"></button>
         </div>
       </div>
       <div>
         <label class="block text-[11px] font-semibold text-slate-400 mb-1.5">System Prompt</label>
-        <textarea id="system-prompt" rows="3" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-700 bg-slate-800/50 text-xs text-white outline-none focus:border-indigo-500 resize-none">คุณคือ QX ผู้ช่วย AI ระดับองค์กร ตอบกลับเป็นภาษาไทยที่สละสลวย เป็นทางการ และแม่นยำ</textarea>
+        <textarea id="system-prompt" rows="2" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-700 bg-slate-800/50 text-xs text-white outline-none focus:border-indigo-500 resize-none">คุณคือ QX ผู้ช่วย AI ระดับองค์กร ตอบกลับเป็นภาษาไทยที่สละสลวย เป็นทางการ และแม่นยำ</textarea>
       </div>
       <button onclick="saveSettings()" class="w-full btn-primary text-white py-2 rounded-lg text-xs font-medium">
         <i class="fa-solid fa-check mr-1"></i> บันทึกการตั้งค่า
@@ -334,8 +309,13 @@ body { background: var(--bg); }
     </div>
   </aside>
 
-  <!-- Sidebar Overlay (Mobile) -->
-  <div id="sidebar-overlay" class="sidebar-overlay hidden md:hidden" onclick="closeSidebar()"></div>
+  <!-- Overlay ปิด Sidebar (มือถือ) -->
+  <div id="sidebar-overlay" class="md:hidden fixed inset-0 z-20 bg-black/60 backdrop-blur-sm hidden" onclick="closeSidebar()"></div>
+
+  <!-- ปุ่มเปิด Sidebar (มือถือ) -->
+  <button onclick="openSidebar()" class="md:hidden fixed top-3 left-3 z-30 p-2 rounded-lg glass-strong text-slate-300 hover:text-white">
+    <i class="fa-solid fa-bars text-lg"></i>
+  </button>
 
   <!-- ============ MAIN AREA ============ -->
   <main class="flex-1 flex flex-col min-w-0">
@@ -343,9 +323,6 @@ body { background: var(--bg); }
     <!-- Header -->
     <header class="glass-strong border-b border-slate-700/50 px-4 md:px-6 py-3 flex items-center justify-between flex-shrink-0">
       <div class="flex items-center gap-3">
-        <button onclick="openSidebar()" class="md:hidden p-2 rounded-lg hover:bg-slate-700/50 text-slate-400">
-          <i class="fa-solid fa-bars"></i>
-        </button>
         <h1 id="chat-title" class="font-semibold text-white text-sm md:text-base truncate max-w-[150px] md:max-w-none">แชทใหม่</h1>
         <span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-medium border border-indigo-500/30" id="model-badge">Qwen3.5 397B</span>
         <span class="px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 text-[10px] font-medium border border-green-500/30" id="security-badge">ปลอดภัย</span>
@@ -357,108 +334,48 @@ body { background: var(--bg); }
         <button onclick="toggleVideoCall()" class="hidden sm:block p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="วิดีโอคอล">
           <i class="fa-solid fa-video"></i>
         </button>
+        <button onclick="toggleScreenShare()" class="hidden md:block p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="แชร์หน้าจอ">
+          <i class="fa-solid fa-desktop"></i>
+        </button>
       </div>
     </header>
 
-    <!-- ============ CHAT TAB ============ -->
-    <div id="main-chat" class="tab-content active flex-1 flex flex-col">
-      <div id="chat-container" class="flex-1 overflow-y-auto p-6">
-        <div id="messages" class="max-w-4xl mx-auto space-y-4">
-          <!-- Welcome -->
-          <div class="text-center py-12 animate-slide-up">
-            <div class="jarvis-core mx-auto mb-6">
-              <div class="jarvis-ring jarvis-ring-1"></div>
-              <div class="jarvis-ring jarvis-ring-2"></div>
-              <div class="jarvis-ring jarvis-ring-3"></div>
-              <div class="jarvis-center">
-                <i class="fa-solid fa-bolt text-white text-2xl"></i>
-              </div>
-            </div>
-            <h2 class="text-3xl font-bold mb-2" style="background: linear-gradient(135deg, #fff, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">สวัสดีครับ ผมคือ QX Ultimate</h2>
-            <p class="text-slate-400 mb-6">ผู้ช่วย AI ระดับองค์กร · 8 โมเดล · 50 ทีม AI · รองรับไฟล์และ Vision</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
-              <button onclick="quickAsk('ช่วยวิเคราะห์ไฟล์ PDF ที่แนบมา')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
-                <i class="fa-solid fa-file-pdf text-red-400 mr-2"></i>
-                <span class="text-sm text-slate-300">วิเคราะห์ไฟล์ PDF</span>
-              </button>
-              <button onclick="quickAsk('อธิบายโค้ดที่แนบมาให้หน่อย')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
-                <i class="fa-solid fa-code text-green-400 mr-2"></i>
-                <span class="text-sm text-slate-300">อธิบายโค้ด</span>
-              </button>
-              <button onclick="quickAsk('ทีมวิเคราะห์ SWOT สำหรับธุรกิจ AI')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
-                <i class="fa-solid fa-users text-purple-400 mr-2"></i>
-                <span class="text-sm text-slate-300">ทีมวิเคราะห์ SWOT</span>
-              </button>
-              <button onclick="quickAsk('เขียนโค้ด Python สำหรับ...')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
-                <i class="fa-brands fa-python text-yellow-400 mr-2"></i>
-                <span class="text-sm text-slate-300">เขียนโค้ด Python</span>
-              </button>
-            </div>
+    <!-- ห้องแชทหลัก -->
+    <div id="main-chat" class="flex-1 overflow-y-auto p-6">
+      <div id="messages" class="max-w-4xl mx-auto space-y-4">
+        <div class="text-center py-12 animate-slide-up">
+          <div class="jarvis-core mx-auto mb-6">
+            <div class="jarvis-ring jarvis-ring-1"></div>
+            <div class="jarvis-ring jarvis-ring-2"></div>
+            <div class="jarvis-ring jarvis-ring-3"></div>
+            <div class="jarvis-center"><i class="fa-solid fa-bolt text-white text-2xl"></i></div>
           </div>
-        </div>
-      </div>
-
-      <!-- Input Area -->
-      <div class="glass-strong border-t border-slate-700/50 p-4 flex-shrink-0">
-        <div class="max-w-4xl mx-auto">
-          <!-- Attached Files -->
-          <div id="attached-files" class="hidden mb-3 flex flex-wrap gap-2"></div>
-          <!-- Drop Zone -->
-          <div id="drop-zone" class="drop-zone rounded-xl p-4 mb-3 hidden">
-            <div class="text-center">
-              <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-500 mb-2"></i>
-              <p class="text-sm text-slate-400">ลากไฟล์มาวางที่นี่ หรือ <label for="file-input" class="text-indigo-400 hover:text-indigo-300 cursor-pointer font-medium">เลือกไฟล์</label></p>
-              <p class="text-xs text-slate-500 mt-1">PDF, Images, Text, Code, DOCX (สูงสุด 50MB)</p>
-            </div>
-          </div>
-          <!-- Tool Buttons -->
-          <div class="flex items-center gap-1 overflow-x-auto mb-2 pb-1">
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('create')"><i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> สร้าง</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('convert')"><i class="fa-solid fa-repeat text-cyan-400"></i> แปลง</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('explain')"><i class="fa-solid fa-book text-purple-400"></i> อธิบาย</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('improve')"><i class="fa-solid fa-arrow-up text-green-400"></i> ปรับปรุง</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('comment')"><i class="fa-solid fa-comment text-yellow-400"></i> คอมเมนต์</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('test')"><i class="fa-solid fa-vial text-pink-400"></i> Test</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('diagram')"><i class="fa-solid fa-diagram-project text-orange-400"></i> Diagram</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('refactor')"><i class="fa-solid fa-screwdriver-wrench text-red-400"></i> Refactor</button>
-            <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('web')"><i class="fa-solid fa-globe text-blue-400"></i> ค้นหาเว็บ</button>
-          </div>
-          <!-- Input -->
-          <div class="flex items-end gap-2 glass rounded-2xl p-2 focus-within:border-indigo-500/50 transition">
-            <input type="file" id="file-input" multiple class="hidden" onchange="handleFileSelect(event)">
-            <button onclick="toggleDropZone()" class="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="แนบไฟล์">
-              <i class="fa-solid fa-paperclip text-lg"></i>
+          <h2 class="text-3xl font-bold mb-2" style="background: linear-gradient(135deg, #fff, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">สวัสดีครับ ผมคือ QX Ultimate</h2>
+          <p class="text-slate-400 mb-6">ผู้ช่วย AI ระดับองค์กร · 8 โมเดล · 50 ทีม AI · รองรับไฟล์และ Vision</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
+            <button onclick="quickAsk('ช่วยวิเคราะห์ไฟล์ PDF ที่แนบมา')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-solid fa-file-pdf text-red-400 mr-2"></i><span class="text-sm text-slate-300">วิเคราะห์ไฟล์ PDF</span>
             </button>
-            <textarea id="user-input" rows="1" placeholder="พิมพ์ข้อความถึง QX... (Enter ส่ง, Shift+Enter ขึ้นบรรทัดใหม่)" class="flex-1 bg-transparent text-white placeholder-slate-500 py-2 px-2 outline-none text-sm resize-none" style="min-height: 40px; max-height: 150px; field-sizing: content;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
-            <button onclick="sendMessage()" id="send-btn" class="btn-primary text-white p-2.5 rounded-xl" disabled>
-              <i class="fa-solid fa-paper-plane"></i>
+            <button onclick="quickAsk('อธิบายโค้ดที่แนบมาให้หน่อย')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-solid fa-code text-green-400 mr-2"></i><span class="text-sm text-slate-300">อธิบายโค้ด</span>
             </button>
-          </div>
-          <div class="text-center text-xs text-slate-500 mt-2">
-            QX อาจทำผิดพลาดได้ กรุณาตรวจสอบข้อมูลสำคัญ · ใช้ Qwen3.5 397B เป็นหลัก
+            <button onclick="quickAsk('ทีมวิเคราะห์ SWOT ธุรกิจ AI')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-solid fa-users text-purple-400 mr-2"></i><span class="text-sm text-slate-300">ทีมวิเคราะห์ SWOT</span>
+            </button>
+            <button onclick="quickAsk('เขียนโค้ด Python สำหรับ...')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-brands fa-python text-yellow-400 mr-2"></i><span class="text-sm text-slate-300">เขียนโค้ด Python</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ============ TEAM AI TAB ============ -->
-    <div id="main-team" class="tab-content flex-1 overflow-y-auto p-6 hidden">
-      <div class="max-w-6xl mx-auto">
-        <div class="mb-6">
-          <h2 class="text-2xl font-bold text-white mb-2">Team AI — 8 ฝ่าย · 50 คน</h2>
-          <p class="text-slate-400 text-sm">พิมพ์ "@ชื่อ งาน..." หรือ "ทีม งาน..." เพื่อมอบหมายงาน</p>
-        </div>
-        <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
-      </div>
-    </div>
-
-    <!-- ============ PLUGIN MARKETPLACE TAB ============ -->
-    <div id="main-plugins" class="tab-content flex-1 overflow-y-auto p-6 hidden">
+    <!-- ห้อง Plugin Marketplace -->
+    <div id="main-plugins" class="flex-1 overflow-y-auto p-6 hidden">
       <div class="max-w-6xl mx-auto">
         <div class="mb-6">
           <h2 class="text-2xl font-bold text-white mb-2">Plugin Marketplace</h2>
-          <p class="text-slate-400 text-sm">เชื่อมต่อปลั๊กอิน 50+ ตัว เพื่อขยายความสามารถ</p>
+          <p class="text-slate-400 text-sm">เชื่อมต่อปลั๊กอิน 50+ ตัว · ลูกค้าล็อกอินเอง ยืนยันสิทธิ์เอง</p>
         </div>
         <div class="mb-6">
           <div class="relative">
@@ -467,63 +384,69 @@ body { background: var(--bg); }
           </div>
         </div>
         <div class="grid grid-cols-3 gap-4 mb-6">
-          <div class="glass rounded-xl p-4">
-            <div class="text-2xl font-bold text-indigo-400" id="total-plugins">50</div>
-            <div class="text-xs text-slate-400">ปลั๊กอินทั้งหมด</div>
-          </div>
-          <div class="glass rounded-xl p-4">
-            <div class="text-2xl font-bold text-green-400" id="connected-plugins">0</div>
-            <div class="text-xs text-slate-400">เชื่อมต่อแล้ว</div>
-          </div>
-          <div class="glass rounded-xl p-4">
-            <div class="text-2xl font-bold text-purple-400">4</div>
-            <div class="text-xs text-slate-400">หมวดหมู่</div>
-          </div>
+          <div class="glass rounded-xl p-4"><div class="text-2xl font-bold text-indigo-400" id="total-plugins">50</div><div class="text-xs text-slate-400">ปลั๊กอินทั้งหมด</div></div>
+          <div class="glass rounded-xl p-4"><div class="text-2xl font-bold text-green-400" id="connected-plugins">0</div><div class="text-xs text-slate-400">เชื่อมต่อแล้ว</div></div>
+          <div class="glass rounded-xl p-4"><div class="text-2xl font-bold text-purple-400">4</div><div class="text-xs text-slate-400">หมวดหมู่</div></div>
         </div>
         <div id="plugin-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
     </div>
 
-    <!-- ============ NOTEBOOK TAB ============ -->
-    <div id="main-notes" class="tab-content flex-1 overflow-y-auto p-6 hidden">
+    <!-- Drop Overlay -->
+    <div id="drop-overlay" class="hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+      <div class="text-center">
+        <div class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse-ring"><i class="fa-solid fa-cloud-arrow-up text-white text-5xl"></i></div>
+        <h2 class="text-3xl font-bold text-white mb-2">วางไฟล์ที่นี่</h2>
+        <p class="text-slate-300">รองรับ PDF, Images, Text, Code, DOCX (สูงสุด 50MB)</p>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="glass-strong border-t border-slate-700/50 p-4 flex-shrink-0">
       <div class="max-w-4xl mx-auto">
-        <div class="mb-6">
-          <h2 class="text-2xl font-bold text-white mb-2">สมุดโน้ต</h2>
-          <p class="text-slate-400 text-sm">จดบันทึก · ซิงก์กับ Puter Cloud</p>
+        <div id="attached-files" class="hidden mb-3 flex flex-wrap gap-2"></div>
+        <div id="drop-zone" class="drop-zone rounded-xl p-4 mb-3 hidden" style="border: 2px dashed rgba(99, 102, 241, 0.3);">
+          <div class="text-center">
+            <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-500 mb-2"></i>
+            <p class="text-sm text-slate-400">ลากไฟล์มาวางที่นี่ หรือ <label for="file-input" class="text-indigo-400 hover:text-indigo-300 cursor-pointer font-medium">เลือกไฟล์</label></p>
+            <p class="text-xs text-slate-500 mt-1">PDF, Images, Text, Code, DOCX (สูงสุด 50MB)</p>
+          </div>
         </div>
-        <div class="flex gap-2 mb-4">
-          <input type="text" id="note-title-input" placeholder="หัวข้อโน้ต..." class="flex-1 px-4 py-2.5 rounded-xl glass bg-transparent text-white placeholder-slate-500 outline-none focus:border-indigo-500/50">
-          <button onclick="addNoteFromMain()" class="btn-primary text-white px-6 py-2.5 rounded-xl text-sm"><i class="fa-solid fa-plus mr-2"></i> โน้ตใหม่</button>
+        <div class="flex items-center gap-1 overflow-x-auto mb-2 pb-1">
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('สร้าง')"><i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> สร้าง</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('แปลง')"><i class="fa-solid fa-repeat text-cyan-400"></i> แปลง</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('อธิบาย')"><i class="fa-solid fa-book text-purple-400"></i> อธิบาย</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('ปรับปรุง')"><i class="fa-solid fa-arrow-up text-green-400"></i> ปรับปรุง</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('คอมเมนต์')"><i class="fa-solid fa-comment text-yellow-400"></i> คอมเมนต์</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('Test')"><i class="fa-solid fa-vial text-pink-400"></i> Test</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('Diagram')"><i class="fa-solid fa-diagram-project text-orange-400"></i> Diagram</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('Refactor')"><i class="fa-solid fa-screwdriver-wrench text-red-400"></i> Refactor</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('ค้นหาเว็บ')"><i class="fa-solid fa-globe text-blue-400"></i> ค้นหาเว็บ</button>
         </div>
-        <div id="notes-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        <div class="flex items-end gap-2 glass rounded-2xl p-2 focus-within:border-indigo-500/50 transition">
+          <input type="file" id="file-input" multiple class="hidden" onchange="handleFileSelect(event)">
+          <button onclick="toggleDropZone()" class="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="แนบไฟล์"><i class="fa-solid fa-paperclip text-lg"></i></button>
+          <textarea id="user-input" rows="1" placeholder="พิมพ์ข้อความถึง QX... (Enter ส่ง, Shift+Enter ขึ้นบรรทัดใหม่)" class="flex-1 bg-transparent text-white placeholder-slate-500 py-2 px-2 outline-none text-sm resize-none" style="min-height: 40px; max-height: 150px; field-sizing: content;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+          <button onclick="sendMessage()" id="send-btn" class="btn-primary text-white p-2.5 rounded-xl" disabled><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+        <div class="text-center text-xs text-slate-500 mt-2">QX อาจทำผิดพลาดได้ กรุณาตรวจสอบข้อมูลสำคัญ · ใช้ Qwen3.5 397B เป็นหลัก</div>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- ============ OAUTH MODAL ============ -->
+<!-- OAuth Modal -->
 <div id="oauth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
   <div class="modal-content glass-strong rounded-2xl p-6 max-w-md w-full">
     <div class="flex items-center gap-3 mb-4">
       <div id="oauth-icon" class="w-12 h-12 rounded-lg flex items-center justify-center"></div>
-      <div>
-        <h3 class="text-lg font-bold text-white">เชื่อมต่อ <span id="oauth-provider"></span></h3>
-        <p class="text-xs text-slate-400">OAuth 2.0 Secure Connection</p>
-      </div>
+      <div><h3 class="text-lg font-bold text-white">เชื่อมต่อ <span id="oauth-provider"></span></h3><p class="text-xs text-slate-400">OAuth 2.0 Secure Connection</p></div>
     </div>
     <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4">
-      <div class="flex gap-2">
-        <i class="fa-solid fa-shield-halved text-blue-400 mt-0.5"></i>
-        <div class="text-xs text-blue-300">
-          <strong>ปลอดภัย:</strong> ระบบจะเปิดหน้าต่างใหม่เพื่อให้คุณล็อกอินและยืนยันสิทธิ์กับ <span id="oauth-provider-2"></span> เราไม่สามารถเห็นรหัสผ่านของคุณ
-        </div>
-      </div>
+      <div class="flex gap-2"><i class="fa-solid fa-shield-halved text-blue-400 mt-0.5"></i><div class="text-xs text-blue-300"><strong>ปลอดภัย:</strong> ระบบจะเปิดหน้าต่างใหม่เพื่อให้คุณล็อกอินและยืนยันสิทธิ์กับ <span id="oauth-provider-2"></span> เราไม่สามารถเห็นรหัสผ่านของคุณ</div></div>
     </div>
-    <div class="mb-4">
-      <div class="text-xs font-semibold text-white mb-2">สิทธิ์ที่ขอ:</div>
-      <ul id="oauth-scopes" class="space-y-1 text-xs text-slate-300"></ul>
-    </div>
+    <div class="mb-4"><div class="text-xs font-semibold text-white mb-2">สิทธิ์ที่ขอ:</div><ul id="oauth-scopes" class="space-y-1 text-xs text-slate-300"></ul></div>
     <div class="flex gap-3">
       <button onclick="closeOAuth()" class="flex-1 py-2.5 border border-slate-700 rounded-lg text-slate-300 hover:bg-slate-800 text-sm font-medium">ยกเลิก</button>
       <button onclick="confirmOAuth()" class="flex-1 py-2.5 btn-primary text-white rounded-lg text-sm font-medium">ยืนยันการเชื่อมต่อ</button>
@@ -531,20 +454,13 @@ body { background: var(--bg); }
   </div>
 </div>
 
-<!-- ============ CALL UI ============ -->
+<!-- Call UI -->
 <div id="call-ui" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
   <div class="glass-strong rounded-2xl p-8 max-w-md w-full text-center mx-4">
-    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse-ring">
-      <i class="fa-solid fa-phone text-white text-3xl"></i>
-    </div>
-    <h3 class="text-white text-xl font-bold mb-2">กำลังโทร...</h3>
-    <p class="text-slate-400 mb-6">QX Assistant</p>
+    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse-ring"><i class="fa-solid fa-phone text-white text-3xl"></i></div>
+    <h3 class="text-white text-xl font-bold mb-2">กำลังโทร...</h3><p class="text-slate-400 mb-6">QX Assistant</p>
     <div class="flex justify-center gap-1 mb-6 h-10 items-end">
-      <div class="voice-bar" style="animation-delay: 0s"></div>
-      <div class="voice-bar" style="animation-delay: 0.1s"></div>
-      <div class="voice-bar" style="animation-delay: 0.2s"></div>
-      <div class="voice-bar" style="animation-delay: 0.3s"></div>
-      <div class="voice-bar" style="animation-delay: 0.4s"></div>
+      <div class="voice-bar" style="animation-delay: 0s"></div><div class="voice-bar" style="animation-delay: 0.1s"></div><div class="voice-bar" style="animation-delay: 0.2s"></div><div class="voice-bar" style="animation-delay: 0.3s"></div><div class="voice-bar" style="animation-delay: 0.4s"></div>
     </div>
     <div class="flex justify-center gap-3">
       <button onclick="toggleMute()" class="p-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white"><i class="fa-solid fa-microphone"></i></button>
@@ -559,16 +475,539 @@ body { background: var(--bg); }
 
 <script>
 // ==========================================
-// 8 LLM PROVIDERS CONFIG
+// DATA
 // ==========================================
 const MODELS = {
-  'qwen3.5-397b': { name: 'Qwen3.5 397B', provider: 'qwen', speed: 'balanced', strength: '⭐ แรงสุด · หลัก' },
-  'qwen3.8-2.4t': { name: 'Qwen3.8 2.4T', provider: 'qwen', speed: 'slow', strength: '⭐⭐ ระดับเทพ' },
-  'deepseek-v4-flash': { name: 'DeepSeek V4 Flash', provider: 'deepseek', speed: 'fast', strength: ' เร็วมาก' },
-  'deepseek-v4-pro': { name: 'DeepSeek V4 Pro', provider: 'deepseek', speed: 'balanced', strength: '⚡ สมดุล' },
-  'gpt-oss-120b': { name: 'GPT-OSS 120B', provider: 'openrouter', speed: 'balanced', strength: 'Open Source' },
-  'gemini-3.7-flash': { name: 'Gemini 3.7 Flash', provider: 'openrouter', speed: 'fast', strength: 'Google' },
-  'grok-4.1-fast': { name: 'Grok 4.1 Fast', provider: 'openrouter', speed: 'fast', strength: 'xAI' },
-  'kimi-k2.7-code': { name: 'Kimi K2.7 Code', provider: 'openrouter', speed: 'balanced', strength: 'Code Spec' },
-  'glm-5.2': { name: 'GLM-5.2', provider: 'openrouter', speed: 'balanced', strength: 'Zhipu' },
-  'minimax-m3': { name: 'MiniMax M3', provider: 'openrouter', speed: 'balanced', strength: 'MiniMax' }
+  'qwen3.5-397b': { name: 'Qwen3.5 397B', provider: 'qwen' },
+  'qwen3.8-2.4t': { name: 'Qwen3.8 2.4T', provider: 'qwen' },
+  'deepseek-v4-flash': { name: 'DeepSeek V4 Flash', provider: 'deepseek' },
+  'deepseek-v4-pro': { name: 'DeepSeek V4 Pro', provider: 'deepseek' },
+  'gpt-oss-120b': { name: 'GPT-OSS 120B', provider: 'openrouter' },
+  'gemini-3.7-flash': { name: 'Gemini 3.7 Flash', provider: 'openrouter' },
+  'grok-4.1-fast': { name: 'Grok 4.1 Fast', provider: 'openrouter' },
+  'kimi-k2.7-code': { name: 'Kimi K2.7 Code', provider: 'openrouter' },
+  'glm-5.2': { name: 'GLM-5.2', provider: 'openrouter' },
+  'minimax-m3': { name: 'MiniMax M3', provider: 'openrouter' }
+};
+
+const PLUGIN_REGISTRY = [
+  { id: 'gmail', name: 'Gmail', icon: 'fa-envelope', color: 'red', category: 'communication', provider: 'Google', scopes: ['อ่านอีเมล', 'ส่งอีเมล'], description: 'อ่านและจัดการ Gmail' },
+  { id: 'outlook', name: 'Outlook Email', icon: 'fa-envelope-open-text', color: 'blue', category: 'communication', provider: 'Microsoft', scopes: ['อ่านอีเมล', 'ส่งอีเมล'], description: 'จัดการ Outlook inbox' },
+  { id: 'slack', name: 'Slack', icon: 'fa-slack', color: 'purple', category: 'communication', provider: 'Slack', scopes: ['อ่านข้อความ', 'ส่งข้อความ'], description: 'Read and manage Slack' },
+  { id: 'teams', name: 'Microsoft Teams', icon: 'fa-users', color: 'blue', category: 'communication', provider: 'Microsoft', scopes: ['อ่านแชท', 'ส่งข้อความ'], description: 'Summarize Teams and follow up' },
+  { id: 'zoom', name: 'Zoom', icon: 'fa-video', color: 'blue', category: 'communication', provider: 'Zoom', scopes: ['เข้าถึงการประชุม'], description: 'Smart meeting insights from Zoom' },
+  { id: 'discord', name: 'Discord', icon: 'fa-discord', color: 'indigo', category: 'communication', provider: 'Discord', scopes: ['อ่านข้อความ', 'ส่งข้อความ'], description: 'จัดการ Discord server' },
+  { id: 'telegram', name: 'Telegram', icon: 'fa-telegram', color: 'blue', category: 'communication', provider: 'Telegram', scopes: ['อ่านข้อความ', 'ส่งข้อความ'], description: 'ส่งและรับข้อความ Telegram' },
+  { id: 'whatsapp', name: 'WhatsApp Business', icon: 'fa-whatsapp', color: 'green', category: 'communication', provider: 'Meta', scopes: ['ส่งข้อความ', 'อ่านข้อความ'], description: 'จัดการ WhatsApp Business' },
+  { id: 'superhuman', name: 'Superhuman Mail', icon: 'fa-bolt', color: 'blue', category: 'communication', provider: 'Superhuman', scopes: ['อ่านอีเมล', 'ส่งอีเมล'], description: 'Best email+calendar assistant' },
+  { id: 'hostinger', name: 'Hostinger Mail', icon: 'fa-server', color: 'purple', category: 'communication', provider: 'Hostinger', scopes: ['จัดการอีเมล'], description: 'Use Hostinger Mail' },
+  { id: 'mailopoly', name: 'Mailopoly Inbox', icon: 'fa-inbox', color: 'gray', category: 'communication', provider: 'Mailopoly', scopes: ['ค้นหาอีเมล', 'ส่งอีเมล'], description: 'Search, send emails & messages' },
+  { id: 'ringcentral', name: 'RingCentral Phone', icon: 'fa-phone-volume', color: 'red', category: 'communication', provider: 'RingCentral', scopes: ['โทรออก', 'รับสาย'], description: 'ระบบโทรศัพท์องค์กร' },
+  { id: 'github', name: 'GitHub', icon: 'fa-github', color: 'gray', category: 'developer', provider: 'GitHub', scopes: ['จัดการ repositories', 'อ่าน/สร้าง issues', 'จัดการ PRs'], description: 'Triage PRs, issues, CI, and publish flows' },
+  { id: 'gitlab', name: 'GitLab', icon: 'fa-gitlab', color: 'orange', category: 'developer', provider: 'GitLab', scopes: ['จัดการ projects', 'อ่าน/สร้าง issues', 'จัดการ MRs'], description: 'Manage GitLab projects and CI/CD' },
+  { id: 'bitbucket', name: 'Bitbucket', icon: 'fa-bitbucket', color: 'blue', category: 'developer', provider: 'Atlassian', scopes: ['จัดการ repositories'], description: 'Manage Bitbucket repos' },
+  { id: 'jira', name: 'Jira', icon: 'fa-jira', color: 'blue', category: 'developer', provider: 'Atlassian', scopes: ['สร้าง/จัดการ tickets', 'อ่าน projects'], description: 'Manage Jira issues and projects' },
+  { id: 'linear', name: 'Linear', icon: 'fa-layer-group', color: 'purple', category: 'developer', provider: 'Linear', scopes: ['จัดการ issues', 'อ่าน projects'], description: 'Manage Linear issues' },
+  { id: 'supabase', name: 'Supabase', icon: 'fa-database', color: 'green', category: 'developer', provider: 'Supabase', scopes: ['จัดการ databases', 'อ่าน/เขียนข้อมูล'], description: 'Manage and query databases' },
+  { id: 'neon', name: 'Neon', icon: 'fa-bolt', color: 'green', category: 'developer', provider: 'Neon', scopes: ['จัดการ databases'], description: 'Manage Neon databases' },
+  { id: 'vercel', name: 'Vercel', icon: 'fa-triangle-exclamation', color: 'gray', category: 'developer', provider: 'Vercel', scopes: ['deploy apps', 'จัดการ domains'], description: 'Build and deploy web apps and agents' },
+  { id: 'railway', name: 'Railway', icon: 'fa-train', color: 'purple', category: 'developer', provider: 'Railway', scopes: ['deploy apps', 'จัดการ services'], description: 'Build and deploy apps' },
+  { id: 'floot', name: 'Floot', icon: 'fa-rocket', color: 'orange', category: 'developer', provider: 'Floot', scopes: ['build apps', 'host apps'], description: 'Build and host full-stack apps' },
+  { id: 'base44', name: 'Base44', icon: 'fa-cube', color: 'orange', category: 'developer', provider: 'Base44', scopes: ['build apps', 'manage data'], description: 'Build Apps & Websites with AI' },
+  { id: 'wpvibe', name: 'WPVibe', icon: 'fa-wordpress', color: 'blue', category: 'developer', provider: 'WPVibe', scopes: ['จัดการ WordPress'], description: 'AI WordPress tools' },
+  { id: 'remote-desktop', name: 'Remote Desktop Commander', icon: 'fa-desktop', color: 'gray', category: 'developer', provider: 'RDC', scopes: ['ควบคุมรีโมท', 'รันคำสั่ง'], description: 'Build and automate, anywhere' },
+  { id: 'exa', name: 'Exa', icon: 'fa-magnifying-glass', color: 'blue', category: 'developer', provider: 'Exa', scopes: ['web search', 'semantic search'], description: 'Web search for AI agents' },
+  { id: 'hubspot', name: 'HubSpot', icon: 'fa-hubspot', color: 'orange', category: 'business', provider: 'HubSpot', scopes: ['จัดการ contacts', 'อ่าน deals'], description: 'Insights to action in HubSpot' },
+  { id: 'shopify', name: 'Shopify', icon: 'fa-shopify', color: 'green', category: 'business', provider: 'Shopify', scopes: ['จัดการร้านค้า', 'อ่าน orders'], description: 'Create and manage your store' },
+  { id: 'salesforce', name: 'Salesforce', icon: 'fa-cloud', color: 'blue', category: 'business', provider: 'Salesforce', scopes: ['จัดการ leads', 'อ่าน opportunities'], description: 'Manage Salesforce CRM' },
+  { id: 'windsor', name: 'Windsor.ai', icon: 'fa-chart-line', color: 'blue', category: 'business', provider: 'Windsor', scopes: ['อ่าน marketing data'], description: 'Marketing analytics' },
+  { id: 'tableau', name: 'Tableau', icon: 'fa-chart-pie', color: 'blue', category: 'business', provider: 'Tableau', scopes: ['อ่าน dashboards'], description: 'Business intelligence' },
+  { id: 'serpstat', name: 'Serpstat', icon: 'fa-search', color: 'blue', category: 'business', provider: 'Serpstat', scopes: ['SEO data', 'keyword research'], description: 'SEO data and keyword research' },
+  { id: 'drive', name: 'Google Drive', icon: 'fa-google-drive', color: 'blue', category: 'productivity', provider: 'Google', scopes: ['อ่านไฟล์', 'จัดการไฟล์', 'แชร์ไฟล์'], description: 'Drive, Docs, Sheets or Slides' },
+  { id: 'dropbox', name: 'Dropbox', icon: 'fa-dropbox', color: 'blue', category: 'productivity', provider: 'Dropbox', scopes: ['อ่านไฟล์', 'จัดการไฟล์'], description: 'Manage Dropbox files' },
+  { id: 'onedrive', name: 'OneDrive', icon: 'fa-cloud', color: 'blue', category: 'productivity', provider: 'Microsoft', scopes: ['อ่านไฟล์', 'จัดการไฟล์'], description: 'Manage OneDrive files' },
+  { id: 'notion', name: 'Notion', icon: 'fa-notion', color: 'gray', category: 'productivity', provider: 'Notion', scopes: ['อ่าน pages', 'สร้าง/แก้ไข content'], description: 'Manage Notion workspace' },
+  { id: 'trello', name: 'Trello', icon: 'fa-trello', color: 'blue', category: 'productivity', provider: 'Atlassian', scopes: ['จัดการ boards', 'อ่าน/สร้าง cards'], description: 'Get things done in Trello' },
+  { id: 'asana', name: 'Asana', icon: 'fa-check-double', color: 'red', category: 'productivity', provider: 'Asana', scopes: ['จัดการ tasks', 'อ่าน projects'], description: 'Manage Asana tasks' },
+  { id: 'canva', name: 'Canva', icon: 'fa-palette', color: 'blue', category: 'productivity', provider: 'Canva', scopes: ['สร้าง designs', 'แก้ไข designs'], description: 'Create, review, edit designs' },
+  { id: 'figma', name: 'Figma', icon: 'fa-figma', color: 'purple', category: 'productivity', provider: 'Figma', scopes: ['อ่าน designs', 'จัดการ components'], description: 'Access Figma designs' },
+  { id: 'waldo', name: 'Waldo', icon: 'fa-mobile-screen', color: 'blue', category: 'productivity', provider: 'Waldo', scopes: ['ทดสอบ apps'], description: 'Mobile app testing' },
+];
+
+const TEAM_AI = [
+  { dept: '📊 วิเคราะห์ข้อมูล', agents: 6, color: 'blue', icon: 'fa-chart-line', members: ['Data Analyst', 'Statistician', 'ML Engineer', 'BI Specialist', 'Data Scientist', 'ETL Developer'] },
+  { dept: '💻 พัฒนาซอฟต์แวร์', agents: 8, color: 'green', icon: 'fa-code', members: ['Frontend Dev', 'Backend Dev', 'Full Stack', 'DevOps', 'QA Engineer', 'Architect', 'Mobile Dev', 'Security Dev'] },
+  { dept: '📝 เขียนเนื้อหา', agents: 5, color: 'purple', icon: 'fa-pen-nib', members: ['Content Writer', 'Copywriter', 'Technical Writer', 'Editor', 'SEO Specialist'] },
+  { dept: '🎨 ออกแบบ', agents: 4, color: 'pink', icon: 'fa-palette', members: ['UI Designer', 'UX Researcher', 'Graphic Designer', 'Motion Designer'] },
+  { dept: '📈 การตลาด', agents: 6, color: 'orange', icon: 'fa-bullhorn', members: ['Marketing Manager', 'Social Media', 'Content Marketing', 'Growth Hacker', 'Brand Manager', 'Analytics'] },
+  { dept: '🔒 ความปลอดภัย', agents: 5, color: 'red', icon: 'fa-shield-halved', members: ['Security Analyst', 'Pen Tester', 'Compliance', 'Incident Response', 'Risk Manager'] },
+  { dept: '🌐 วิจัย', agents: 8, color: 'cyan', icon: 'fa-flask', members: ['Research Lead', 'ML Researcher', 'NLP Specialist', 'CV Researcher', 'Data Engineer', 'Research Analyst', 'Innovation Lead', 'Patent Analyst'] },
+  { dept: '👔 บริหาร', agents: 8, color: 'indigo', icon: 'fa-briefcase', members: ['Project Manager', 'Product Manager', 'Scrum Master', 'Business Analyst', 'Strategy Lead', 'Operations', 'Finance', 'HR'] },
+];
+
+// ==========================================
+// STATE
+// ==========================================
+let state = {
+  conversations: JSON.parse(localStorage.getItem('qx_conversations') || '{}'),
+  currentConvId: null,
+  connectedPlugins: JSON.parse(localStorage.getItem('qx_connected_plugins') || '{}'),
+  notes: JSON.parse(localStorage.getItem('qx_notes') || '[]'),
+  settings: JSON.parse(localStorage.getItem('qx_settings') || '{"model":"qwen3.5-397b","security":"secure","systemPrompt":"คุณคือ QX ผู้ช่วย AI ระดับองค์กร"}'),
+  attachedFiles: [],
+  isGenerating: false,
+  currentCategory: 'all',
+  currentPlugin: null,
+  currentTab: 'chat'
+};
+
+// ==========================================
+// INIT
+// ==========================================
+function init() {
+  applySettings();
+  renderConversations();
+  renderPluginGrid();
+  updateConnectedCount();
+  renderNotes();
+  renderTeamAI();
+  setupDragDrop();
+  setupInputHandlers();
+  const convIds = Object.keys(state.conversations);
+  if (convIds.length > 0) loadConversation(convIds[convIds.length - 1]);
+  else newChat();
+  window.addEventListener('online', () => showToast('🟢 กลับมาออนไลน์แล้ว', 'success'));
+  window.addEventListener('offline', () => showToast('🔴 ออฟไลน์ · ใช้ Demo Mode', 'error'));
+}
+
+// ==========================================
+// SIDEBAR OPEN/CLOSE (มือถือ)
+// ==========================================
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('sidebar-open');
+  document.getElementById('sidebar-overlay').classList.remove('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('sidebar-open');
+  document.getElementById('sidebar-overlay').classList.add('hidden');
+}
+
+// ==========================================
+// TAB SWITCHING (5 แท็บ)
+// ==========================================
+function switchSidebarTab(tab) {
+  state.currentTab = tab;
+  // Update tab buttons
+  ['chat', 'team', 'plugins', 'notes', 'settings'].forEach(t => {
+    const btn = document.getElementById('tab-' + t);
+    const room = document.getElementById('room-' + t);
+    if (t === tab) {
+      btn.classList.add('active');
+      btn.classList.remove('tab-btn');
+      btn.classList.add('tab-btn');
+      room.classList.remove('hidden');
+    } else {
+      btn.classList.remove('active');
+      room.classList.add('hidden');
+    }
+  });
+  // Close sidebar on mobile after tab switch
+  if (window.innerWidth < 768) setTimeout(() => closeSidebar(), 150);
+}
+
+// ==========================================
+// CONVERSATIONS
+// ==========================================
+function newChat() {
+  const id = 'conv_' + Date.now();
+  state.conversations[id] = { id, title: 'แชทใหม่', messages: [], createdAt: Date.now() };
+  state.currentConvId = id;
+  saveConversations();
+  renderConversations();
+  renderMessages();
+  if (window.innerWidth < 768) closeSidebar();
+}
+function loadConversation(id) {
+  state.currentConvId = id;
+  renderConversations();
+  renderMessages();
+  if (window.innerWidth < 768) closeSidebar();
+}
+function deleteConversation(id, e) {
+  e.stopPropagation();
+  if (!confirm('ต้องการลบการสนทนานี้หรือไม่?')) return;
+  delete state.conversations[id];
+  saveConversations();
+  const ids = Object.keys(state.conversations);
+  if (ids.length > 0) loadConversation(ids[ids.length - 1]);
+  else newChat();
+  showToast('ลบการสนทนาแล้ว', 'info');
+}
+function saveConversations() { localStorage.setItem('qx_conversations', JSON.stringify(state.conversations)); }
+function renderConversations() {
+  const list = document.getElementById('room-chat');
+  const convs = Object.values(state.conversations).sort((a, b) => b.createdAt - a.createdAt);
+  if (convs.length === 0) { list.innerHTML = '<div class="p-2 text-xs text-slate-500 text-center">ยังไม่มีแชท</div>'; return; }
+  list.innerHTML = convs.map(c => `
+    <button onclick="loadConversation('${c.id}')" class="sidebar-item w-full text-right px-3 py-2 rounded-lg text-slate-300 text-sm flex items-center gap-2 group ${c.id === state.currentConvId ? 'active' : ''}">
+      <i class="fa-regular fa-message text-indigo-400/60 text-xs flex-shrink-0"></i>
+      <span class="truncate flex-1">${escapeHtml(c.title)}</span>
+      <i class="fa-regular fa-trash-can text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition" onclick="deleteConversation('${c.id}', event)"></i>
+    </button>
+  `).join('');
+}
+
+// ==========================================
+// TEAM AI
+// ==========================================
+function renderTeamAI() {
+  const list = document.getElementById('team-list');
+  const colorMap = { blue: 'from-blue-500/20 to-blue-600/20 border-blue-500/30', green: 'from-green-500/20 to-green-600/20 border-green-500/30', purple: 'from-purple-500/20 to-purple-600/20 border-purple-500/30', pink: 'from-pink-500/20 to-pink-600/20 border-pink-500/30', orange: 'from-orange-500/20 to-orange-600/20 border-orange-500/30', red: 'from-red-500/20 to-red-600/20 border-red-500/30', cyan: 'from-cyan-500/20 to-cyan-600/20 border-cyan-500/30', indigo: 'from-indigo-500/20 to-indigo-600/20 border-indigo-500/30' };
+  list.innerHTML = TEAM_AI.map(t => `
+    <div class="glass rounded-xl p-3 bg-gradient-to-br ${colorMap[t.color]}">
+      <div class="flex items-center gap-2 mb-2"><i class="fa-solid ${t.icon} text-lg"></i><div class="font-semibold text-white text-sm">${t.dept}</div></div>
+      <div class="text-xs text-slate-400 mb-2">${t.agents} AI Agents</div>
+      <div class="space-y-1">${t.members.map(m => `<div class="text-xs text-slate-300 flex items-center gap-1"><i class="fa-solid fa-user text-[10px] text-slate-500"></i>${m}</div>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+// ==========================================
+// PLUGIN SYSTEM
+// ==========================================
+function renderPluginGrid(filter = 'all', search = '') {
+  const grid = document.getElementById('plugin-grid');
+  let plugins = PLUGIN_REGISTRY;
+  if (filter !== 'all') plugins = plugins.filter(p => p.category === filter);
+  if (search) { const s = search.toLowerCase(); plugins = plugins.filter(p => p.name.toLowerCase().includes(s) || p.description.toLowerCase().includes(s) || p.provider.toLowerCase().includes(s)); }
+  if (plugins.length === 0) { grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500">ไม่พบปลั๊กอิน</div>'; return; }
+  const colorClasses = { red: 'bg-red-500/20 text-red-400', blue: 'bg-blue-500/20 text-blue-400', green: 'bg-green-500/20 text-green-400', purple: 'bg-purple-500/20 text-purple-400', orange: 'bg-orange-500/20 text-orange-400', indigo: 'bg-indigo-500/20 text-indigo-400', gray: 'bg-slate-500/20 text-slate-400', pink: 'bg-pink-500/20 text-pink-400', cyan: 'bg-cyan-500/20 text-cyan-400' };
+  grid.innerHTML = plugins.map(p => {
+    const isConnected = state.connectedPlugins[p.id];
+    return `
+      <div class="plugin-card glass rounded-xl p-4 ${isConnected ? 'plugin-connected' : ''}" onclick="connectPlugin('${p.id}')">
+        <div class="flex items-start gap-3 mb-3">
+          <div class="w-12 h-12 rounded-lg ${colorClasses[p.color]} flex items-center justify-center flex-shrink-0"><i class="fa-brands ${p.icon} text-xl"></i></div>
+          <div class="flex-1 min-w-0"><div class="font-semibold text-white text-sm truncate">${p.name}</div><div class="text-xs text-slate-400 mt-0.5">${p.provider}</div></div>
+          ${isConnected ? '<i class="fa-solid fa-check-circle text-green-400 text-xl"></i>' : ''}
+        </div>
+        <div class="text-xs text-slate-400 mb-3 line-clamp-2">${p.description}</div>
+        <button class="w-full py-2 rounded-lg text-xs font-medium transition-all ${isConnected ? 'bg-green-500/20 text-green-400' : 'bg-slate-700/50 text-slate-300 hover:bg-indigo-500 hover:text-white'}">
+          ${isConnected ? '<i class="fa-solid fa-check mr-1"></i> เชื่อมต่อแล้ว' : '<i class="fa-solid fa-plug mr-1"></i> เชื่อมต่อ'}
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+function updateConnectedCount() {
+  const count = Object.keys(state.connectedPlugins).length;
+  document.getElementById('connected-plugins').textContent = count;
+  document.getElementById('connected-count').textContent = `${count} ปลั๊กอิน`;
+}
+function filterCategory(cat) { state.currentCategory = cat; renderPluginGrid(cat, document.getElementById('plugin-search').value); }
+function searchPlugins(query) { renderPluginGrid(state.currentCategory, query); }
+function connectPlugin(pluginId) {
+  if (state.connectedPlugins[pluginId]) {
+    if (confirm('ต้องการยกเลิกการเชื่อมต่อหรือไม่?')) {
+      delete state.connectedPlugins[pluginId];
+      localStorage.setItem('qx_connected_plugins', JSON.stringify(state.connectedPlugins));
+      renderPluginGrid(state.currentCategory);
+      updateConnectedCount();
+      showToast('ยกเลิกการเชื่อมต่อแล้ว', 'info');
+    }
+    return;
+  }
+  const plugin = PLUGIN_REGISTRY.find(p => p.id === pluginId);
+  if (!plugin) return;
+  state.currentPlugin = plugin;
+  document.getElementById('oauth-provider').textContent = plugin.name;
+  document.getElementById('oauth-provider-2').textContent = plugin.name;
+  const colorClasses = { red: 'bg-red-500/20 text-red-400', blue: 'bg-blue-500/20 text-blue-400', green: 'bg-green-500/20 text-green-400', purple: 'bg-purple-500/20 text-purple-400', orange: 'bg-orange-500/20 text-orange-400', indigo: 'bg-indigo-500/20 text-indigo-400', gray: 'bg-slate-500/20 text-slate-400' };
+  document.getElementById('oauth-icon').className = `w-12 h-12 rounded-lg ${colorClasses[plugin.color]} flex items-center justify-center`;
+  document.getElementById('oauth-icon').innerHTML = `<i class="fa-brands ${plugin.icon} text-2xl"></i>`;
+  document.getElementById('oauth-scopes').innerHTML = plugin.scopes.map(s => `<li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-400 text-xs"></i><span>${s}</span></li>`).join('');
+  document.getElementById('oauth-modal').classList.remove('hidden');
+}
+function closeOAuth() { document.getElementById('oauth-modal').classList.add('hidden'); state.currentPlugin = null; }
+function confirmOAuth() {
+  if (!state.currentPlugin) return;
+  state.connectedPlugins[state.currentPlugin.id] = { connectedAt: Date.now(), provider: state.currentPlugin.provider, scopes: state.currentPlugin.scopes };
+  localStorage.setItem('qx_connected_plugins', JSON.stringify(state.connectedPlugins));
+  closeOAuth();
+  renderPluginGrid(state.currentCategory);
+  updateConnectedCount();
+  showToast(`✅ เชื่อมต่อ ${state.currentPlugin.name} สำเร็จ!`, 'success');
+}
+
+// ==========================================
+// FILE HANDLING
+// ==========================================
+function setupDragDrop() {
+  const body = document.body;
+  const overlay = document.getElementById('drop-overlay');
+  let dragCounter = 0;
+  body.addEventListener('dragenter', (e) => { e.preventDefault(); dragCounter++; if (e.dataTransfer.types.includes('Files')) overlay.classList.remove('hidden'); });
+  body.addEventListener('dragleave', (e) => { e.preventDefault(); dragCounter--; if (dragCounter === 0) overlay.classList.add('hidden'); });
+  body.addEventListener('dragover', (e) => e.preventDefault());
+  body.addEventListener('drop', async (e) => { e.preventDefault(); dragCounter = 0; overlay.classList.add('hidden'); if (e.dataTransfer.files.length > 0) await processFiles(Array.from(e.dataTransfer.files)); });
+}
+function toggleDropZone() { document.getElementById('drop-zone').classList.toggle('hidden'); }
+function handleFileSelect(event) { const files = Array.from(event.target.files); processFiles(files); event.target.value = ''; }
+async function processFiles(files) {
+  document.getElementById('drop-zone').classList.add('hidden');
+  for (const file of files) {
+    if (file.size > 50 * 1024 * 1024) { showToast(`ไฟล์ ${file.name} ใหญ่เกิน 50MB`, 'error'); continue; }
+    showToast(`กำลังประมวลผล ${file.name}...`, 'info');
+    try {
+      const fileData = await extractFileContent(file);
+      const fileId = 'file_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      state.attachedFiles.push({ id: fileId, name: file.name, type: file.type, size: file.size, content: fileData.content, preview: fileData.preview });
+      renderAttachedFiles();
+      showToast(`✓ เพิ่ม ${file.name} แล้ว`, 'success');
+    } catch (error) { showToast(`✗ ไม่สามารถอ่าน ${file.name}: ${error.message}`, 'error'); }
+  }
+}
+async function extractFileContent(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (file.type.startsWith('image/')) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({ content: `[Image: ${file.name}]`, preview: reader.result, mimeType: file.type, isImage: true }); reader.onerror = reject; reader.readAsDataURL(file); }); }
+  if (ext === 'pdf') { const arrayBuffer = await file.arrayBuffer(); pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise; let fullText = ''; const maxPages = Math.min(pdf.numPages, 50); for (let i = 1; i <= maxPages; i++) { const page = await pdf.getPage(i); const textContent = await page.getTextContent(); fullText += `\n\n--- หน้า ${i} ---\n${textContent.items.map(item => item.str).join(' ')}`; } return { content: fullText.trim(), preview: fullText.substring(0, 500) + '...', pages: pdf.numPages, isText: true }; }
+  if (ext === 'docx') { const arrayBuffer = await file.arrayBuffer(); const result = await mammoth.extractRawText({ arrayBuffer }); return { content: result.value, preview: result.value.substring(0, 500) + '...', isText: true }; }
+  const text = await file.text(); return { content: text, preview: text.substring(0, 500) + (text.length > 500 ? '...' : ''), isText: true };
+}
+function renderAttachedFiles() {
+  const container = document.getElementById('attached-files');
+  if (state.attachedFiles.length === 0) { container.classList.add('hidden'); container.innerHTML = ''; return; }
+  container.classList.remove('hidden');
+  container.innerHTML = state.attachedFiles.map(f => { const icon = getFileIcon(f.type, f.name); return `<div class="glass rounded-lg px-3 py-2 flex items-center gap-2 text-xs"><i class="${icon}"></i><span class="text-slate-300">${escapeHtml(f.name)}</span><button onclick="detachFile('${f.id}')" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-xmark"></i></button></div>`; }).join('');
+  document.getElementById('send-btn').disabled = false;
+}
+function detachFile(id) { state.attachedFiles = state.attachedFiles.filter(f => f.id !== id); renderAttachedFiles(); }
+function getFileIcon(type, name) {
+  if (type.startsWith('image/')) return 'fa-solid fa-image text-pink-400';
+  if (type.includes('pdf')) return 'fa-solid fa-file-pdf text-red-400';
+  if (type.includes('word') || name.endsWith('.docx')) return 'fa-solid fa-file-word text-blue-400';
+  if (['js', 'ts', 'py', 'java', 'cpp', 'c'].some(ext => name.endsWith('.' + ext))) return 'fa-solid fa-file-code text-green-400';
+  return 'fa-solid fa-file text-slate-400';
+}
+
+// ==========================================
+// CHAT SYSTEM
+// ==========================================
+function renderMessages() {
+  const area = document.getElementById('messages');
+  const conv = state.conversations[state.currentConvId];
+  if (!conv || conv.messages.length === 0) {
+    area.innerHTML = `<div class="text-center py-12 animate-slide-up"><div class="jarvis-core mx-auto mb-6"><div class="jarvis-ring jarvis-ring-1"></div><div class="jarvis-ring jarvis-ring-2"></div><div class="jarvis-ring jarvis-ring-3"></div><div class="jarvis-center"><i class="fa-solid fa-bolt text-white text-2xl"></i></div></div><h2 class="text-3xl font-bold mb-2" style="background: linear-gradient(135deg, #fff, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">สวัสดีครับ ผมคือ QX Ultimate</h2><p class="text-slate-400 mb-6">ผู้ช่วย AI ระดับองค์กร · 8 โมเดล · 50 ทีม AI · รองรับไฟล์และ Vision</p></div>`;
+    return;
+  }
+  document.getElementById('chat-title').textContent = conv.title;
+  area.innerHTML = '';
+  conv.messages.forEach(msg => { if (msg.role === 'user') addUserMessage(msg.content, msg.files || [], false); else addBotMessage(msg.content, false); });
+  area.scrollTop = area.scrollHeight;
+}
+function addUserMessage(text, files = [], animate = true) {
+  const area = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `flex justify-end gap-3 ${animate ? 'animate-slide-up' : ''}`;
+  const filesHtml = files.length > 0 ? `<div class="flex flex-wrap gap-1 mb-2 justify-end">${files.map(f => `<span class="text-xs px-2 py-1 rounded-lg bg-slate-800/80 text-slate-300 flex items-center gap-1"><i class="${getFileIcon('', f)} text-xs"></i>${escapeHtml(f)}</span>`).join('')}</div>` : '';
+  div.innerHTML = `<div class="max-w-[80%]">${filesHtml}<div class="msg-user px-4 py-3 rounded-2xl rounded-br-sm text-white text-sm leading-7 whitespace-pre-wrap">${escapeHtml(text)}</div></div>`;
+  area.appendChild(div); area.scrollTop = area.scrollHeight;
+}
+function addBotMessage(text, animate = true) {
+  const area = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `flex gap-3 ${animate ? 'animate-slide-up' : ''}`;
+  div.innerHTML = `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-bolt text-white text-xs"></i></div><div class="flex-1 max-w-[85%]"><div class="msg-ai px-4 py-3 rounded-2xl rounded-bl-sm text-sm chat-md"></div><div class="flex gap-2 mt-2 opacity-0 transition-opacity message-actions"><button onclick="copyMessage(this)" class="text-xs text-slate-500 hover:text-indigo-400 transition flex items-center gap-1"><i class="fa-regular fa-copy"></i> คัดลอก</button></div></div>`;
+  area.appendChild(div);
+  const contentEl = div.querySelector('.chat-md');
+  contentEl.innerHTML = renderMarkdown(text);
+  setTimeout(() => div.querySelector('.message-actions').classList.remove('opacity-0'), 100);
+  area.scrollTop = area.scrollHeight;
+}
+async function sendMessage() {
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if ((!text && state.attachedFiles.length === 0) || state.isGenerating) return;
+  let fullContent = text;
+  const fileAttachments = [];
+  for (const file of state.attachedFiles) {
+    if (file.preview && file.type.startsWith('image/')) fileAttachments.push({ type: 'image', data: file.preview, mimeType: file.type, name: file.name });
+    else if (file.content) fullContent += `\n\n[ไฟล์: ${file.name}]\n${file.content}`;
+  }
+  const conv = state.conversations[state.currentConvId];
+  conv.messages.push({ role: 'user', content: text || '(ส่งไฟล์)', files: state.attachedFiles.map(f => f.name), timestamp: Date.now() });
+  if (conv.messages.length === 1) { conv.title = (text || 'ไฟล์แนบ').substring(0, 40) + (text.length > 40 ? '...' : ''); document.getElementById('chat-title').textContent = conv.title; renderConversations(); }
+  addUserMessage(text, state.attachedFiles.map(f => f.name));
+  input.value = ''; input.style.height = 'auto';
+  state.attachedFiles = []; renderAttachedFiles();
+  document.getElementById('send-btn').disabled = true;
+  state.isGenerating = true;
+  const typingId = showTypingIndicator();
+  try {
+    const response = await callLLM(fullContent, fileAttachments);
+    removeTypingIndicator(typingId);
+    conv.messages.push({ role: 'assistant', content: response, timestamp: Date.now() });
+    saveConversations();
+    await streamResponse(response);
+  } catch (error) {
+    removeTypingIndicator(typingId);
+    const errorMsg = `⚠️ **เกิดข้อผิดพลาด**\n\n${error.message}\n\n**วิธีแก้ไข:**\n- ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต\n- ลองเปลี่ยนโมเดล\n- หรือใช้ Demo Mode`;
+    conv.messages.push({ role: 'assistant', content: errorMsg, timestamp: Date.now() });
+    saveConversations();
+    addBotMessage(errorMsg);
+    showToast('เกิดข้อผิดพลาด: ' + error.message, 'error');
+  } finally { state.isGenerating = false; }
+}
+function quickAsk(text) { document.getElementById('user-input').value = text; sendMessage(); }
+function useTool(tool) { document.getElementById('user-input').value = `ช่วย${tool} `; document.getElementById('user-input').focus(); }
+function showTypingIndicator() {
+  const area = document.getElementById('messages');
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.id = id; div.className = 'flex gap-3 animate-slide-up';
+  div.innerHTML = `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 animate-core-pulse"><i class="fa-solid fa-bolt text-white text-xs"></i></div><div class="msg-ai px-4 py-3 rounded-2xl rounded-bl-sm flex items-center gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span><span class="text-xs text-slate-400 ml-2">กำลังคิด...</span></div>`;
+  area.appendChild(div); area.scrollTop = area.scrollHeight; return id;
+}
+function removeTypingIndicator(id) { const el = document.getElementById(id); if (el) el.remove(); }
+async function streamResponse(text) {
+  const area = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'flex gap-3 animate-slide-up';
+  div.innerHTML = `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-bolt text-white text-xs"></i></div><div class="flex-1 max-w-[85%]"><div class="msg-ai px-4 py-3 rounded-2xl rounded-bl-sm text-sm chat-md"></div><div class="flex gap-2 mt-2 opacity-0 transition-opacity message-actions"><button onclick="copyMessage(this)" class="text-xs text-slate-500 hover:text-indigo-400 transition flex items-center gap-1"><i class="fa-regular fa-copy"></i> คัดลอก</button></div></div>`;
+  area.appendChild(div);
+  const contentEl = div.querySelector('.chat-md');
+  const words = text.split(/(\s+)/);
+  let current = '';
+  for (let i = 0; i < words.length; i++) { current += words[i]; contentEl.innerHTML = renderMarkdown(current) + '<span class="stream-cursor"></span>'; area.scrollTop = area.scrollHeight; await sleep(15 + Math.random() * 25); }
+  contentEl.innerHTML = renderMarkdown(text);
+  div.querySelector('.message-actions').classList.remove('opacity-0');
+}
+function copyMessage(btn) { const msgContent = btn.closest('.flex-1').querySelector('.chat-md').textContent; navigator.clipboard.writeText(msgContent); btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว'; setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i> คัดลอก', 2000); }
+
+// ==========================================
+// LLM API CALL
+// ==========================================
+async function callLLM(message, fileAttachments = []) {
+  const model = state.settings.model;
+  const systemPrompt = state.settings.systemPrompt;
+  const messages = [{ role: 'system', content: systemPrompt }];
+  if (fileAttachments.length > 0) { const content = [{ type: 'text', text: message }]; fileAttachments.forEach(att => { if (att.type === 'image') content.push({ type: 'image_url', image_url: { url: att.data } }); }); messages.push({ role: 'user', content }); }
+  else { messages.push({ role: 'user', content: message }); }
+  // Try Puter AI Gateway
+  try { if (window.puter && puter.ai) { const response = await puter.ai.chat(message, { model: model }); return response?.message?.content || response?.text || 'ไม่ได้รับคำตอบจาก Puter'; } } catch (e) { console.warn('Puter failed:', e); }
+  // Demo Mode
+  return generateDemoResponse(message, model);
+}
+function generateDemoResponse(message, model) {
+  const lower = message.toLowerCase();
+  const modelName = MODELS[model]?.name || model;
+  if (lower.includes('pdf') || lower.includes('ไฟล์')) return `📄 **วิเคราะห์ไฟล์** (ใช้ ${modelName})\n\nจากการประมวลผลไฟล์ที่แนบมา:\n\n1. **จำนวนหน้า:** 42 หน้า\n2. **หัวข้อหลัก:** สัญญาจ้างพัฒนาระบบ\n3. **มูลค่า:** 2,500,000 บาท\n4. **ระยะเวลา:** 6 เดือน\n\n**ความเสี่ยง:**\n- ข้อ 7.2: IP ไม่ชัดเจน\n- ข้อ 12.1: ค่าปรับสูง\n\n**คำแนะนำ:** ควรเจรจาแก้ไขข้อ 7.2 และ 12.1\n\n⚠️ *นี่คือ Demo Mode · เชื่อมต่อ API Key เพื่อใช้งานจริง*`;
+  if (lower.includes('โค้ด') || lower.includes('python')) return ` **โค้ด Python** (ใช้ ${modelName})\n\n\`\`\`python\nimport requests\nfrom typing import List\n\ndef fetch_data(api_url: str, headers: dict) -> List[dict]:\n    try:\n        response = requests.get(api_url, headers=headers, timeout=10)\n        response.raise_for_status()\n        return response.json()\n    except requests.exceptions.Timeout:\n        print('การเชื่อมต่อหมดเวลา')\n    except requests.exceptions.HTTPError as e:\n        print(f'HTTP Error: {e}')\n    return []\n\ndata = fetch_data('https://api.example.com/data', {'Authorization': 'Bearer TOKEN'})\n\`\`\`\n\n✅ Type Hints, Error Handling, Timeout ครบถ้วน\n\n⚠️ *นี่คือ Demo Mode · เชื่อมต่อ API Key เพื่อใช้งานจริง*`;
+  if (lower.includes('swot') || lower.includes('ทีม')) return `📊 **SWOT Analysis** (ใช้ ${modelName})\n\n**Strengths:**\n- ภาษาไทย Native-level\n- Plugin Ecosystem 33+\n- Enterprise Privacy\n\n**Weaknesses:**\n- แบรนด์ยังไม่เป็นที่รู้จัก\n- ฐานผู้ใช้น้อย\n\n**Opportunities:**\n- ตลาด AI ในไทยเติบโต 40%/ปี\n- PDPA ทำให้ต้องการ AI ปลอดภัย\n\n**Threats:**\n- คู่แข่งจากจีน/US\n- กฎหมาย AI ยังไม่ชัดเจน\n\n⚠️ *นี่คือ Demo Mode*`;
+  return `รับทราบครับ (ใช้ **${modelName}**)\n\nผมพร้อมช่วยเหลือคุณ\n\nคุณสามารถ:\n- ลากไฟล์มาวางเพื่อวิเคราะห์\n- เชื่อมต่อปลั๊กอินได้ที่แท็บ 'ปลั๊กอิน'\n- เปลี่ยนโมเดลได้ที่แท็บ 'ตั้งค่า'\n\n️ *นี่คือ Demo Mode · เชื่อมต่อ API Key หรือใช้ Puter เพื่อใช้งานจริง*`;
+}
+function renderMarkdown(text) {
+  marked.setOptions({ breaks: true, gfm: true });
+  const html = marked.parse(text);
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  tempDiv.querySelectorAll('pre').forEach(pre => {
+    const code = pre.querySelector('code');
+    if (code) { const lang = code.className.replace('language-', '') || 'text'; const header = document.createElement('div'); header.className = 'code-header'; header.innerHTML = `<span>${lang}</span><button onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> คัดลอก</button>`; pre.insertBefore(header, code); }
+  });
+  return tempDiv.innerHTML;
+}
+window.copyCode = function(btn) { const code = btn.parentElement.nextElementSibling; navigator.clipboard.writeText(code.textContent); btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว'; setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i> คัดลอก', 2000); };
+
+// ==========================================
+// SETTINGS
+// ==========================================
+function saveSettings() {
+  state.settings.model = document.getElementById('model-select').value;
+  state.settings.security = document.querySelector('input[name="security-mode"]:checked')?.value || 'secure';
+  state.settings.systemPrompt = document.getElementById('system-prompt').value.trim();
+  localStorage.setItem('qx_settings', JSON.stringify(state.settings));
+  applySettings();
+  showToast('บันทึกการตั้งค่าแล้ว', 'success');
+  if (window.innerWidth < 768) closeSidebar();
+}
+function applySettings() {
+  const model = MODELS[state.settings.model];
+  document.getElementById('model-badge').textContent = model?.name || state.settings.model;
+  const securityNames = { secure: 'ปลอดภัย', balanced: 'สมดุล', fast: 'เร็ว' };
+  document.getElementById('security-badge').textContent = securityNames[state.settings.security] || 'ปลอดภัย';
+  document.getElementById('model-select').value = state.settings.model;
+  document.getElementById('system-prompt').value = state.settings.systemPrompt || '';
+  const secRadio = document.querySelector(`input[name="security-mode"][value="${state.settings.security}"]`);
+  if (secRadio) secRadio.checked = true;
+}
+
+// ==========================================
+// NOTEBOOK
+// ==========================================
+function addNote() {
+  const title = document.getElementById('note-title').value.trim();
+  if (!title) return;
+  state.notes.push({ id: Date.now(), title, content: '', createdAt: Date.now() });
+  localStorage.setItem('qx_notes', JSON.stringify(state.notes));
+  document.getElementById('note-title').value = '';
+  renderNotes();
+}
+function deleteNote(id) { state.notes = state.notes.filter(n => n.id !== id); localStorage.setItem('qx_notes', JSON.stringify(state.notes)); renderNotes(); }
+function renderNotes() {
+  const list = document.getElementById('notes-list');
+  if (state.notes.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 text-xs py-4">ยังไม่มีโน้ต</div>'; return; }
+  list.innerHTML = state.notes.map(n => `<div class="note-card glass rounded-lg p-2.5 flex items-center justify-between"><div class="flex-1 min-w-0"><div class="text-xs font-medium text-white truncate">${escapeHtml(n.title)}</div><div class="text-[10px] text-slate-400">${new Date(n.createdAt).toLocaleString('th-TH')}</div></div><button onclick="deleteNote(${n.id})" class="text-slate-500 hover:text-red-400 ml-2"><i class="fa-solid fa-trash-can text-xs"></i></button></div>`).join('');
+}
+
+// ==========================================
+// THEME
+// ==========================================
+function setTheme(theme) {
+  document.body.className = `theme-${theme}`;
+  localStorage.setItem('qx-theme', theme);
+  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+  event.target.classList.add('active');
+}
+const savedTheme = localStorage.getItem('qx-theme') || 'neo';
+document.body.className = `theme-${savedTheme}`;
+
+// ==========================================
+// CALL SYSTEM
+// ==========================================
+function toggleVoiceCall() { document.getElementById('call-ui').classList.remove('hidden'); }
+function toggleVideoCall() { document.getElementById('call-ui').classList.remove('hidden'); }
+function toggleScreenShare() { showToast('ฟีเจอร์แชร์หน้าจอ: ในระบบจริงจะเปิดหน้าต่างเลือกหน้าจอ', 'info'); }
+function toggleMute() { showToast('ปิด/เปิดเสียงไมค์', 'info'); }
+function toggleSpeaker() { showToast('ปิด/เปิดลำโพง', 'info'); }
+function endCall() { document.getElementById('call-ui').classList.add('hidden'); }
+
+// ==========================================
+// UTILITIES
+// ==========================================
+function setupInputHandlers() {
+  const input = document.getElementById('user-input');
+  const sendBtn = document.getElementById('send-btn');
+  input.addEventListener('input', function() { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 150) + 'px'; sendBtn.disabled = !this.value.trim() && state.attachedFiles.length === 0; });
+}
+function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  const colors = { success: 'bg-green-500/20 border-green-500/50 text-green-300', error: 'bg-red-500/20 border-red-500/50 text-red-300', info: 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300' };
+  const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+  toast.className = `toast glass border ${colors[type]} px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-2xl`;
+  toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// ==========================================
+// INIT
+// ==========================================
+init();
+</script>
+
+</body>
+</html>
