@@ -24,6 +24,14 @@ const MOONSHOT_MODELS = parseList(process.env.MOONSHOT_MODELS);
 const MAX_ATTEMPTS = Math.min(8, Math.max(1, Number(process.env.LLM_MAX_TOTAL_ATTEMPTS || 8)));
 const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS || 30000);
 
+const MODEL_ALIASES = {
+  'minimax-m3': 'minimax/minimax-m3:free',
+  'minimax/m3': 'minimax/minimax-m3:free',
+  'openrouter-free': 'openrouter/free'
+};
+
+const normalizeRequestedModel = (model) => MODEL_ALIASES[String(model || '').trim()] || String(model || '').trim();
+
 const json = (res, status, body) => {
   if (res.writableEnded) return;
   res.writeHead(status, {
@@ -92,19 +100,18 @@ async function callMoonshot(model, messages, apiKey = MOONSHOT_API_KEY) {
 }
 
 function resolveModel(model) {
-  if (model.startsWith('moonshot:')) return { provider: 'moonshot', id: model.slice(9) };
-  if (model.startsWith('openrouter:')) return { provider: 'openrouter', id: model.slice(11) };
-  if (MOONSHOT_MODELS.includes(model)) return { provider: 'moonshot', id: model };
-  return { provider: 'openrouter', id: model };
+  const normalized = normalizeRequestedModel(model);
+  if (normalized.startsWith('moonshot:')) return { provider: 'moonshot', id: normalized.slice(9) };
+  if (normalized.startsWith('openrouter:')) return { provider: 'openrouter', id: normalized.slice(11) };
+  if (MOONSHOT_MODELS.includes(normalized)) return { provider: 'moonshot', id: normalized };
+  return { provider: 'openrouter', id: normalized };
 }
 
 async function callModel(model, messages, credentials = {}) {
   const target = resolveModel(model);
   const openrouterKey = credentials.openrouterApiKey || OPENROUTER_API_KEY;
   const moonshotKey = credentials.moonshotApiKey || MOONSHOT_API_KEY;
-  if (target.provider === 'moonshot') {
-    return callMoonshot(target.id, messages, moonshotKey);
-  }
+  if (target.provider === 'moonshot') return callMoonshot(target.id, messages, moonshotKey);
   return callOpenRouter(target.id, messages, openrouterKey);
 }
 
@@ -133,12 +140,13 @@ function recordStat({ command, model, provider, skills, elapsedMs, success, demo
 }
 
 async function runPipeline(command, res, req, options = {}) {
-  const { skillMode = 'auto', selectedSkills = [], showSkills = true, openrouterApiKey = '', moonshotApiKey = '' } = options;
+  const { skillMode = 'auto', selectedSkills = [], showSkills = true, openrouterApiKey = '', moonshotApiKey = '', requestedModel = '' } = options;
   const started = Date.now();
   const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const tools = ['Intent Router', 'Skill Engine', 'Model Router', 'Tool Executor', 'QA Validator'];
+  const activePool = normalizeRequestedModel(requestedModel) ? [normalizeRequestedModel(requestedModel)] : MODEL_POOL;
   req.on('close', () => console.log(`⚠️ Client disconnected: ${requestId}`));
-  sendEvent(res, { type: 'start', requestId, command, maxAttempts: MAX_ATTEMPTS, pool: MODEL_POOL, skillMode });
+  sendEvent(res, { type: 'start', requestId, command, maxAttempts: MAX_ATTEMPTS, pool: activePool, skillMode });
   sendEvent(res, { type: 'step', step: 'API Gateway', status: 'active', message: 'Request received and validated' });
   sendEvent(res, { type: 'step', step: 'Agent Core', status: 'active', message: 'Analyzing intent' });
   sendEvent(res, { type: 'tools', tools });
@@ -171,14 +179,14 @@ async function runPipeline(command, res, req, options = {}) {
 
   const systemPrompt = skillsEngine.buildSkillPrompt(activeSkills, 'You are the Agent Core of a multi-model tool hub. Answer concisely in Thai. If skills are provided, incorporate them and guide the user.');
   const messages = [{ role: 'system', content: systemPrompt }, { role: 'user', content: command }];
-  sendEvent(res, { type: 'step', step: 'Model Router', status: 'active', message: `Pool loaded: ${MODEL_POOL.length} models` });
+  sendEvent(res, { type: 'step', step: 'Model Router', status: 'active', message: `Pool loaded: ${activePool.length} model(s)` });
 
   let result = null;
   const failures = [];
-  const attempts = Math.min(MAX_ATTEMPTS, MODEL_POOL.length);
+  const attempts = Math.min(MAX_ATTEMPTS, activePool.length);
   for (let i = 0; i < attempts; i++) {
     if (res.writableEnded) break;
-    const model = MODEL_POOL[i];
+    const model = activePool[i];
     const target = resolveModel(model);
     sendEvent(res, { type: 'attempt', attempt: i + 1, maxAttempts: MAX_ATTEMPTS, provider: target.provider, model: target.id, status: 'running' });
     try {
@@ -204,9 +212,49 @@ async function runPipeline(command, res, req, options = {}) {
   sendEvent(res, { type: 'complete', status: 'success', requestId, elapsedMs, attempts: failures.length + 1, model: result.model, provider: result.provider, demo: result.demo, tools, skillMatchInfo, activeSkills: activeSkills.length > 0 ? activeSkills.map(s => ({ id: s.id, category: s.category, title: s.title })) : null, result: result.text });
 }
 
-// Browser bridge: send the API key entered in the QX Settings panel to this same-origin backend.
-// The backend still prefers Render's OPENROUTER_API_KEY when configured.
-const FRONTEND_AI_BRIDGE = `<script>(function(){window.callLLM=async function(message,fileAttachments){const apiKey=(window.state&&window.state.settings&&window.state.settings.apiKey)||'';const r=await fetch('/api/agent/stream',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command:String(message||''),skillMode:'auto',showSkills:false,apiKey})});if(!r.ok){throw new Error('AI backend HTTP '+r.status);}if(!r.body){throw new Error('AI backend returned no stream');}const reader=r.body.getReader();const decoder=new TextDecoder();let buffer='';let result='';let terminalError='';while(true){const x=await reader.read();if(x.done)break;buffer+=decoder.decode(x.value,{stream:true});const parts=buffer.split('\\n\\n');buffer=parts.pop()||'';for(const part of parts){for(const line of part.split('\\n')){if(!line.startsWith('data:'))continue;try{const event=JSON.parse(line.slice(5).trim());if(event.type==='complete'){if(event.status==='success')result=event.result||'';else terminalError=event.error||event.failures?.map(f=>f.error).join(' | ')||'AI backend failed';}}catch(e){}}}}if(terminalError)throw new Error(terminalError);if(!result)throw new Error('AI backend returned an empty response');return result;};})();</script>`;
+// This bridge is only a compatibility fallback. The server also rewrites the original
+// lexical callLLM() function below, so the UI cannot fall back to Demo Mode after deploy.
+const FRONTEND_AI_BRIDGE = `<script>(function(){window.__QX_BACKEND_BRIDGE__=true;})();</script>`;
+
+const FRONTEND_CALLLLM = `async function callLLM(message, fileAttachments = []) {
+  const model = state.settings.model || 'minimax-m3';
+  const apiKey = state.settings.apiKey || '';
+  const response = await fetch('/api/agent/stream', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ command: String(message || ''), model, apiKey, skillMode: 'auto', showSkills: false })
+  });
+  if (!response.ok) throw new Error('AI backend HTTP ' + response.status);
+  if (!response.body) throw new Error('AI backend returned no stream');
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let result = '';
+  let terminalError = '';
+  while (true) {
+    const chunk = await reader.read();
+    if (chunk.done) break;
+    buffer += decoder.decode(chunk.value, { stream: true });
+    const parts = buffer.split('\\n\\n');
+    buffer = parts.pop() || '';
+    for (const part of parts) {
+      for (const line of part.split('\\n')) {
+        if (!line.startsWith('data:')) continue;
+        try {
+          const event = JSON.parse(line.slice(5).trim());
+          if (event.type === 'complete') {
+            if (event.status === 'success') result = event.result || '';
+            else terminalError = event.error || (event.failures || []).map(f => f.error).join(' | ') || 'AI backend failed';
+          }
+        } catch (_) {}
+      }
+    }
+  }
+  if (terminalError) throw new Error(terminalError);
+  if (!result) throw new Error('AI backend returned an empty response');
+  return result;
+}
+`;
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -253,7 +301,7 @@ const server = http.createServer(async (req, res) => {
       try { body = JSON.parse(raw || '{}'); } catch (e) { return json(res, 400, { error: 'Invalid JSON' }); }
       const command = String(body.command || '').trim();
       if (!command) return json(res, 400, { error: 'command is required' });
-      const options = { skillMode: body.skillMode || 'auto', selectedSkills: Array.isArray(body.skills) ? body.skills : [], showSkills: body.showSkills !== false, openrouterApiKey: String(body.apiKey || ''), moonshotApiKey: String(body.moonshotApiKey || '') };
+      const options = { skillMode: body.skillMode || 'auto', selectedSkills: Array.isArray(body.skills) ? body.skills : [], showSkills: body.showSkills !== false, openrouterApiKey: String(body.apiKey || ''), moonshotApiKey: String(body.moonshotApiKey || ''), requestedModel: String(body.model || '') };
       res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive', 'X-Accel-Buffering': 'no' });
       try { await runPipeline(command, res, req, options); } catch (error) { sendEvent(res, { type: 'complete', status: 'error', error: error.message }); } finally { res.end(); }
     });
@@ -272,7 +320,11 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
     fs.readFile(path.join(__dirname, 'index.html'), (error, data) => {
       if (error) return json(res, 500, { error: 'index.html unavailable' });
-      const html = data.toString('utf8').replace('</body>', `${FRONTEND_AI_BRIDGE}</body>`);
+      let html = data.toString('utf8');
+      // CRITICAL: the original index.html has a lexical callLLM() that falls back to Demo Mode.
+      // Replacing window.callLLM is not enough because lexical function bindings are resolved locally.
+      html = html.replace(/async function callLLM\(message, fileAttachments = \[\]\) \{[\s\S]*?\n\}\nfunction generateDemoResponse/, `${FRONTEND_CALLLLM}\nfunction generateDemoResponse`);
+      html = html.replace('</body>', `${FRONTEND_AI_BRIDGE}</body>`);
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache', 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY' });
       res.end(html);
     });
