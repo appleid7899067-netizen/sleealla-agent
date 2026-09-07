@@ -2,9 +2,9 @@
   "name": "sleealla-agent",
   "version": "1.0.0",
   "private": true,
-  "description": "Static Thai AI agent with 400 AI and self-development skills",
+  "description": "SlieQwenBoss Lo8 AI agent with hardened backend, model routing and 400 skills",
   "scripts": {
-    "start": "node server.js"
+    "start": "node -r ./hardening.js server.js"
   },
   "engines": {
     "node": ">=18"
