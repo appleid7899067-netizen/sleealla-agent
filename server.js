@@ -18,13 +18,7 @@ const parseList = (value) => String(value || '').split(',').map(s => s.trim()).f
 
 const MODEL_POOL = parseList(process.env.MODEL_POOL).length
   ? parseList(process.env.MODEL_POOL)
-  : [
-      'deepseek/deepseek-chat',
-      'google/gemini-2.5-flash',
-      'openai/gpt-oss-120b',
-      'qwen/qwen3-235b-a22b',
-      'meta-llama/llama-3.3-70b-instruct'
-    ];
+  : ['openrouter/free'];
 
 const MOONSHOT_MODELS = parseList(process.env.MOONSHOT_MODELS);
 const MAX_ATTEMPTS = Math.min(8, Math.max(1, Number(process.env.LLM_MAX_TOTAL_ATTEMPTS || 8)));
@@ -60,11 +54,12 @@ async function fetchWithTimeout(url, options, timeoutMs = FETCH_TIMEOUT_MS) {
   }
 }
 
-async function callOpenRouter(model, messages) {
+async function callOpenRouter(model, messages, apiKey = OPENROUTER_API_KEY) {
+  if (!apiKey) throw new Error('OPENROUTER_API_KEY is not configured');
   const response = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+      'Authorization': `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': APP_URL,
       'X-Title': 'SILELO/QX Agent Backend'
@@ -80,10 +75,11 @@ async function callOpenRouter(model, messages) {
   return { ok: true, demo: false, provider: 'openrouter', model, text };
 }
 
-async function callMoonshot(model, messages) {
+async function callMoonshot(model, messages, apiKey = MOONSHOT_API_KEY) {
+  if (!apiKey) throw new Error('MOONSHOT_API_KEY is not configured');
   const response = await fetchWithTimeout('https://api.moonshot.ai/v1/chat/completions', {
     method: 'POST',
-    headers: { 'Authorization': `Bearer ${MOONSHOT_API_KEY}`, 'Content-Type': 'application/json' },
+    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ model, messages, temperature: 0.2 })
   });
   if (!response.ok) {
@@ -102,14 +98,14 @@ function resolveModel(model) {
   return { provider: 'openrouter', id: model };
 }
 
-async function callModel(model, messages) {
+async function callModel(model, messages, credentials = {}) {
   const target = resolveModel(model);
+  const openrouterKey = credentials.openrouterApiKey || OPENROUTER_API_KEY;
+  const moonshotKey = credentials.moonshotApiKey || MOONSHOT_API_KEY;
   if (target.provider === 'moonshot') {
-    if (!MOONSHOT_API_KEY) return { ok: true, demo: true, provider: 'moonshot', model: target.id, text: `[DEMO MODE] Moonshot/${target.id} (ไม่ได้ตั้งค่า API Key)` };
-    return callMoonshot(target.id, messages);
+    return callMoonshot(target.id, messages, moonshotKey);
   }
-  if (!OPENROUTER_API_KEY) return { ok: true, demo: true, provider: 'openrouter', model: target.id, text: `[DEMO MODE] OpenRouter/${target.id} (ไม่ได้ตั้งค่า API Key)` };
-  return callOpenRouter(target.id, messages);
+  return callOpenRouter(target.id, messages, openrouterKey);
 }
 
 const stats = {
@@ -137,7 +133,7 @@ function recordStat({ command, model, provider, skills, elapsedMs, success, demo
 }
 
 async function runPipeline(command, res, req, options = {}) {
-  const { skillMode = 'auto', selectedSkills = [], showSkills = true } = options;
+  const { skillMode = 'auto', selectedSkills = [], showSkills = true, openrouterApiKey = '', moonshotApiKey = '' } = options;
   const started = Date.now();
   const requestId = `req_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const tools = ['Intent Router', 'Skill Engine', 'Model Router', 'Tool Executor', 'QA Validator'];
@@ -186,7 +182,7 @@ async function runPipeline(command, res, req, options = {}) {
     const target = resolveModel(model);
     sendEvent(res, { type: 'attempt', attempt: i + 1, maxAttempts: MAX_ATTEMPTS, provider: target.provider, model: target.id, status: 'running' });
     try {
-      result = await callModel(model, messages);
+      result = await callModel(model, messages, { openrouterApiKey, moonshotApiKey });
       sendEvent(res, { type: 'attempt', attempt: i + 1, provider: result.provider, model: result.model, status: 'success' });
       break;
     } catch (error) {
@@ -208,8 +204,9 @@ async function runPipeline(command, res, req, options = {}) {
   sendEvent(res, { type: 'complete', status: 'success', requestId, elapsedMs, attempts: failures.length + 1, model: result.model, provider: result.provider, demo: result.demo, tools, skillMatchInfo, activeSkills: activeSkills.length > 0 ? activeSkills.map(s => ({ id: s.id, category: s.category, title: s.title })) : null, result: result.text });
 }
 
-// Browser bridge: force the UI chat through this backend instead of Puter/direct browser API calls.
-const FRONTEND_AI_BRIDGE = `<script>(function(){window.callLLM=async function(message,fileAttachments){const r=await fetch('/api/agent/stream',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command:String(message||''),skillMode:'auto',showSkills:false})});if(!r.ok){throw new Error('AI backend HTTP '+r.status);}if(!r.body){throw new Error('AI backend returned no stream');}const reader=r.body.getReader();const decoder=new TextDecoder();let buffer='';let result='';while(true){const x=await reader.read();if(x.done)break;buffer+=decoder.decode(x.value,{stream:true});const parts=buffer.split('\\n\\n');buffer=parts.pop()||'';for(const part of parts){for(const line of part.split('\\n')){if(!line.startsWith('data:'))continue;try{const event=JSON.parse(line.slice(5).trim());if(event.type==='complete'){if(event.status==='success')result=event.result||'';else throw new Error(event.error||'AI backend failed');}}catch(e){if(e&&e.message&&e.message!=='Unexpected end of JSON input')throw e;}}}}if(!result)throw new Error('AI backend returned an empty response');return result;};})();</script>`;
+// Browser bridge: send the API key entered in the QX Settings panel to this same-origin backend.
+// The backend still prefers Render's OPENROUTER_API_KEY when configured.
+const FRONTEND_AI_BRIDGE = `<script>(function(){window.callLLM=async function(message,fileAttachments){const apiKey=(window.state&&window.state.settings&&window.state.settings.apiKey)||'';const r=await fetch('/api/agent/stream',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command:String(message||''),skillMode:'auto',showSkills:false,apiKey})});if(!r.ok){throw new Error('AI backend HTTP '+r.status);}if(!r.body){throw new Error('AI backend returned no stream');}const reader=r.body.getReader();const decoder=new TextDecoder();let buffer='';let result='';let terminalError='';while(true){const x=await reader.read();if(x.done)break;buffer+=decoder.decode(x.value,{stream:true});const parts=buffer.split('\\n\\n');buffer=parts.pop()||'';for(const part of parts){for(const line of part.split('\\n')){if(!line.startsWith('data:'))continue;try{const event=JSON.parse(line.slice(5).trim());if(event.type==='complete'){if(event.status==='success')result=event.result||'';else terminalError=event.error||event.failures?.map(f=>f.error).join(' | ')||'AI backend failed';}}catch(e){}}}}if(terminalError)throw new Error(terminalError);if(!result)throw new Error('AI backend returned an empty response');return result;};})();</script>`;
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -218,9 +215,8 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
 
-  if (req.method === 'GET' && url.pathname === '/api/health') {
-    return json(res, 200, { ok: true, service: 'silelo-qx-agent', models: MODEL_POOL.length, openrouterConfigured: Boolean(OPENROUTER_API_KEY), moonshotConfigured: Boolean(MOONSHOT_API_KEY), demo: !OPENROUTER_API_KEY && !MOONSHOT_API_KEY, maxAttempts: MAX_ATTEMPTS, uptime: Math.round((Date.now() - stats.startedAt) / 1000), skills: { total: skillsEngine.getAllSkills().length, categories: skillsEngine.getCategories().length } });
-  }
+  const healthBody = () => ({ ok: true, service: 'silelo-qx-agent', models: MODEL_POOL.length, openrouterConfigured: Boolean(OPENROUTER_API_KEY), moonshotConfigured: Boolean(MOONSHOT_API_KEY), demo: !OPENROUTER_API_KEY && !MOONSHOT_API_KEY, maxAttempts: MAX_ATTEMPTS, uptime: Math.round((Date.now() - stats.startedAt) / 1000), skills: { total: skillsEngine.getAllSkills().length, categories: skillsEngine.getCategories().length } });
+  if (req.method === 'GET' && (url.pathname === '/api/health' || url.pathname === '/health')) return json(res, 200, healthBody());
 
   if (req.method === 'GET' && url.pathname === '/api/stats') {
     const avgMs = stats.totalRequests > 0 ? Math.round(stats.totalElapsedMs / stats.totalRequests) : 0;
@@ -257,7 +253,7 @@ const server = http.createServer(async (req, res) => {
       try { body = JSON.parse(raw || '{}'); } catch (e) { return json(res, 400, { error: 'Invalid JSON' }); }
       const command = String(body.command || '').trim();
       if (!command) return json(res, 400, { error: 'command is required' });
-      const options = { skillMode: body.skillMode || 'auto', selectedSkills: Array.isArray(body.skills) ? body.skills : [], showSkills: body.showSkills !== false };
+      const options = { skillMode: body.skillMode || 'auto', selectedSkills: Array.isArray(body.skills) ? body.skills : [], showSkills: body.showSkills !== false, openrouterApiKey: String(body.apiKey || ''), moonshotApiKey: String(body.moonshotApiKey || '') };
       res.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive', 'X-Accel-Buffering': 'no' });
       try { await runPipeline(command, res, req, options); } catch (error) { sendEvent(res, { type: 'complete', status: 'error', error: error.message }); } finally { res.end(); }
     });
@@ -288,5 +284,5 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`🚀 SILELO/QX Backend listening on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`📊 Health check: http://localhost:${PORT}/health`);
 });
