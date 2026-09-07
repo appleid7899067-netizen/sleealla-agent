@@ -1,0 +1,94 @@
+# ============================================================
+# models.yaml — ตั้งค่า 10 โมเดลสำหรับ Multi-Model Hub
+# (tag = ชื่อโมเดลใน Ollama, ใช้คำสั่ง ollama pull <tag>)
+# ============================================================
+
+models:
+  - name: "DeepSeek Coder 16B"
+    tag: "deepseek-coder-v2:16b"
+    size_gb: 10
+    rank: 1
+    roles: ["code"]
+    strengths: "เขียนโค้ดดีเยี่ยม ใกล้ GPT-4o"
+
+  - name: "DeepSeek R1 14B"
+    tag: "deepseek-r1:14b"
+    size_gb: 8.5
+    rank: 2
+    roles: ["reasoning"]
+    strengths: "คิดลึก ให้เหตุผล แก้ปัญหา"
+
+  - name: "Qwen 2.5 Coder 32B"
+    tag: "qwen2.5-coder:32b"
+    size_gb: 19
+    rank: 3
+    roles: ["code", "thai"]
+    strengths: "เขียนโค้ด + ภาษาไทยดีเยี่ยม"
+
+  - name: "Qwen 3 14B"
+    tag: "qwen3:14b"
+    size_gb: 8.5
+    rank: 4
+    roles: ["general", "thai", "code"]
+    strengths: "ทั่วไป + ไทยดี + โค้ดดี"
+
+  - name: "Llama 3.1 70B"
+    tag: "llama3.1:70b"
+    size_gb: 40
+    rank: 5
+    roles: ["general", "reasoning"]
+    strengths: "ฉลาดรอบด้าน ใกล้ GPT-5"
+
+  - name: "Gemma 3 12B"
+    tag: "gemma3:12b"
+    size_gb: 7.5
+    rank: 6
+    roles: ["general", "fast"]
+    strengths: "เล็ก เร็ว ของ Google"
+
+  - name: "Mistral Large 2 123B"
+    tag: "mistral-large:123b"
+    size_gb: 70
+    rank: 7
+    roles: ["general", "reasoning"]
+    strengths: "แรงสุด รอบด้าน"
+
+  - name: "CodeLlama 70B"
+    tag: "codellama:70b"
+    size_gb: 40
+    rank: 8
+    roles: ["code"]
+    strengths: "เขียนโค้ดเน้นๆ"
+
+  - name: "Qwen 2.5 72B"
+    tag: "qwen2.5:72b"
+    size_gb: 45
+    rank: 9
+    roles: ["general", "thai"]
+    strengths: "ภาษาไทยดีมาก รอบด้าน"
+
+  - name: "Phi 4 14B"
+    tag: "phi4:14b"
+    size_gb: 8
+    rank: 10
+    roles: ["fast", "general", "reasoning"]
+    strengths: "เล็กมาก เร็วมาก แรงเกินตัว"
+
+# ============================================================
+# ตั้งค่า Router
+# ============================================================
+router:
+  ollama_url: "http://localhost:11434"     # ที่อยู่ของ Ollama
+  default_model: "auto"                     # auto = เลือกเองตามงาน
+  fallback_model: "qwen3:14b"               # ใช้เมื่อไม่มีตัวไหนตรง
+  # คำสำคัญสำหรับตรวจจับประเภทงาน (ภาษาไทย + อังกฤษ)
+  task_keywords:
+    code:        ["code", "เขียนโค้ด", "function", "python", "javascript", "bug", "error",
+                  "โปรแกรม", "สคริปต์", "html", "css", "sql", "api", "debug", "unit test",
+                  "โค้ด", "ดักบั๊ก", "คอมไพล์"]
+    thai:        ["ภาษาไทย", "แปลไทย", "thai", "แปลเป็นไทย", "แต่งประโยคไทย"]
+    reasoning:   ["เหตุผล", "วิเคราะห์", "ตรรกะ", "พิสูจน์", "math", "logic", "puzzle",
+                  "แก้ปัญหา", "เปรียบเทียบ", "ถกเถียง", "debate", "why"]
+    fast:        ["เร็ว", "สั้น", "quick", "short", "สรุปสั้น"]
+  # ลำดับความสำคัญของบทบาทเมื่อเลือกโมเดล (ตัวแรก = สำคัญสุด)
+  role_priority: ["code", "thai", "reasoning", "general", "fast"]

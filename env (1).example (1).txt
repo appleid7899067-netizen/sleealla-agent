@@ -1,0 +1,70 @@
+# ==========================================
+# 🔑 SILELO Neo-Connect — Environment Variables
+# 📌 วิธีใช้: ก๊อปไฟล์นี้เป็น .env (สำหรับ dev ในเครื่อง)
+#    หรือตั้งค่าผ่าน Dashboard: Vercel → Settings → Environment Variables
+#    (production ไม่ได้อ่านไฟล์ .env — อ่านจาก Dashboard เสมอ)
+# ⚠️ ห้าม commit ไฟล์ .env จริงเด็ดขาด! .gitignore ครอบไว้แล้ว
+# ==========================================
+
+# 🧠 AI Providers — สมองหลัก (RACE chain)
+GROQ_API_KEY=                    # จำเป็น — ตัวหลัก RACE (6 โมเดล)
+GEMINI_API_KEYS=                 # หลายคีย์คั่นด้วย , (9 keys)
+GEMINI_MODEL=gemini-3.6-flash
+OPENROUTER_API_KEY=              # fallback ชั้น 2
+OPENROUTER_TEXT_MODELS=nvidia/nemotron-3-ultra-550b-a55b:free,google/gemma-4-26b-a4b-it:free
+POLLINATIONS_MODEL=openai        # fallback ชั้น 3 (ฟรี ไม่ต้อง key)
+GROQ_MODELS=openai/gpt-oss-120b,llama-3.3-70b-versatile,qwen/qwen3.6-27b,openai/gpt-oss-20b,groq/compound-mini,llama-3.1-8b-instant
+
+# 🧠 OpenAI (สำรอง — ยังไม่ต่อเข้า RACE จนกว่าจะใส่คีย์จริง)
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
+OPENAI_TTS_MODEL=tts-1-hd
+OPENAI_TTS_VOICE=nova
+
+# 🤖 Azure OpenAI / Copilot (สำรอง)
+AZURE_OPENAI_ENDPOINT=
+AZURE_OPENAI_KEY=
+AZURE_OPENAI_MODEL=gpt-4o
+
+# 🎨 สร้างภาพ (สำรอง)
+DALL_API_KEY=
+STABILITY_API_KEY=
+
+# 🎙️ เสียง — Azure Speech (สำรอง) / ElevenLabs
+AZURE_SPEECH_KEY=
+AZURE_SPEECH_REGION=thailand
+ELEVENLABS_API_KEY=
+ELEVENLABS_MODEL=
+ELEVENLABS_VOICE_ID=
+TTS_VOICE=th-TH-PremwadeeNeural
+
+# 🌐 LINE — บอท + LINE Login
+LINE_CHANNEL_SECRET=
+LINE_CHANNEL_ACCESS_TOKEN=
+LINE_LOGIN_CHANNEL_ID=
+LINE_LOGIN_CHANNEL_SECRET=
+
+# 🔐 ความปลอดภัย — ล็อก/Login
+PIN_CODE=gamma
+ADMIN_PASSWORD=
+AUTH_SECRET=
+AUTH_WHITELIST=
+RUN_SECRET=
+JWT_SECRET=
+
+# 🔗 OAuth Login (Google / Facebook)
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+FB_APP_ID=
+FB_APP_SECRET=
+
+# 📦 ฐานข้อมูล (สำรอง)
+DATABASE_URL=
+
+# ⚙️ ระบบ
+APP_URL=https://neo-connect-ten.vercel.app
+SILELO_URL=https://silelo.onrender.com
+NODE_ENV=production
+PORT=3000
+LANG=th-TH
+TIMEZONE=Asia/Bangkok
