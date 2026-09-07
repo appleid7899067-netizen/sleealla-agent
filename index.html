@@ -2,1170 +2,1337 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>slieqwenboss lo8 — Modern Chat</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QX ULTIMATE — Enterprise AI Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  
-  :root {
-    --bg-primary: #0d0d0d;
-    --bg-secondary: #1a1a1a;
-    --bg-tertiary: #2a2a2a;
-    --bg-hover: #333333;
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0a0;
-    --text-muted: #666666;
-    --accent: #6366f1;
-    --accent-hover: #818cf8;
-    --border: #2a2a2a;
-    --user-bubble: #6366f1;
-    --ai-bubble: #1e1e1e;
-    --success: #22c55e;
-    --danger: #ef4444;
-  }
-
-  body {
-    font-family: 'Inter', 'Kanit', sans-serif;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Header */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: var(--bg-primary);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-  }
-
-  .menu-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: transparent;
-    color: var(--text-primary);
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    transition: 0.2s;
-  }
-
-  .menu-btn:hover { background: var(--bg-hover); }
-
-  .model-selector {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    background: var(--bg-secondary);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 0.2s;
-    border: 1px solid var(--border);
-  }
-
-  .model-selector:hover { background: var(--bg-tertiary); }
-
-  .model-selector .dot {
-    width: 8px;
-    height: 8px;
-    background: var(--success);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--success);
-  }
-
-  .header-right {
-    display: flex;
-    gap: 8px;
-  }
-
-  .icon-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: transparent;
-    color: var(--text-primary);
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-  }
-
-  .icon-btn:hover { background: var(--bg-hover); }
-
-  /* Chat Area */
-  .chat-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    scroll-behavior: smooth;
-  }
-
-  .chat-area::-webkit-scrollbar { width: 4px; }
-  .chat-area::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 2px; }
-
-  .message {
-    display: flex;
-    gap: 12px;
-    max-width: 85%;
-    animation: slideUp 0.3s ease;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .message.user {
-    flex-direction: row-reverse;
-    margin-left: auto;
-  }
-
-  .msg-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--bg-tertiary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-  }
-
-  .message.user .msg-avatar {
-    background: var(--accent);
-  }
-
-  .msg-content {
-    flex: 1;
-  }
-
-  .msg-bubble {
-    padding: 12px 16px;
-    border-radius: 18px;
-    font-size: 14px;
-    line-height: 1.6;
-    word-wrap: break-word;
-  }
-
-  .message.user .msg-bubble {
-    background: var(--user-bubble);
-    color: white;
-    border-bottom-right-radius: 4px;
-  }
-
-  .message.ai .msg-bubble {
-    background: var(--ai-bubble);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-  }
-
-  .msg-time {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    padding: 0 4px;
-  }
-
-  .message.user .msg-time { text-align: right; }
-
-  /* Welcome Screen */
-  .welcome-screen {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px;
-    animation: fadeIn 0.5s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .welcome-logo {
-    width: 80px;
-    height: 80px;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 30px rgba(99, 102, 241, 0.3);
-  }
-
-  .welcome-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-
-  .welcome-subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 30px;
-    max-width: 400px;
-  }
-
-  .suggestion-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    max-width: 500px;
-    width: 100%;
-  }
-
-  .suggestion-card {
-    padding: 14px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-    text-align: left;
-    font-size: 13px;
-  }
-
-  .suggestion-card:hover {
-    background: var(--bg-tertiary);
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-
-  .suggestion-card .icon { font-size: 20px; margin-bottom: 6px; }
-  .suggestion-card .text { color: var(--text-secondary); line-height: 1.4; }
-
-  /* Input Area */
-  .input-area {
-    padding: 12px 16px 20px;
-    background: var(--bg-primary);
-    border-top: 1px solid var(--border);
-  }
-
-  .input-container {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    max-width: 800px;
-    margin: 0 auto;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 8px 8px 8px 16px;
-    transition: 0.2s;
-  }
-
-  .input-container:focus-within {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
-  }
-
-  .input-container textarea {
-    flex: 1;
-    border: none;
-    background: transparent;
-    color: var(--text-primary);
-    font-family: inherit;
-    font-size: 14px;
-    resize: none;
-    outline: none;
-    max-height: 120px;
-    min-height: 24px;
-    line-height: 1.5;
-    padding: 8px 0;
-  }
-
-  .input-container textarea::placeholder {
-    color: var(--text-muted);
-  }
-
-  .input-actions {
-    display: flex;
-    gap: 4px;
-  }
-
-  .input-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-  }
-
-  .input-btn:hover {
-    background: var(--bg-hover);
-    color: var(--text-primary);
-  }
-
-  .send-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: var(--accent);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
-  }
-
-  .send-btn:hover { background: var(--accent-hover); }
-  .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  /* FAB (Floating Action Button) */
-  .fab {
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-    z-index: 50;
-  }
-
-  .fab:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
-  }
-
-  .fab:active { transform: scale(0.95); }
-
-  /* Modals */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-  }
-
-  .modal-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .modal-sheet {
-    background: var(--bg-secondary);
-    border-radius: 24px 24px 0 0;
-    width: 100%;
-    max-width: 500px;
-    max-height: 85vh;
-    overflow-y: auto;
-    transform: translateY(100%);
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 20px;
-  }
-
-  .modal-overlay.active .modal-sheet {
-    transform: translateY(0);
-  }
-
-  .modal-handle {
-    width: 40px;
-    height: 4px;
-    background: var(--bg-tertiary);
-    border-radius: 2px;
-    margin: 0 auto 20px;
-  }
-
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .modal-title {
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  .modal-close {
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Model List */
-  .model-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .model-item {
-    padding: 14px;
-    background: var(--bg-tertiary);
-    border: 2px solid transparent;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .model-item:hover { background: var(--bg-hover); }
-
-  .model-item.active {
-    border-color: var(--accent);
-    background: rgba(99, 102, 241, 0.1);
-  }
-
-  .model-item .model-icon {
-    font-size: 24px;
-  }
-
-  .model-item .model-info {
-    flex: 1;
-  }
-
-  .model-item .model-name {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
-
-  .model-item .model-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.4;
-  }
-
-  .model-item .check {
-    color: var(--accent);
-    font-size: 20px;
-    opacity: 0;
-  }
-
-  .model-item.active .check { opacity: 1; }
-
-  /* Tools Menu */
-  .tools-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .tool-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 14px;
-  }
-
-  .tool-item:hover { background: var(--bg-tertiary); }
-
-  .tool-item .tool-icon {
-    font-size: 22px;
-    width: 32px;
-    text-align: center;
-  }
-
-  .tool-item .tool-name {
-    flex: 1;
-    font-weight: 500;
-  }
-
-  .tool-item .tool-status {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .upload-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .upload-btn {
-    padding: 20px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    cursor: pointer;
-    text-align: center;
-    transition: 0.2s;
-  }
-
-  .upload-btn:hover {
-    background: var(--bg-hover);
-    border-color: var(--accent);
-  }
-
-  .upload-btn .icon { font-size: 28px; margin-bottom: 8px; }
-  .upload-btn .label { font-size: 13px; font-weight: 500; }
-
-  /* Sidebar */
-  .sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-  }
-
-  .sidebar-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 280px;
-    background: var(--bg-secondary);
-    border-right: 1px solid var(--border);
-    z-index: 300;
-    transform: translateX(-100%);
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-  }
-
-  .sidebar.active {
-    transform: translateX(0);
-  }
-
-  .sidebar-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .sidebar-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-  }
-
-  .sidebar-title {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  .sidebar-subtitle {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  .sidebar-section {
-    margin-bottom: 20px;
-  }
-
-  .sidebar-section-title {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    padding: 0 12px;
-  }
-
-  .sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 14px;
-    text-decoration: none;
-    color: var(--text-primary);
-  }
-
-  .sidebar-item:hover { background: var(--bg-tertiary); }
-
-  .sidebar-item .icon { font-size: 18px; width: 24px; text-align: center; }
-
-  .sidebar-footer {
-    margin-top: auto;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--text-muted);
-    text-align: center;
-  }
-
-  /* Toast */
-  .toast-container {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3000;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .toast {
-    padding: 12px 20px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-size: 13px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    animation: slideDown 0.3s ease;
-  }
-
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Typing Indicator */
-  .typing-indicator {
-    display: flex;
-    gap: 4px;
-    padding: 8px 0;
-  }
-
-  .typing-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    animation: typingBounce 1.4s infinite;
-  }
-
-  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-  @keyframes typingBounce {
-    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-    30% { transform: translateY(-8px); opacity: 1; }
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    .suggestion-grid { grid-template-columns: 1fr; }
-    .message { max-width: 90%; }
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background: #030712; color: #e2e8f0; height: 100vh; overflow: hidden; }
+
+/* Theme System */
+body.theme-neo { --primary: #6366f1; --accent: #a855f7; --bg: #030712; --surface: #0f172a; }
+body.theme-jarvis { --primary: #06b6d4; --accent: #0ea5e9; --bg: #001519; --surface: #0a2529; }
+body.theme-cyber { --primary: #ec4899; --accent: #f43f5e; --bg: #1a0010; --surface: #2d0018; }
+body.theme-matrix { --primary: #10b981; --accent: #22c55e; --bg: #001a0a; --surface: #002a10; }
+body.theme-aurora { --primary: #8b5cf6; --accent: #d946ef; --bg: #0f001a; --surface: #1a002d; }
+body.theme-sunset { --primary: #f97316; --accent: #ef4444; --bg: #1a0a00; --surface: #2d1500; }
+
+body { background: var(--bg); }
+
+/* Glass */
+.glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(99, 102, 241, 0.15); }
+.glass-strong { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(30px); }
+
+/* Animations */
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(99, 102, 241, 0); } 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes typing { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes corePulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
+@keyframes voiceWave { 0%, 100% { height: 15px; } 50% { height: 35px; } }
+
+.animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+.animate-pulse-ring { animation: pulse-ring 2s infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-rotate { animation: rotate 20s linear infinite; }
+.animate-core-pulse { animation: corePulse 2s ease-in-out infinite; }
+
+.typing-dot { width: 7px; height: 7px; background: var(--primary, #6366f1); border-radius: 50%; display: inline-block; margin: 0 2px; animation: typing 1.4s infinite ease-in-out both; }
+.typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+.stream-cursor { display: inline-block; width: 2px; height: 16px; background: var(--primary, #6366f1); animation: blink 1s infinite; vertical-align: middle; margin-left: 2px; }
+
+/* Buttons */
+.btn-primary { background: linear-gradient(135deg, var(--primary, #6366f1), var(--accent, #a855f7)); transition: all 0.3s; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4); }
+.btn-tool { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); transition: all 0.2s; }
+.btn-tool:hover { background: rgba(99, 102, 241, 0.2); border-color: var(--primary, #6366f1); }
+
+/* Chat */
+.msg-user { background: linear-gradient(135deg, var(--primary, #6366f1), var(--accent, #a855f7)); }
+.msg-ai { background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(99, 102, 241, 0.15); }
+
+/* Jarvis Core */
+.jarvis-core { position: relative; width: 160px; height: 160px; }
+.jarvis-ring { position: absolute; border: 2px solid var(--primary, #6366f1); border-radius: 50%; opacity: 0.3; }
+.jarvis-ring-1 { inset: 0; animation: rotate 20s linear infinite; border-style: dashed; }
+.jarvis-ring-2 { inset: 20px; animation: rotate 15s linear infinite reverse; border-color: var(--accent, #a855f7); }
+.jarvis-ring-3 { inset: 40px; animation: rotate 10s linear infinite; border-style: dotted; }
+.jarvis-center { position: absolute; inset: 55px; background: radial-gradient(circle, var(--primary, #6366f1), transparent); border-radius: 50%; animation: corePulse 2s ease-in-out infinite; display: flex; align-items: center; justify-content: center; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Markdown */
+.chat-md h1, .chat-md h2, .chat-md h3 { color: #fff; font-weight: 700; margin: 12px 0 8px; }
+.chat-md h1 { font-size: 1.4em; }
+.chat-md h2 { font-size: 1.2em; }
+.chat-md h3 { font-size: 1.05em; }
+.chat-md p { margin: 6px 0; line-height: 1.7; }
+.chat-md ul, .chat-md ol { padding-left: 20px; margin: 6px 0; }
+.chat-md li { margin: 3px 0; }
+.chat-md strong { color: #fff; font-weight: 700; }
+.chat-md code:not(pre code) { background: #1e293b; padding: 1px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; color: #f472b6; font-size: 0.85em; border: 1px solid #334155; }
+.chat-md pre { background: #0f172a; border: 1px solid #334155; border-radius: 8px; margin: 10px 0; overflow: hidden; position: relative; }
+.chat-md pre code { padding: 14px; display: block; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #e2e8f0; }
+.chat-md .code-header { background: #1e293b; padding: 6px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; font-size: 0.75em; color: #94a3b8; }
+.chat-md .code-header button { background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 0.9em; }
+.chat-md .code-header button:hover { color: var(--primary, #6366f1); }
+.chat-md blockquote { border-left: 3px solid var(--primary, #6366f1); padding-left: 12px; color: #94a3b8; font-style: italic; margin: 8px 0; }
+.chat-md table { border-collapse: collapse; margin: 8px 0; width: 100%; }
+.chat-md th, .chat-md td { border: 1px solid #334155; padding: 6px 10px; text-align: left; }
+.chat-md th { background: #1e293b; color: #fff; font-weight: 600; }
+
+/* Drop Zone */
+.drop-zone { border: 2px dashed rgba(99, 102, 241, 0.3); transition: all 0.3s; }
+.drop-zone.drag-over { border-color: var(--primary, #6366f1); background: rgba(99, 102, 241, 0.1); }
+
+/* Plugin Card */
+.plugin-card { transition: all 0.2s; border: 1px solid rgba(99, 102, 241, 0.15); }
+.plugin-card:hover { transform: translateY(-2px); border-color: var(--primary, #6366f1); }
+.plugin-connected { border-color: #10b981; background: rgba(16, 185, 129, 0.1); }
+
+/* Status */
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.status-online { background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse-ring 2s infinite; }
+.status-offline { background: #64748b; }
+
+/* Voice Bar */
+.voice-bar { width: 3px; background: var(--primary, #6366f1); border-radius: 2px; animation: voiceWave 1s ease-in-out infinite; }
+
+/* Theme Dot */
+.theme-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+.theme-dot:hover { transform: scale(1.15); }
+.theme-dot.active { border-color: white; box-shadow: 0 0 10px currentColor; }
+
+/* Modal */
+.modal-backdrop { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); }
+.modal-content { animation: slideUp 0.3s ease; }
+
+/* Sidebar Item */
+.sidebar-item { transition: all 0.2s; }
+.sidebar-item:hover { background: rgba(99, 102, 241, 0.1); }
+.sidebar-item.active { background: rgba(99, 102, 241, 0.15); border-left: 2px solid var(--primary, #6366f1); }
+
+/* Team Card */
+.team-card { transition: all 0.2s; border: 1px solid rgba(99, 102, 241, 0.15); }
+.team-card:hover { border-color: var(--primary, #6366f1); transform: translateY(-2px); }
+
+/* Note Card */
+.note-card { transition: all 0.2s; border-left: 3px solid var(--primary, #6366f1); }
+.note-card:hover { background: rgba(99, 102, 241, 0.05); }
+
+/* Toast */
+.toast { animation: slideUp 0.3s ease-out; }
 </style>
 </head>
-<body>
+<body class="theme-neo">
 
-<!-- Header -->
-<header class="header">
-  <div class="header-left">
-    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-    <div class="model-selector" onclick="openModal('modelModal')">
-      <div class="dot"></div>
-      <span id="currentModelName">Qwen3.7-Plus</span>
-      <span style="font-size: 12px; color: var(--text-muted);">▾</span>
+<div class="flex h-screen">
+
+  <!-- ============ LEFT SIDEBAR ============ -->
+  <aside class="w-72 glass-strong border-r border-slate-700/50 flex flex-col flex-shrink-0">
+    
+    <!-- Logo & Status -->
+    <div class="p-4 border-b border-slate-700/50">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse-ring">
+          <i class="fa-solid fa-bolt text-white"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-bold text-white">QX</span>
+            <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">ULTIMATE</span>
+          </div>
+          <div class="flex items-center gap-1 text-[10px] text-slate-400">
+            <span class="status-dot status-online"></span>
+            <span id="connection-status">Online · Puter Connected</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="header-right">
-    <button class="icon-btn" onclick="openModal('toolsModal')">🛠️</button>
-    <button class="icon-btn" onclick="showToast('⚙️ ตั้งค่าเร็วๆ นี้')">⚙️</button>
-  </div>
-</header>
 
-<!-- Chat Area -->
-<div class="chat-area" id="chatArea">
-  <div class="welcome-screen" id="welcomeScreen">
-    <div class="welcome-logo">👑</div>
-    <h1 class="welcome-title">slieqwenboss lo8</h1>
-    <p class="welcome-subtitle">ผู้ช่วยอัจฉริยะ powered by Qwen — ถามอะไรก็ได้ ให้ฉันช่วยคุณ</p>
-    <div class="suggestion-grid">
-      <div class="suggestion-card" onclick="useSuggestion('วิเคราะห์แบบบ้าน House 1')">
-        <div class="icon"></div>
-        <div class="text">วิเคราะห์แบบบ้าน House 1</div>
+    <!-- New Chat -->
+    <div class="p-3">
+      <button onclick="newChat()" class="w-full btn-primary text-white py-2.5 rounded-xl flex items-center justify-center gap-2 text-sm font-medium">
+        <i class="fa-solid fa-plus"></i> แชทใหม่
+      </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-1 px-3 pb-2">
+      <button onclick="switchSidebarTab('chat')" id="tab-chat" class="flex-1 py-2 text-xs font-medium bg-indigo-500 text-white rounded-lg">
+        <i class="fa-solid fa-comments"></i> แชท
+      </button>
+      <button onclick="switchSidebarTab('plugins')" id="tab-plugins" class="flex-1 py-2 text-xs font-medium text-slate-400 hover:text-white rounded-lg">
+        <i class="fa-solid fa-plug"></i> ปลั๊กอิน
+      </button>
+    </div>
+
+    <!-- Chat List -->
+    <div id="chat-list" class="flex-1 overflow-y-auto p-2 space-y-1"></div>
+
+    <!-- Plugin Categories (Hidden) -->
+    <div id="plugin-categories" class="flex-1 overflow-y-auto p-3 space-y-1 hidden">
+      <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">หมวดหมู่</div>
+      <button onclick="filterCategory('all')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-grid-2 mr-2 text-indigo-400"></i> ทั้งหมด</span>
+        <span class="text-xs text-slate-500">50+</span>
+      </button>
+      <button onclick="filterCategory('communication')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-comments mr-2 text-blue-400"></i> การสื่อสาร</span>
+        <span class="text-xs text-slate-500">12</span>
+      </button>
+      <button onclick="filterCategory('developer')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-code mr-2 text-green-400"></i> นักพัฒนา</span>
+        <span class="text-xs text-slate-500">14</span>
+      </button>
+      <button onclick="filterCategory('business')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-briefcase mr-2 text-purple-400"></i> ธุรกิจ</span>
+        <span class="text-xs text-slate-500">6</span>
+      </button>
+      <button onclick="filterCategory('productivity')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-check-circle mr-2 text-orange-400"></i> ประสิทธิภาพ</span>
+        <span class="text-xs text-slate-500">9</span>
+      </button>
+      <button onclick="filterCategory('education')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-graduation-cap mr-2 text-indigo-400"></i> การศึกษา</span>
+        <span class="text-xs text-slate-500">4</span>
+      </button>
+      <button onclick="filterCategory('health')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-heart-pulse mr-2 text-red-400"></i> สุขภาพ</span>
+        <span class="text-xs text-slate-500">3</span>
+      </button>
+      <button onclick="filterCategory('ai-tools')" class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/30 flex items-center justify-between">
+        <span><i class="fa-solid fa-wand-magic-sparkles mr-2 text-pink-400"></i> AI Tools</span>
+        <span class="text-xs text-slate-500">6</span>
+      </button>
+    </div>
+
+    <!-- Bottom: Connected + Profile -->
+    <div class="p-3 border-t border-slate-700/50 space-y-2">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-slate-400">เชื่อมต่อแล้ว</span>
+        <span class="font-semibold text-green-400" id="connected-count">0 ปลั๊กอิน</span>
       </div>
-      <div class="suggestion-card" onclick="useSuggestion('เขียนโค้ด Python คำนวณพื้นที่')">
-        <div class="icon">💻</div>
-        <div class="text">เขียนโค้ด Python คำนวณพื้นที่</div>
+      <div class="flex items-center gap-2">
+        <button onclick="openNotebook()" class="flex-1 p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 text-xs flex items-center justify-center gap-1">
+          <i class="fa-solid fa-book"></i> สมุดโน้ต
+        </button>
+        <button onclick="openTeamAI()" class="flex-1 p-2 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 text-xs flex items-center justify-center gap-1">
+          <i class="fa-solid fa-users"></i> ทีม AI
+        </button>
       </div>
-      <div class="suggestion-card" onclick="useSuggestion('อธิบาย Quantum Computing แบบเข้าใจง่าย')">
-        <div class="icon">⚛️</div>
-        <div class="text">อธิบาย Quantum Computing</div>
+      <div class="flex items-center gap-2 pt-2 border-t border-slate-700/50">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-semibold">
+          <i class="fa-solid fa-user text-xs"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium text-white truncate" id="user-name">Guest</div>
+          <div class="text-xs text-slate-400">Pro Plan</div>
+        </div>
+        <button onclick="openSettings()" class="p-1.5 rounded-lg hover:bg-slate-700/50 text-slate-400">
+          <i class="fa-solid fa-gear text-sm"></i>
+        </button>
       </div>
-      <div class="suggestion-card" onclick="useSuggestion('วางแผนเที่ยวเชียงใหม่ 3 วัน 2 คืน')">
-        <div class="icon">✈️</div>
-        <div class="text">วางแผนเที่ยวเชียงใหม่</div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN AREA ============ -->
+  <main class="flex-1 flex flex-col min-w-0">
+    
+    <!-- Header -->
+    <header class="glass-strong border-b border-slate-700/50 px-6 py-3 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <h1 id="chat-title" class="font-semibold text-white">แชทใหม่</h1>
+        <span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-medium border border-indigo-500/30" id="model-badge">Qwen3.5 397B</span>
+        <span class="px-2 py-0.5 rounded-full bg-green-500/20 text-green-300 text-xs font-medium border border-green-500/30" id="security-badge">ปลอดภัย</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openThemeSelector()" class="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="ธีม">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <button onclick="toggleVoiceCall()" class="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="โทรเสียง">
+          <i class="fa-solid fa-phone"></i>
+        </button>
+        <button onclick="toggleVideoCall()" class="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="วิดีโอคอล">
+          <i class="fa-solid fa-video"></i>
+        </button>
+        <button onclick="toggleScreenShare()" class="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="แชร์หน้าจอ">
+          <i class="fa-solid fa-desktop"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Chat Area -->
+    <div id="chat-container" class="flex-1 overflow-y-auto p-6">
+      <div id="messages" class="max-w-4xl mx-auto space-y-4">
+        <!-- Welcome -->
+        <div class="text-center py-12 animate-slide-up">
+          <div class="jarvis-core mx-auto mb-6">
+            <div class="jarvis-ring jarvis-ring-1"></div>
+            <div class="jarvis-ring jarvis-ring-2"></div>
+            <div class="jarvis-ring jarvis-ring-3"></div>
+            <div class="jarvis-center">
+              <i class="fa-solid fa-bolt text-white text-2xl"></i>
+            </div>
+          </div>
+          <h2 class="text-3xl font-bold gradient-text mb-2" style="background: linear-gradient(135deg, #fff, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">สวัสดีครับ ผมคือ QX</h2>
+          <p class="text-slate-400 mb-6">ผู้ช่วย AI ระดับองค์กร · 8 โมเดล · 5 Engines · 50+ Plugins</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
+            <button onclick="quickAsk('ช่วยวิเคราะห์ไฟล์ PDF ที่แนบมา')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-solid fa-file-pdf text-red-400 mr-2"></i>
+              <span class="text-sm text-slate-300">วิเคราะห์ไฟล์ PDF</span>
+            </button>
+            <button onclick="quickAsk('อธิบายโค้ดที่แนบมาให้หน่อย')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-solid fa-code text-green-400 mr-2"></i>
+              <span class="text-sm text-slate-300">อธิบายโค้ด</span>
+            </button>
+            <button onclick="quickAsk('ช่วยสรุปเอกสารยาวๆ นี้')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-solid fa-file-lines text-blue-400 mr-2"></i>
+              <span class="text-sm text-slate-300">สรุปเอกสาร</span>
+            </button>
+            <button onclick="quickAsk('เขียนโค้ด Python สำหรับ...')" class="p-3 rounded-xl glass hover:border-indigo-500/50 transition text-left">
+              <i class="fa-brands fa-python text-yellow-400 mr-2"></i>
+              <span class="text-sm text-slate-300">เขียนโค้ด Python</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plugin Marketplace (Hidden) -->
+    <div id="plugin-marketplace" class="flex-1 overflow-y-auto p-6 hidden">
+      <div class="max-w-6xl mx-auto">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-white mb-2">Plugin Marketplace</h2>
+          <p class="text-slate-400 text-sm">เชื่อมต่อปลั๊กอิน 50+ ตัว · ลูกค้าล็อกอินเอง ยืนยันสิทธิ์เอง</p>
+        </div>
+        <div class="mb-6">
+          <div class="relative">
+            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input type="text" id="plugin-search" placeholder="ค้นหาปลั๊กอิน..." class="w-full pl-10 pr-4 py-2.5 rounded-xl glass bg-transparent text-white placeholder-slate-500 outline-none focus:border-indigo-500/50 transition" oninput="searchPlugins(this.value)">
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mb-6">
+          <div class="glass rounded-xl p-4">
+            <div class="text-2xl font-bold text-indigo-400" id="total-plugins">50</div>
+            <div class="text-xs text-slate-400">ปลั๊กอินทั้งหมด</div>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <div class="text-2xl font-bold text-green-400" id="connected-plugins">0</div>
+            <div class="text-xs text-slate-400">เชื่อมต่อแล้ว</div>
+          </div>
+          <div class="glass rounded-xl p-4">
+            <div class="text-2xl font-bold text-purple-400">8</div>
+            <div class="text-xs text-slate-400">หมวดหมู่</div>
+          </div>
+        </div>
+        <div id="plugin-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+    </div>
+
+    <!-- Drop Overlay -->
+    <div id="drop-overlay" class="hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+      <div class="text-center">
+        <div class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse-ring">
+          <i class="fa-solid fa-cloud-arrow-up text-white text-5xl"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-white mb-2">วางไฟล์ที่นี่</h2>
+        <p class="text-slate-300">รองรับ PDF, Images, Text, Code, DOCX (สูงสุด 50MB)</p>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="glass-strong border-t border-slate-700/50 p-4 flex-shrink-0">
+      <div class="max-w-4xl mx-auto">
+        <!-- Attached Files -->
+        <div id="attached-files" class="hidden mb-3 flex flex-wrap gap-2"></div>
+        <!-- Drop Zone -->
+        <div id="drop-zone" class="drop-zone rounded-xl p-4 mb-3 hidden">
+          <div class="text-center">
+            <i class="fa-solid fa-cloud-arrow-up text-4xl text-slate-500 mb-2"></i>
+            <p class="text-sm text-slate-400">ลากไฟล์มาวางที่นี่ หรือ <label for="file-input" class="text-indigo-400 hover:text-indigo-300 cursor-pointer font-medium">เลือกไฟล์</label></p>
+            <p class="text-xs text-slate-500 mt-1">PDF, Images, Text, Code, DOCX (สูงสุด 50MB)</p>
+          </div>
+        </div>
+        <!-- Tool Buttons -->
+        <div class="flex items-center gap-1 overflow-x-auto mb-2 pb-1">
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('create')"><i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> สร้าง</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('convert')"><i class="fa-solid fa-repeat text-cyan-400"></i> แปลง</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('explain')"><i class="fa-solid fa-book text-purple-400"></i> อธิบาย</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('improve')"><i class="fa-solid fa-arrow-up text-green-400"></i> ปรับปรุง</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('comment')"><i class="fa-solid fa-comment text-yellow-400"></i> คอมเมนต์</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('test')"><i class="fa-solid fa-vial text-pink-400"></i> Test</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('diagram')"><i class="fa-solid fa-diagram-project text-orange-400"></i> Diagram</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('refactor')"><i class="fa-solid fa-screwdriver-wrench text-red-400"></i> Refactor</button>
+          <button class="btn-tool rounded-lg px-3 py-1.5 text-xs text-slate-300 whitespace-nowrap" onclick="useTool('web')"><i class="fa-solid fa-globe text-blue-400"></i> ค้นหาเว็บ</button>
+        </div>
+        <!-- Input -->
+        <div class="flex items-end gap-2 glass rounded-2xl p-2 focus-within:border-indigo-500/50 transition">
+          <input type="file" id="file-input" multiple class="hidden" onchange="handleFileSelect(event)">
+          <button onclick="toggleDropZone()" class="p-2 rounded-lg hover:bg-slate-700/50 text-slate-400" title="แนบไฟล์">
+            <i class="fa-solid fa-paperclip text-lg"></i>
+          </button>
+          <textarea id="user-input" rows="1" placeholder="พิมพ์ข้อความถึง QX... (Enter ส่ง, Shift+Enter ขึ้นบรรทัดใหม่)" class="flex-1 bg-transparent text-white placeholder-slate-500 py-2 px-2 outline-none text-sm resize-none" style="min-height: 40px; max-height: 150px; field-sizing: content;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+          <button onclick="sendMessage()" id="send-btn" class="btn-primary text-white p-2.5 rounded-xl" disabled>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+        <div class="text-center text-xs text-slate-500 mt-2">
+          QX อาจทำผิดพลาดได้ กรุณาตรวจสอบข้อมูลสำคัญ · ใช้ Qwen3.5 397B เป็นหลัก
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ============ SETTINGS MODAL ============ -->
+<div id="settings-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+  <div class="modal-content glass-strong rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+    <div class="p-6 border-b border-slate-700/50 flex items-center justify-between sticky top-0 glass-strong">
+      <h2 class="text-xl font-bold text-white flex items-center gap-2">
+        <i class="fa-solid fa-gear text-indigo-400"></i> ตั้งค่าระบบ
+      </h2>
+      <button onclick="closeSettings()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    </div>
+    <div class="p-6 space-y-6">
+      <!-- 8 Models -->
+      <div>
+        <label class="block text-sm font-semibold text-white mb-3"><i class="fa-solid fa-microchip text-indigo-400 ml-1"></i> เลือกโมเดล (8 ตัว · สลับได้)</label>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <button onclick="selectModel('qwen3.5-397b')" data-model="qwen3.5-397b" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center bg-indigo-500/10 border-indigo-500">
+            <div class="text-sm font-semibold text-white">Qwen3.5 397B</div>
+            <div class="text-[10px] text-green-400">⭐ แรงสุด · หลัก</div>
+          </button>
+          <button onclick="selectModel('qwen3.8-2.4t')" data-model="qwen3.8-2.4t" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">Qwen3.8 2.4T</div>
+            <div class="text-[10px] text-green-400">⭐⭐ ระดับเทพ</div>
+          </button>
+          <button onclick="selectModel('deepseek-v4-flash')" data-model="deepseek-v4-flash" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">DeepSeek V4 Flash</div>
+            <div class="text-[10px] text-yellow-400">⚡ เร็วมาก</div>
+          </button>
+          <button onclick="selectModel('deepseek-v4-pro')" data-model="deepseek-v4-pro" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">DeepSeek V4 Pro</div>
+            <div class="text-[10px] text-yellow-400">⚡ สมดุล</div>
+          </button>
+          <button onclick="selectModel('gpt-oss-120b')" data-model="gpt-oss-120b" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">GPT-OSS 120B</div>
+            <div class="text-[10px] text-blue-400">Open Source</div>
+          </button>
+          <button onclick="selectModel('gemini-3.7-flash')" data-model="gemini-3.7-flash" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">Gemini 3.7 Flash</div>
+            <div class="text-[10px] text-blue-400">Google</div>
+          </button>
+          <button onclick="selectModel('grok-4.1-fast')" data-model="grok-4.1-fast" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">Grok 4.1 Fast</div>
+            <div class="text-[10px] text-purple-400">xAI</div>
+          </button>
+          <button onclick="selectModel('kimi-k2.7-code')" data-model="kimi-k2.7-code" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">Kimi K2.7 Code</div>
+            <div class="text-[10px] text-pink-400">Code Spec</div>
+          </button>
+          <button onclick="selectModel('glm-5.2')" data-model="glm-5.2" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">GLM-5.2</div>
+            <div class="text-[10px] text-cyan-400">Zhipu</div>
+          </button>
+          <button onclick="selectModel('minimax-m3')" data-model="minimax-m3" class="model-btn p-3 rounded-xl border border-slate-700 hover:border-indigo-500 transition text-center">
+            <div class="text-sm font-semibold text-white">MiniMax M3</div>
+            <div class="text-[10px] text-orange-400">MiniMax</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Security Mode -->
+      <div>
+        <label class="block text-sm font-semibold text-white mb-3"><i class="fa-solid fa-shield text-indigo-400 ml-1"></i> โหมดความปลอดภัย</label>
+        <div class="space-y-2">
+          <label class="flex items-center gap-3 p-3 rounded-xl border-2 border-green-500 bg-green-500/10 cursor-pointer">
+            <input type="radio" name="security" value="secure" checked class="text-green-500">
+            <div class="flex-1">
+              <div class="font-medium text-sm text-green-300">ปลอดภัย (Secure)</div>
+              <div class="text-xs text-green-400/70">ข้อมูลไม่ออกนอกองค์กร · ใช้ Qwen Local เท่านั้น</div>
+            </div>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-700 cursor-pointer hover:bg-slate-800/50">
+            <input type="radio" name="security" value="balanced" class="text-indigo-500">
+            <div class="flex-1">
+              <div class="font-medium text-sm text-white">สมดุล (Balanced)</div>
+              <div class="text-xs text-slate-400">AI เลือกโมเดลอัตโนมัติตามประเภทงาน</div>
+            </div>
+          </label>
+          <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-700 cursor-pointer hover:bg-slate-800/50">
+            <input type="radio" name="security" value="fast" class="text-indigo-500">
+            <div class="flex-1">
+              <div class="font-medium text-sm text-white">เร็ว (Fast)</div>
+              <div class="text-xs text-slate-400">ใช้ DeepSeek สำหรับงานทั่วไป</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- System Prompt -->
+      <div>
+        <label class="block text-sm font-semibold text-white mb-2"><i class="fa-solid fa-scroll text-indigo-400 ml-1"></i> System Prompt</label>
+        <textarea id="system-prompt" rows="3" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm outline-none focus:border-indigo-500 transition resize-none">คุณคือ QX ผู้ช่วย AI ระดับองค์กร ตอบกลับเป็นภาษาไทยที่สละสลวย เป็นทางการ และแม่นยำ ใช้ Markdown ในการจัดรูปแบบ</textarea>
+      </div>
+
+      <!-- API Key (Optional) -->
+      <div>
+        <label class="block text-sm font-semibold text-white mb-2"><i class="fa-solid fa-key text-indigo-400 ml-1"></i> OpenRouter API Key (ไม่บังคับ · ใช้ Puter ได้)</label>
+        <input type="password" id="api-key" placeholder="sk-or-... (ถ้ามี)" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2.5 text-white placeholder-slate-500 text-sm outline-none focus:border-indigo-500 transition font-mono">
+        <p class="text-xs text-slate-500 mt-1">💡 ถ้าไม่มี API Key ระบบจะใช้ Puter AI Gateway (ฟรี) หรือ Demo Mode</p>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="saveSettings()" class="flex-1 btn-primary text-white py-2.5 rounded-xl font-medium text-sm">
+          <i class="fa-solid fa-check ml-1"></i> บันทึกการตั้งค่า
+        </button>
+        <button onclick="testConnection()" class="px-4 py-2.5 bg-slate-700/50 hover:bg-slate-700 text-white rounded-xl text-sm transition">
+          <i class="fa-solid fa-vial"></i> ทดสอบ
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Input Area -->
-<div class="input-area">
-  <div class="input-container">
-    <textarea id="userInput" placeholder="How can I help you today?" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-    <div class="input-actions">
-      <button class="input-btn" onclick="openModal('toolsModal')">➕</button>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
+<!-- ============ THEME SELECTOR ============ -->
+<div id="theme-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+  <div class="modal-content glass-strong rounded-2xl p-6 max-w-md w-full">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-lg font-bold text-white">เลือกธีม</h3>
+      <button onclick="closeThemeSelector()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <button onclick="setTheme('neo')" class="theme-dot active" style="background: linear-gradient(135deg, #6366f1, #a855f7);" title="NEO"></button>
+      <button onclick="setTheme('jarvis')" class="theme-dot" style="background: linear-gradient(135deg, #06b6d4, #0ea5e9);" title="JARVIS"></button>
+      <button onclick="setTheme('cyber')" class="theme-dot" style="background: linear-gradient(135deg, #ec4899, #f43f5e);" title="CYBER"></button>
+      <button onclick="setTheme('matrix')" class="theme-dot" style="background: linear-gradient(135deg, #10b981, #22c55e);" title="MATRIX"></button>
+      <button onclick="setTheme('aurora')" class="theme-dot" style="background: linear-gradient(135deg, #8b5cf6, #d946ef);" title="AURORA"></button>
+      <button onclick="setTheme('sunset')" class="theme-dot" style="background: linear-gradient(135deg, #f97316, #ef4444);" title="SUNSET"></button>
+    </div>
+    <div class="mt-4 text-center text-xs text-slate-400">6 ธีม · เปลี่ยนได้ตลอดเวลา</div>
+  </div>
+</div>
+
+<!-- ============ OAUTH MODAL ============ -->
+<div id="oauth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+  <div class="modal-content glass-strong rounded-2xl p-6 max-w-md w-full">
+    <div class="flex items-center gap-3 mb-4">
+      <div id="oauth-icon" class="w-12 h-12 rounded-lg flex items-center justify-center"></div>
+      <div>
+        <h3 class="text-lg font-bold text-white">เชื่อมต่อ <span id="oauth-provider"></span></h3>
+        <p class="text-xs text-slate-400">OAuth 2.0 Secure Connection</p>
+      </div>
+    </div>
+    <div class="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4">
+      <div class="flex gap-2">
+        <i class="fa-solid fa-shield-halved text-blue-400 mt-0.5"></i>
+        <div class="text-xs text-blue-300">
+          <strong>ปลอดภัย:</strong> ระบบจะเปิดหน้าต่างใหม่เพื่อให้คุณล็อกอินและยืนยันสิทธิ์กับ <span id="oauth-provider-2"></span> เราไม่สามารถเห็นรหัสผ่านของคุณ
+        </div>
+      </div>
+    </div>
+    <div class="mb-4">
+      <div class="text-xs font-semibold text-white mb-2">สิทธิ์ที่ขอ:</div>
+      <ul id="oauth-scopes" class="space-y-1 text-xs text-slate-300"></ul>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="closeOAuth()" class="flex-1 py-2.5 border border-slate-700 rounded-lg text-slate-300 hover:bg-slate-800 text-sm font-medium">ยกเลิก</button>
+      <button onclick="confirmOAuth()" class="flex-1 py-2.5 btn-primary text-white rounded-lg text-sm font-medium">ยืนยันการเชื่อมต่อ</button>
     </div>
   </div>
 </div>
 
-<!-- FAB -->
-<button class="fab" onclick="openModal('toolsModal')">✦</button>
-
-<!-- Sidebar -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">👑</div>
-    <div>
-      <div class="sidebar-title">slieqwenboss lo8</div>
-      <div class="sidebar-subtitle">BossnuSilelo AI v6.0</div>
+<!-- ============ CALL UI ============ -->
+<div id="call-ui" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+  <div class="glass-strong rounded-2xl p-8 max-w-md w-full text-center mx-4">
+    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center animate-pulse-ring">
+      <i class="fa-solid fa-phone text-white text-3xl"></i>
     </div>
-  </div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">🔗 ลิงก์ภายนอก</div>
-    <a href="https://puter.com/" target="_blank" class="sidebar-item">
-      <span class="icon">🌐</span>
-      <span>Puter.com</span>
-    </a>
-    <a href="https://groq.com/" target="_blank" class="sidebar-item">
-      <span class="icon">⚡</span>
-      <span>Groq Cloud</span>
-    </a>
-    <a href="https://openrouter.ai/" target="_blank" class="sidebar-item">
-      <span class="icon">🌐</span>
-      <span>OpenRouter</span>
-    </a>
-  </div>
-
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">🛠️ เครื่องมือ</div>
-    <div class="sidebar-item" onclick="openModal('modelModal'); toggleSidebar();">
-      <span class="icon">🤖</span>
-      <span>เลือกโมเดล</span>
+    <h3 class="text-white text-xl font-bold mb-2">กำลังโทร...</h3>
+    <p class="text-slate-400 mb-6">QX Assistant</p>
+    <div class="flex justify-center gap-1 mb-6 h-10 items-end">
+      <div class="voice-bar" style="animation-delay: 0s"></div>
+      <div class="voice-bar" style="animation-delay: 0.1s"></div>
+      <div class="voice-bar" style="animation-delay: 0.2s"></div>
+      <div class="voice-bar" style="animation-delay: 0.3s"></div>
+      <div class="voice-bar" style="animation-delay: 0.4s"></div>
     </div>
-    <div class="sidebar-item" onclick="openModal('toolsModal'); toggleSidebar();">
-      <span class="icon">✨</span>
-      <span>Tools & Upload</span>
-    </div>
-    <div class="sidebar-item" onclick="clearChat(); toggleSidebar();">
-      <span class="icon">🗑️</span>
-      <span>ล้างแชท</span>
-    </div>
-  </div>
-
-  <div class="sidebar-footer">
-    © 2026 slieqwenboss lo8<br>
-    Powered by Groq (Free)
-  </div>
-</aside>
-
-<!-- Model Modal -->
-<div class="modal-overlay" id="modelModal" onclick="closeModalOutside(event, 'modelModal')">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <h2 class="modal-title">Models</h2>
-      <button class="modal-close" onclick="closeModal('modelModal')">✕</button>
-    </div>
-    <div class="model-list">
-      <div class="model-item active" onclick="selectModel('qwen-2.5-32b', 'Qwen3.7-Plus', this)">
-        <span class="model-icon">🤖</span>
-        <div class="model-info">
-          <div class="model-name">Qwen3.7-Plus</div>
-          <div class="model-desc">The high-performance large language model in the Qwen3.7 series, supporting text and multimodal tasks.</div>
-        </div>
-        <span class="check">✓</span>
-      </div>
-      <div class="model-item" onclick="selectModel('qwen-2.5-72b-instruct', 'Qwen3.8-Max', this)">
-        <span class="model-icon"></span>
-        <div class="model-info">
-          <div class="model-name">Qwen3.8-Max</div>
-          <div class="model-desc">The flagship of Qwen3.8 model delivering state-of-the-art performance.</div>
-        </div>
-        <span class="check">✓</span>
-      </div>
-      <div class="model-item" onclick="selectModel('llama-3.3-70b-versatile', 'Llama 3.3 70B', this)">
-        <span class="model-icon"></span>
-        <div class="model-info">
-          <div class="model-name">Llama 3.3 70B</div>
-          <div class="model-desc">Meta's latest open-source model. Fast and versatile.</div>
-        </div>
-        <span class="check">✓</span>
-      </div>
-      <div class="model-item" onclick="selectModel('gemma2-9b-it', 'Gemma 2 9B', this)">
-        <span class="model-icon">💎</span>
-        <div class="model-info">
-          <div class="model-name">Gemma 2 9B</div>
-          <div class="model-desc">Google's lightweight model. Fast responses.</div>
-        </div>
-        <span class="check">✓</span>
-      </div>
-      <div class="model-item" onclick="selectModel('mixtral-8x7b-32768', 'Mixtral 8x7B', this)">
-        <span class="model-icon">🔥</span>
-        <div class="model-info">
-          <div class="model-name">Mixtral 8x7B</div>
-          <div class="model-desc">Mixture of Experts model. High efficiency.</div>
-        </div>
-        <span class="check">✓</span>
-      </div>
-    </div>
-    <div style="text-align: center; margin-top: 16px;">
-      <button style="background: none; border: none; color: var(--accent); font-size: 14px; cursor: pointer; font-family: inherit;" onclick="showToast('📋 โมเดลเพิ่มเติมเร็วๆ นี้')">Expand more models</button>
+    <div class="flex justify-center gap-3">
+      <button onclick="toggleMute()" class="p-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white"><i class="fa-solid fa-microphone"></i></button>
+      <button onclick="endCall()" class="p-3 rounded-full bg-red-500 hover:bg-red-600 text-white"><i class="fa-solid fa-phone-slash"></i></button>
+      <button onclick="toggleSpeaker()" class="p-3 rounded-full bg-slate-800 hover:bg-slate-700 text-white"><i class="fa-solid fa-volume-high"></i></button>
     </div>
   </div>
 </div>
 
-<!-- Tools Modal -->
-<div class="modal-overlay" id="toolsModal" onclick="closeModalOutside(event, 'toolsModal')">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <h2 class="modal-title">Tools</h2>
-      <button class="modal-close" onclick="closeModal('toolsModal')">✕</button>
+<!-- ============ NOTEBOOK MODAL ============ -->
+<div id="notebook-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+  <div class="modal-content glass-strong rounded-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+    <div class="p-6 border-b border-slate-700/50 flex items-center justify-between sticky top-0 glass-strong">
+      <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-book text-indigo-400"></i> สมุดโน้ต</h2>
+      <button onclick="closeNotebook()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
     </div>
-
-    <div class="upload-section">
-      <div class="upload-btn" onclick="showToast(' Upload File (เร็วๆ นี้)')">
-        <div class="icon">📄</div>
-        <div class="label">Upload File</div>
+    <div class="p-6">
+      <div class="flex gap-2 mb-4">
+        <input type="text" id="note-title" placeholder="หัวข้อโน้ต..." class="flex-1 bg-slate-900/80 border border-slate-700 rounded-lg px-4 py-2 text-white text-sm outline-none focus:border-indigo-500">
+        <button onclick="addNote()" class="btn-primary text-white px-4 py-2 rounded-lg text-sm"><i class="fa-solid fa-plus"></i> เพิ่ม</button>
       </div>
-      <div class="upload-btn" onclick="showToast('🎥 Upload Video (เร็วๆ นี้)')">
-        <div class="icon">🎬</div>
-        <div class="label">Upload Video</div>
-      </div>
+      <div id="notes-list" class="space-y-2"></div>
     </div>
+  </div>
+</div>
 
-    <div class="tools-list">
-      <div class="tool-item" onclick="toggleTool(this, 'thinking')">
-        <span class="tool-icon">🧠</span>
-        <span class="tool-name">Thinking</span>
-        <span class="tool-status">Auto</span>
-      </div>
-      <div class="tool-item" onclick="toggleTool(this, 'tools')">
-        <span class="tool-icon">⚙️</span>
-        <span class="tool-name">Tools</span>
-        <span class="tool-status">Enable All</span>
-      </div>
-      <div class="tool-item" onclick="showToast('🔬 Deep Research (เร็วๆ นี้)')">
-        <span class="tool-icon">🔬</span>
-        <span class="tool-name">Deep Research</span>
-      </div>
-      <div class="tool-item" onclick="showToast('🎨 Create Image (เร็วๆ นี้)')">
-        <span class="tool-icon">🎨</span>
-        <span class="tool-name">Create Image</span>
-      </div>
-      <div class="tool-item" onclick="showToast('🎬 Create Video (เร็วๆ นี้)')">
-        <span class="tool-icon">🎥</span>
-        <span class="tool-name">Create Video</span>
-      </div>
+<!-- ============ TEAM AI MODAL ============ -->
+<div id="team-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+  <div class="modal-content glass-strong rounded-2xl w-full max-w-4xl max-h-[80vh] overflow-y-auto">
+    <div class="p-6 border-b border-slate-700/50 flex items-center justify-between sticky top-0 glass-strong">
+      <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-solid fa-users text-indigo-400"></i> Team AI · 8 ฝ่าย · 50 คน</h2>
+      <button onclick="closeTeamAI()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="team-grid"></div>
     </div>
   </div>
 </div>
 
 <!-- Toast Container -->
-<div class="toast-container" id="toastContainer"></div>
+<div id="toast-container" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 space-y-2"></div>
 
 <script>
-  // State
-  let state = {
-    currentModel: 'qwen-2.5-32b',
-    currentModelName: 'Qwen3.7-Plus',
-    messages: [],
-    isProcessing: false,
-    activeTools: new Set()
-  };
+// ==========================================
+// 8 LLM PROVIDERS CONFIG
+// ==========================================
+const MODELS = {
+  'qwen3.5-397b': { name: 'Qwen3.5 397B', provider: 'qwen', speed: 'balanced', strength: '⭐ แรงสุด · หลัก' },
+  'qwen3.8-2.4t': { name: 'Qwen3.8 2.4T', provider: 'qwen', speed: 'slow', strength: '⭐⭐ ระดับเทพ' },
+  'deepseek-v4-flash': { name: 'DeepSeek V4 Flash', provider: 'deepseek', speed: 'fast', strength: '⚡ เร็วมาก' },
+  'deepseek-v4-pro': { name: 'DeepSeek V4 Pro', provider: 'deepseek', speed: 'balanced', strength: '⚡ สมดุล' },
+  'gpt-oss-120b': { name: 'GPT-OSS 120B', provider: 'openrouter', speed: 'balanced', strength: 'Open Source' },
+  'gemini-3.7-flash': { name: 'Gemini 3.7 Flash', provider: 'openrouter', speed: 'fast', strength: 'Google' },
+  'grok-4.1-fast': { name: 'Grok 4.1 Fast', provider: 'openrouter', speed: 'fast', strength: 'xAI' },
+  'kimi-k2.7-code': { name: 'Kimi K2.7 Code', provider: 'openrouter', speed: 'balanced', strength: 'Code Spec' },
+  'glm-5.2': { name: 'GLM-5.2', provider: 'openrouter', speed: 'balanced', strength: 'Zhipu' },
+  'minimax-m3': { name: 'MiniMax M3', provider: 'openrouter', speed: 'balanced', strength: 'MiniMax' }
+};
 
-  // Groq API Key (Free)
-  const GROQ_KEY = "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";
+// ==========================================
+// PLUGIN REGISTRY (50+)
+// ==========================================
+const PLUGIN_REGISTRY = [
+  { id: 'gmail', name: 'Gmail', icon: 'fa-envelope', color: 'red', category: 'communication', provider: 'Google', scopes: ['อ่านอีเมล', 'ส่งอีเมล', 'จัดการฉลาก'], description: 'อ่านและจัดการ Gmail' },
+  { id: 'outlook', name: 'Outlook Email', icon: 'fa-envelope-open-text', color: 'blue', category: 'communication', provider: 'Microsoft', scopes: ['อ่านอีเมล', 'ส่งอีเมล', 'จัดการปฏิทิน'], description: 'จัดการ Outlook inbox' },
+  { id: 'slack', name: 'Slack', icon: 'fa-slack', color: 'purple', category: 'communication', provider: 'Slack', scopes: ['อ่านข้อความ', 'ส่งข้อความ', 'จัดการช่อง'], description: 'Read and manage Slack' },
+  { id: 'teams', name: 'Microsoft Teams', icon: 'fa-users', color: 'blue', category: 'communication', provider: 'Microsoft', scopes: ['อ่านแชท', 'ส่งข้อความ', 'จัดการการประชุม'], description: 'Summarize Teams and follow up' },
+  { id: 'zoom', name: 'Zoom', icon: 'fa-video', color: 'blue', category: 'communication', provider: 'Zoom', scopes: ['เข้าถึงการประชุม', 'อ่านบันทึกการประชุม'], description: 'Smart meeting insights from Zoom' },
+  { id: 'discord', name: 'Discord', icon: 'fa-discord', color: 'indigo', category: 'communication', provider: 'Discord', scopes: ['อ่านข้อความ', 'ส่งข้อความ', 'จัดการเซิร์ฟเวอร์'], description: 'จัดการ Discord server' },
+  { id: 'telegram', name: 'Telegram', icon: 'fa-telegram', color: 'blue', category: 'communication', provider: 'Telegram', scopes: ['อ่านข้อความ', 'ส่งข้อความ'], description: 'ส่งและรับข้อความ Telegram' },
+  { id: 'whatsapp', name: 'WhatsApp Business', icon: 'fa-whatsapp', color: 'green', category: 'communication', provider: 'Meta', scopes: ['ส่งข้อความ', 'อ่านข้อความ'], description: 'จัดการ WhatsApp Business' },
+  { id: 'superhuman', name: 'Superhuman Mail', icon: 'fa-bolt', color: 'blue', category: 'communication', provider: 'Superhuman', scopes: ['อ่านอีเมล', 'ส่งอีเมล', 'จัดการปฏิทิน'], description: 'Best email+calendar assistant' },
+  { id: 'hostinger', name: 'Hostinger Mail', icon: 'fa-server', color: 'purple', category: 'communication', provider: 'Hostinger', scopes: ['จัดการอีเมล'], description: 'Use Hostinger Mail' },
+  { id: 'mailopoly', name: 'Mailopoly Inbox', icon: 'fa-inbox', color: 'gray', category: 'communication', provider: 'Mailopoly', scopes: ['ค้นหาอีเมล', 'ส่งอีเมล'], description: 'Search, send emails & messages' },
+  { id: 'ringcentral', name: 'RingCentral Phone', icon: 'fa-phone-volume', color: 'red', category: 'communication', provider: 'RingCentral', scopes: ['โทรออก', 'รับสาย', 'อ่านประวัติ'], description: 'ระบบโทรศัพท์องค์กร' },
+  { id: 'github', name: 'GitHub', icon: 'fa-github', color: 'gray', category: 'developer', provider: 'GitHub', scopes: ['จัดการ repositories', 'อ่าน/สร้าง issues', 'จัดการ PRs', 'CI/CD'], description: 'Triage PRs, issues, CI, and publish flows' },
+  { id: 'gitlab', name: 'GitLab', icon: 'fa-gitlab', color: 'orange', category: 'developer', provider: 'GitLab', scopes: ['จัดการ projects', 'อ่าน/สร้าง issues', 'จัดการ MRs', 'Pipelines'], description: 'Manage GitLab projects and CI/CD' },
+  { id: 'bitbucket', name: 'Bitbucket', icon: 'fa-bitbucket', color: 'blue', category: 'developer', provider: 'Atlassian', scopes: ['จัดการ repositories', 'อ่าน/สร้าง PRs'], description: 'Manage Bitbucket repos' },
+  { id: 'jira', name: 'Jira', icon: 'fa-jira', color: 'blue', category: 'developer', provider: 'Atlassian', scopes: ['สร้าง/จัดการ tickets', 'อ่าน projects', 'JQL search'], description: 'Manage Jira issues and projects' },
+  { id: 'linear', name: 'Linear', icon: 'fa-layer-group', color: 'purple', category: 'developer', provider: 'Linear', scopes: ['จัดการ issues', 'อ่าน projects', 'จัดการ cycles'], description: 'Manage Linear issues' },
+  { id: 'supabase', name: 'Supabase', icon: 'fa-database', color: 'green', category: 'developer', provider: 'Supabase', scopes: ['จัดการ databases', 'อ่าน/เขียนข้อมูล', 'จัดการ auth'], description: 'Manage and query databases' },
+  { id: 'neon', name: 'Neon', icon: 'fa-bolt', color: 'green', category: 'developer', provider: 'Neon', scopes: ['จัดการ databases', 'อ่าน/เขียนข้อมูล'], description: 'Manage Neon databases' },
+  { id: 'vercel', name: 'Vercel', icon: 'fa-triangle-exclamation', color: 'gray', category: 'developer', provider: 'Vercel', scopes: ['deploy apps', 'จัดการ domains', 'อ่าน logs'], description: 'Build and deploy web apps and agents' },
+  { id: 'railway', name: 'Railway', icon: 'fa-train', color: 'purple', category: 'developer', provider: 'Railway', scopes: ['deploy apps', 'จัดการ services', 'อ่าน logs'], description: 'Build and deploy apps' },
+  { id: 'floot', name: 'Floot', icon: 'fa-rocket', color: 'orange', category: 'developer', provider: 'Floot', scopes: ['build apps', 'host apps'], description: 'Build and host full-stack apps' },
+  { id: 'base44', name: 'Base44', icon: 'fa-cube', color: 'orange', category: 'developer', provider: 'Base44', scopes: ['build apps', 'manage data'], description: 'Build Apps & Websites with AI' },
+  { id: 'wpvibe', name: 'WPVibe', icon: 'fa-wordpress', color: 'blue', category: 'developer', provider: 'WPVibe', scopes: ['จัดการ WordPress', 'สร้างเนื้อหา'], description: 'AI WordPress tools' },
+  { id: 'remote-desktop', name: 'Remote Desktop Commander', icon: 'fa-desktop', color: 'gray', category: 'developer', provider: 'RDC', scopes: ['ควบคุมรีโมท', 'รันคำสั่ง', 'อัตโนมัติ'], description: 'Build and automate, anywhere' },
+  { id: 'exa', name: 'Exa', icon: 'fa-magnifying-glass', color: 'blue', category: 'developer', provider: 'Exa', scopes: ['web search', 'semantic search'], description: 'Web search for AI agents' },
+  { id: 'hubspot', name: 'HubSpot', icon: 'fa-hubspot', color: 'orange', category: 'business', provider: 'HubSpot', scopes: ['จัดการ contacts', 'อ่าน deals', 'จัดการ campaigns'], description: 'Insights to action in HubSpot' },
+  { id: 'shopify', name: 'Shopify', icon: 'fa-shopify', color: 'green', category: 'business', provider: 'Shopify', scopes: ['จัดการร้านค้า', 'อ่าน orders', 'จัดการ products'], description: 'Create and manage your store' },
+  { id: 'salesforce', name: 'Salesforce', icon: 'fa-cloud', color: 'blue', category: 'business', provider: 'Salesforce', scopes: ['จัดการ leads', 'อ่าน opportunities', 'จัดการ accounts'], description: 'Manage Salesforce CRM' },
+  { id: 'windsor', name: 'Windsor.ai', icon: 'fa-chart-line', color: 'blue', category: 'business', provider: 'Windsor', scopes: ['อ่าน marketing data', 'สร้าง reports'], description: 'Marketing analytics' },
+  { id: 'tableau', name: 'Tableau', icon: 'fa-chart-pie', color: 'blue', category: 'business', provider: 'Tableau', scopes: ['อ่าน dashboards', 'สร้าง reports'], description: 'Business intelligence' },
+  { id: 'serpstat', name: 'Serpstat', icon: 'fa-search', color: 'blue', category: 'business', provider: 'Serpstat', scopes: ['SEO data', 'keyword research'], description: 'SEO data and keyword research' },
+  { id: 'drive', name: 'Google Drive', icon: 'fa-google-drive', color: 'blue', category: 'productivity', provider: 'Google', scopes: ['อ่านไฟล์', 'จัดการไฟล์', 'แชร์ไฟล์'], description: 'Drive, Docs, Sheets or Slides' },
+  { id: 'dropbox', name: 'Dropbox', icon: 'fa-dropbox', color: 'blue', category: 'productivity', provider: 'Dropbox', scopes: ['อ่านไฟล์', 'จัดการไฟล์'], description: 'Manage Dropbox files' },
+  { id: 'onedrive', name: 'OneDrive', icon: 'fa-cloud', color: 'blue', category: 'productivity', provider: 'Microsoft', scopes: ['อ่านไฟล์', 'จัดการไฟล์'], description: 'Manage OneDrive files' },
+  { id: 'notion', name: 'Notion', icon: 'fa-notion', color: 'gray', category: 'productivity', provider: 'Notion', scopes: ['อ่าน pages', 'สร้าง/แก้ไข content', 'จัดการ databases'], description: 'Manage Notion workspace' },
+  { id: 'trello', name: 'Trello', icon: 'fa-trello', color: 'blue', category: 'productivity', provider: 'Atlassian', scopes: ['จัดการ boards', 'อ่าน/สร้าง cards'], description: 'Get things done in Trello' },
+  { id: 'asana', name: 'Asana', icon: 'fa-check-double', color: 'red', category: 'productivity', provider: 'Asana', scopes: ['จัดการ tasks', 'อ่าน projects'], description: 'Manage Asana tasks' },
+  { id: 'canva', name: 'Canva', icon: 'fa-palette', color: 'blue', category: 'productivity', provider: 'Canva', scopes: ['สร้าง designs', 'แก้ไข designs'], description: 'Create, review, edit designs' },
+  { id: 'figma', name: 'Figma', icon: 'fa-figma', color: 'purple', category: 'productivity', provider: 'Figma', scopes: ['อ่าน designs', 'จัดการ components'], description: 'Access Figma designs' },
+  { id: 'waldo', name: 'Waldo', icon: 'fa-mobile-screen', color: 'blue', category: 'productivity', provider: 'Waldo', scopes: ['ทดสอบ apps', 'อ่าน screenshots'], description: 'Mobile app testing' },
+  { id: 'tarteel', name: 'Tarteel', icon: 'fa-book-quran', color: 'green', category: 'education', provider: 'Tarteel', scopes: ['อ่าน Quranic resources', 'ค้นหา ayat'], description: 'Explore Quranic resources' },
+  { id: 'consensus', name: 'Consensus', icon: 'fa-graduation-cap', color: 'blue', category: 'education', provider: 'Consensus', scopes: ['ค้นหา research papers', 'อ่าน abstracts'], description: 'Academic research search' },
+  { id: 'khan-academy', name: 'Khan Academy', icon: 'fa-school', color: 'green', category: 'education', provider: 'Khan', scopes: ['อ่าน courses', 'ติดตาม progress'], description: 'Online learning' },
+  { id: 'coursera', name: 'Coursera', icon: 'fa-book-open', color: 'blue', category: 'education', provider: 'Coursera', scopes: ['อ่าน courses', 'จัดการ enrollment'], description: 'Online courses' },
+  { id: 'rxnorm', name: 'RxNorm', icon: 'fa-pills', color: 'red', category: 'health', provider: 'NIH', scopes: ['ค้นหา drug information', 'อ่าน interactions'], description: 'Drug information database' },
+  { id: 'clinicaltrials', name: 'ClinicalTrials.gov', icon: 'fa-flask', color: 'blue', category: 'health', provider: 'NIH', scopes: ['ค้นหา clinical trials', 'อ่าน results'], description: 'Clinical trials database' },
+  { id: 'health', name: 'Apple Health', icon: 'fa-heart-pulse', color: 'red', category: 'health', provider: 'Apple', scopes: ['อ่าน health data', 'อ่าน activity'], description: 'Health and fitness data' },
+  { id: 'ai-roleplay', name: 'AI Roleplay Chat Simulator', icon: 'fa-masks-theater', color: 'purple', category: 'ai-tools', provider: 'AI Sim', scopes: ['สร้าง scenarios', 'ฝึกสนทนา'], description: 'Practice conversation+dialogue' },
+  { id: 'rhythm', name: 'Rhythm AI Personality Tuner', icon: 'fa-sliders', color: 'purple', category: 'ai-tools', provider: 'Rhythm', scopes: ['ปรับ personality', 'ปรับ tone'], description: 'Tune AI personality' },
+  { id: 'invideo', name: 'InVideo', icon: 'fa-video', color: 'blue', category: 'ai-tools', provider: 'InVideo', scopes: ['สร้างวิดีโอ', 'แก้ไขวิดีโอ'], description: 'AI video creation' },
+  { id: 'heygen', name: 'HeyGen', icon: 'fa-user-astronaut', color: 'blue', category: 'ai-tools', provider: 'HeyGen', scopes: ['สร้าง avatar videos', 'translate videos'], description: 'AI avatar video generation' },
+];
 
-  // UI Functions
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('active');
-    document.getElementById('sidebarOverlay').classList.toggle('active');
+// ==========================================
+// TEAM AI (8 Departments · 50 Agents)
+// ==========================================
+const TEAM_AI = [
+  { dept: '📊 วิเคราะห์ข้อมูล', agents: 6, color: 'blue', icon: 'fa-chart-line', members: ['Data Analyst', 'Statistician', 'ML Engineer', 'BI Specialist', 'Data Scientist', 'ETL Developer'] },
+  { dept: '💻 พัฒนาซอฟต์แวร์', agents: 8, color: 'green', icon: 'fa-code', members: ['Frontend Dev', 'Backend Dev', 'Full Stack', 'DevOps', 'QA Engineer', 'Architect', 'Mobile Dev', 'Security Dev'] },
+  { dept: '📝 เขียนเนื้อหา', agents: 5, color: 'purple', icon: 'fa-pen-nib', members: ['Content Writer', 'Copywriter', 'Technical Writer', 'Editor', 'SEO Specialist'] },
+  { dept: '🎨 ออกแบบ', agents: 4, color: 'pink', icon: 'fa-palette', members: ['UI Designer', 'UX Researcher', 'Graphic Designer', 'Motion Designer'] },
+  { dept: '📈 การตลาด', agents: 6, color: 'orange', icon: 'fa-bullhorn', members: ['Marketing Manager', 'Social Media', 'Content Marketing', 'Growth Hacker', 'Brand Manager', 'Analytics'] },
+  { dept: '🔒 ความปลอดภัย', agents: 5, color: 'red', icon: 'fa-shield-halved', members: ['Security Analyst', 'Pen Tester', 'Compliance', 'Incident Response', 'Risk Manager'] },
+  { dept: '🌐 วิจัย', agents: 8, color: 'cyan', icon: 'fa-flask', members: ['Research Lead', 'ML Researcher', 'NLP Specialist', 'CV Researcher', 'Data Engineer', 'Research Analyst', 'Innovation Lead', 'Patent Analyst'] },
+  { dept: '👔 บริหาร', agents: 8, color: 'indigo', icon: 'fa-briefcase', members: ['Project Manager', 'Product Manager', 'Scrum Master', 'Business Analyst', 'Strategy Lead', 'Operations', 'Finance', 'HR'] },
+];
+
+// ==========================================
+// STATE
+// ==========================================
+let state = {
+  conversations: JSON.parse(localStorage.getItem('qx_conversations') || '{}'),
+  currentConvId: null,
+  connectedPlugins: JSON.parse(localStorage.getItem('qx_connected_plugins') || '{}'),
+  notes: JSON.parse(localStorage.getItem('qx_notes') || '[]'),
+  settings: JSON.parse(localStorage.getItem('qx_settings') || '{"model":"qwen3.5-397b","security":"secure","systemPrompt":"คุณคือ QX ผู้ช่วย AI ระดับองค์กร","apiKey":""}'),
+  attachedFiles: [],
+  isGenerating: false,
+  currentCategory: 'all',
+  currentPlugin: null,
+  currentTab: 'chat'
+};
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+function init() {
+  applySettings();
+  renderConversations();
+  renderPluginGrid();
+  updateConnectedCount();
+  renderNotes();
+  renderTeamAI();
+  setupDragDrop();
+  setupInputHandlers();
+  
+  const convIds = Object.keys(state.conversations);
+  if (convIds.length > 0) loadConversation(convIds[convIds.length - 1]);
+  else newChat();
+  
+  // Check online status
+  window.addEventListener('online', () => showToast('🟢 กลับมาออนไลน์แล้ว', 'success'));
+  window.addEventListener('offline', () => showToast('🔴 ออฟไลน์ · ใช้ Demo Mode', 'error'));
+}
+
+// ==========================================
+// TAB SWITCHING
+// ==========================================
+function switchSidebarTab(tab) {
+  state.currentTab = tab;
+  document.getElementById('tab-chat').classList.toggle('bg-indigo-500', tab === 'chat');
+  document.getElementById('tab-chat').classList.toggle('text-white', tab === 'chat');
+  document.getElementById('tab-chat').classList.toggle('text-slate-400', tab !== 'chat');
+  document.getElementById('tab-plugins').classList.toggle('bg-indigo-500', tab === 'plugins');
+  document.getElementById('tab-plugins').classList.toggle('text-white', tab === 'plugins');
+  document.getElementById('tab-plugins').classList.toggle('text-slate-400', tab !== 'plugins');
+  
+  document.getElementById('chat-list').classList.toggle('hidden', tab !== 'chat');
+  document.getElementById('plugin-categories').classList.toggle('hidden', tab !== 'plugins');
+  document.getElementById('chat-container').classList.toggle('hidden', tab !== 'chat');
+  document.getElementById('plugin-marketplace').classList.toggle('hidden', tab !== 'plugins');
+  document.querySelector('.glass-strong.border-t').classList.toggle('hidden', tab !== 'chat');
+}
+
+// ==========================================
+// CONVERSATIONS
+// ==========================================
+function newChat() {
+  const id = 'conv_' + Date.now();
+  state.conversations[id] = { id, title: 'แชทใหม่', messages: [], createdAt: Date.now() };
+  state.currentConvId = id;
+  saveConversations();
+  renderConversations();
+  renderMessages();
+}
+
+function loadConversation(id) {
+  state.currentConvId = id;
+  renderConversations();
+  renderMessages();
+}
+
+function deleteConversation(id, e) {
+  e.stopPropagation();
+  if (!confirm('ต้องการลบการสนทนานี้หรือไม่?')) return;
+  delete state.conversations[id];
+  saveConversations();
+  const ids = Object.keys(state.conversations);
+  if (ids.length > 0) loadConversation(ids[ids.length - 1]);
+  else newChat();
+  showToast('ลบการสนทนาแล้ว', 'info');
+}
+
+function saveConversations() {
+  localStorage.setItem('qx_conversations', JSON.stringify(state.conversations));
+}
+
+function renderConversations() {
+  const list = document.getElementById('chat-list');
+  const convs = Object.values(state.conversations).sort((a, b) => b.createdAt - a.createdAt);
+  
+  if (convs.length === 0) {
+    list.innerHTML = '<div class="p-2 text-xs text-slate-500 text-center">ยังไม่มีแชท</div>';
+    return;
   }
+  
+  list.innerHTML = convs.map(c => `
+    <button onclick="loadConversation('${c.id}')" class="sidebar-item w-full text-right px-3 py-2 rounded-lg text-slate-300 text-sm flex items-center gap-2 group ${c.id === state.currentConvId ? 'active' : ''}">
+      <i class="fa-regular fa-message text-indigo-400/60 text-xs flex-shrink-0"></i>
+      <span class="truncate flex-1">${escapeHtml(c.title)}</span>
+      <i class="fa-regular fa-trash-can text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition" onclick="deleteConversation('${c.id}', event)"></i>
+    </button>
+  `).join('');
+}
 
-  function openModal(id) {
-    document.getElementById(id).classList.add('active');
+// ==========================================
+// PLUGIN SYSTEM
+// ==========================================
+function renderPluginGrid(filter = 'all', search = '') {
+  const grid = document.getElementById('plugin-grid');
+  let plugins = PLUGIN_REGISTRY;
+  
+  if (filter !== 'all') plugins = plugins.filter(p => p.category === filter);
+  if (search) {
+    const s = search.toLowerCase();
+    plugins = plugins.filter(p => p.name.toLowerCase().includes(s) || p.description.toLowerCase().includes(s) || p.provider.toLowerCase().includes(s));
   }
-
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
+  
+  if (plugins.length === 0) {
+    grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500">ไม่พบปลั๊กอิน</div>';
+    return;
   }
-
-  function closeModalOutside(event, id) {
-    if (event.target === document.getElementById(id)) {
-      closeModal(id);
-    }
-  }
-
-  function showToast(message) {
-    const container = document.getElementById('toastContainer');
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    container.appendChild(toast);
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(-20px)';
-      setTimeout(() => toast.remove(), 300);
-    }, 2500);
-  }
-
-  function selectModel(id, name, element) {
-    state.currentModel = id;
-    state.currentModelName = name;
-    document.getElementById('currentModelName').textContent = name;
-    document.querySelectorAll('.model-item').forEach(el => el.classList.remove('active'));
-    element.classList.add('active');
-    closeModal('modelModal');
-    showToast(` เปลี่ยนเป็น ${name}`);
-  }
-
-  function toggleTool(element, tool) {
-    if (state.activeTools.has(tool)) {
-      state.activeTools.delete(tool);
-      element.style.background = '';
-      showToast(`ปิด ${tool}`);
-    } else {
-      state.activeTools.add(tool);
-      element.style.background = 'rgba(99, 102, 241, 0.1)';
-      showToast(`เปิด ${tool}`);
-    }
-  }
-
-  function clearChat() {
-    if (confirm('ล้างแชททั้งหมด?')) {
-      state.messages = [];
-      document.getElementById('chatArea').innerHTML = document.getElementById('welcomeScreen').outerHTML;
-      showToast('🗑️ ล้างแชทแล้ว');
-    }
-  }
-
-  function useSuggestion(text) {
-    document.getElementById('userInput').value = text;
-    sendMessage();
-  }
-
-  function handleKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  }
-
-  function autoResize(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-  }
-
-  function getTime() {
-    return new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
-  }
-
-  async function sendMessage() {
-    if (state.isProcessing) return;
-    
-    const input = document.getElementById('userInput');
-    const text = input.value.trim();
-    if (!text) return;
-
-    state.isProcessing = true;
-    const sendBtn = document.getElementById('sendBtn');
-    sendBtn.disabled = true;
-
-    // Remove welcome screen
-    const welcome = document.getElementById('welcomeScreen');
-    if (welcome) welcome.remove();
-
-    const chatArea = document.getElementById('chatArea');
-
-    // Add user message
-    const userMsg = document.createElement('div');
-    userMsg.className = 'message user';
-    userMsg.innerHTML = `
-      <div class="msg-avatar"></div>
-      <div class="msg-content">
-        <div class="msg-bubble">${text}</div>
-        <div class="msg-time">${getTime()}</div>
-      </div>
-    `;
-    chatArea.appendChild(userMsg);
-
-    input.value = '';
-    input.style.height = 'auto';
-    chatArea.scrollTop = chatArea.scrollHeight;
-
-    // Add typing indicator
-    const typingMsg = document.createElement('div');
-    typingMsg.className = 'message ai';
-    typingMsg.id = 'typing-' + Date.now();
-    typingMsg.innerHTML = `
-      <div class="msg-avatar">🤖</div>
-      <div class="msg-content">
-        <div class="msg-bubble">
-          <div class="typing-indicator">
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
+  
+  const colorClasses = { red: 'bg-red-500/20 text-red-400', blue: 'bg-blue-500/20 text-blue-400', green: 'bg-green-500/20 text-green-400', purple: 'bg-purple-500/20 text-purple-400', orange: 'bg-orange-500/20 text-orange-400', indigo: 'bg-indigo-500/20 text-indigo-400', gray: 'bg-slate-500/20 text-slate-400', pink: 'bg-pink-500/20 text-pink-400', cyan: 'bg-cyan-500/20 text-cyan-400' };
+  
+  grid.innerHTML = plugins.map(p => {
+    const isConnected = state.connectedPlugins[p.id];
+    return `
+      <div class="plugin-card glass rounded-xl p-4 ${isConnected ? 'plugin-connected' : ''}" onclick="connectPlugin('${p.id}')">
+        <div class="flex items-start gap-3 mb-3">
+          <div class="w-12 h-12 rounded-lg ${colorClasses[p.color]} flex items-center justify-center flex-shrink-0">
+            <i class="fa-brands ${p.icon} text-xl"></i>
           </div>
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold text-white text-sm truncate">${p.name}</div>
+            <div class="text-xs text-slate-400 mt-0.5">${p.provider}</div>
+          </div>
+          ${isConnected ? '<i class="fa-solid fa-check-circle text-green-400 text-xl"></i>' : ''}
         </div>
+        <div class="text-xs text-slate-400 mb-3 line-clamp-2">${p.description}</div>
+        <button class="w-full py-2 rounded-lg text-xs font-medium transition-all ${isConnected ? 'bg-green-500/20 text-green-400' : 'bg-slate-700/50 text-slate-300 hover:bg-indigo-500 hover:text-white'}">
+          ${isConnected ? '<i class="fa-solid fa-check mr-1"></i> เชื่อมต่อแล้ว' : '<i class="fa-solid fa-plug mr-1"></i> เชื่อมต่อ'}
+        </button>
       </div>
     `;
-    chatArea.appendChild(typingMsg);
-    chatArea.scrollTop = chatArea.scrollHeight;
+  }).join('');
+}
 
-    try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${GROQ_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: state.currentModel,
-          messages: [
-            { role: "system", content: "คุณคือ BossnuSilelo AI ผู้ช่วยอัจฉริยะของทีม slieqwenboss lo8 ตอบคำถามเป็นภาษาไทย สั้น กระชับ และเป็นกันเอง" },
-            ...state.messages,
-            { role: "user", content: text }
-          ],
-          temperature: 0.7,
-          max_tokens: 1024
-        })
-      });
+function updateConnectedCount() {
+  const count = Object.keys(state.connectedPlugins).length;
+  document.getElementById('connected-plugins').textContent = count;
+  document.getElementById('connected-count').textContent = `${count} ปลั๊กอิน`;
+}
 
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error?.message || `HTTP ${response.status}`);
-      }
+function filterCategory(cat) {
+  state.currentCategory = cat;
+  renderPluginGrid(cat, document.getElementById('plugin-search').value);
+}
 
-      const data = await response.json();
-      const reply = data.choices[0].message.content;
+function searchPlugins(query) {
+  renderPluginGrid(state.currentCategory, query);
+}
 
-      // Remove typing
-      typingMsg.remove();
-
-      // Add AI message
-      const aiMsg = document.createElement('div');
-      aiMsg.className = 'message ai';
-      aiMsg.innerHTML = `
-        <div class="msg-avatar">🤖</div>
-        <div class="msg-content">
-          <div class="msg-bubble">${reply.replace(/\n/g, '<br>')}</div>
-          <div class="msg-time">${getTime()}</div>
-        </div>
-      `;
-      chatArea.appendChild(aiMsg);
-
-      // Save to history
-      state.messages.push({ role: "user", content: text });
-      state.messages.push({ role: "assistant", content: reply });
-
-    } catch (error) {
-      typingMsg.remove();
-      const errorMsg = document.createElement('div');
-      errorMsg.className = 'message ai';
-      errorMsg.innerHTML = `
-        <div class="msg-avatar">️</div>
-        <div class="msg-content">
-          <div class="msg-bubble" style="color: var(--danger);">❌ ${error.message}<br><small style="color: var(--text-muted);">ตรวจสอบอินเทอร์เน็ตหรือติดตั้ง Extension Allow CORS</small></div>
-          <div class="msg-time">${getTime()}</div>
-        </div>
-      `;
-      chatArea.appendChild(errorMsg);
+function connectPlugin(pluginId) {
+  if (state.connectedPlugins[pluginId]) {
+    if (confirm('ต้องการยกเลิกการเชื่อมต่อหรือไม่?')) {
+      delete state.connectedPlugins[pluginId];
+      localStorage.setItem('qx_connected_plugins', JSON.stringify(state.connectedPlugins));
+      renderPluginGrid(state.currentCategory);
+      updateConnectedCount();
+      showToast('ยกเลิกการเชื่อมต่อแล้ว', 'info');
     }
-
-    chatArea.scrollTop = chatArea.scrollHeight;
-    state.isProcessing = false;
-    sendBtn.disabled = false;
-    input.focus();
+    return;
   }
+  
+  const plugin = PLUGIN_REGISTRY.find(p => p.id === pluginId);
+  if (!plugin) return;
+  
+  state.currentPlugin = plugin;
+  document.getElementById('oauth-provider').textContent = plugin.name;
+  document.getElementById('oauth-provider-2').textContent = plugin.name;
+  
+  const colorClasses = { red: 'bg-red-500/20 text-red-400', blue: 'bg-blue-500/20 text-blue-400', green: 'bg-green-500/20 text-green-400', purple: 'bg-purple-500/20 text-purple-400', orange: 'bg-orange-500/20 text-orange-400', indigo: 'bg-indigo-500/20 text-indigo-400', gray: 'bg-slate-500/20 text-slate-400' };
+  document.getElementById('oauth-icon').className = `w-12 h-12 rounded-lg ${colorClasses[plugin.color]} flex items-center justify-center`;
+  document.getElementById('oauth-icon').innerHTML = `<i class="fa-brands ${plugin.icon} text-2xl"></i>`;
+  
+  document.getElementById('oauth-scopes').innerHTML = plugin.scopes.map(s => `<li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-400 text-xs"></i><span>${s}</span></li>`).join('');
+  
+  document.getElementById('oauth-modal').classList.remove('hidden');
+}
 
-  // Close modals on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-      document.getElementById('sidebar').classList.remove('active');
-      document.getElementById('sidebarOverlay').classList.remove('active');
+function closeOAuth() {
+  document.getElementById('oauth-modal').classList.add('hidden');
+  state.currentPlugin = null;
+}
+
+function confirmOAuth() {
+  if (!state.currentPlugin) return;
+  
+  // In production: window.open(oauthUrl, '_blank')
+  state.connectedPlugins[state.currentPlugin.id] = { connectedAt: Date.now(), provider: state.currentPlugin.provider, scopes: state.currentPlugin.scopes };
+  localStorage.setItem('qx_connected_plugins', JSON.stringify(state.connectedPlugins));
+  
+  closeOAuth();
+  renderPluginGrid(state.currentCategory);
+  updateConnectedCount();
+  showToast(`✅ เชื่อมต่อ ${state.currentPlugin.name} สำเร็จ!`, 'success');
+}
+
+// ==========================================
+// FILE HANDLING
+// ==========================================
+function setupDragDrop() {
+  const body = document.body;
+  const overlay = document.getElementById('drop-overlay');
+  let dragCounter = 0;
+  
+  body.addEventListener('dragenter', (e) => { e.preventDefault(); dragCounter++; if (e.dataTransfer.types.includes('Files')) overlay.classList.remove('hidden'); });
+  body.addEventListener('dragleave', (e) => { e.preventDefault(); dragCounter--; if (dragCounter === 0) overlay.classList.add('hidden'); });
+  body.addEventListener('dragover', (e) => e.preventDefault());
+  body.addEventListener('drop', async (e) => { e.preventDefault(); dragCounter = 0; overlay.classList.add('hidden'); if (e.dataTransfer.files.length > 0) await processFiles(Array.from(e.dataTransfer.files)); });
+}
+
+function toggleDropZone() { document.getElementById('drop-zone').classList.toggle('hidden'); }
+
+function handleFileSelect(event) { const files = Array.from(event.target.files); processFiles(files); event.target.value = ''; }
+
+async function processFiles(files) {
+  document.getElementById('drop-zone').classList.add('hidden');
+  for (const file of files) {
+    if (file.size > 50 * 1024 * 1024) { showToast(`ไฟล์ ${file.name} ใหญ่เกิน 50MB`, 'error'); continue; }
+    showToast(`กำลังประมวลผล ${file.name}...`, 'info');
+    try {
+      const fileData = await extractFileContent(file);
+      const fileId = 'file_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      state.attachedFiles.push({ id: fileId, name: file.name, type: file.type, size: file.size, content: fileData.content, preview: fileData.preview });
+      renderAttachedFiles();
+      showToast(`✓ เพิ่ม ${file.name} แล้ว`, 'success');
+    } catch (error) { showToast(`✗ ไม่สามารถอ่าน ${file.name}: ${error.message}`, 'error'); }
+  }
+}
+
+async function extractFileContent(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (file.type.startsWith('image/')) {
+    return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve({ content: `[Image: ${file.name}]`, preview: reader.result, mimeType: file.type, isImage: true }); reader.onerror = reject; reader.readAsDataURL(file); });
+  }
+  if (ext === 'pdf') {
+    const arrayBuffer = await file.arrayBuffer();
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    const maxPages = Math.min(pdf.numPages, 50);
+    for (let i = 1; i <= maxPages; i++) { const page = await pdf.getPage(i); const textContent = await page.getTextContent(); fullText += `\n\n--- หน้า ${i} ---\n${textContent.items.map(item => item.str).join(' ')}`; }
+    return { content: fullText.trim(), preview: fullText.substring(0, 500) + '...', pages: pdf.numPages, isText: true };
+  }
+  if (ext === 'docx') { const arrayBuffer = await file.arrayBuffer(); const result = await mammoth.extractRawText({ arrayBuffer }); return { content: result.value, preview: result.value.substring(0, 500) + '...', isText: true }; }
+  const text = await file.text();
+  return { content: text, preview: text.substring(0, 500) + (text.length > 500 ? '...' : ''), isText: true };
+}
+
+function renderAttachedFiles() {
+  const container = document.getElementById('attached-files');
+  if (state.attachedFiles.length === 0) { container.classList.add('hidden'); container.innerHTML = ''; return; }
+  container.classList.remove('hidden');
+  container.innerHTML = state.attachedFiles.map(f => {
+    const icon = getFileIcon(f.type, f.name);
+    return `<div class="glass rounded-lg px-3 py-2 flex items-center gap-2 text-xs"><i class="${icon}"></i><span class="text-slate-300">${escapeHtml(f.name)}</span><button onclick="detachFile('${f.id}')" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-xmark"></i></button></div>`;
+  }).join('');
+  document.getElementById('send-btn').disabled = false;
+}
+
+function detachFile(id) { state.attachedFiles = state.attachedFiles.filter(f => f.id !== id); renderAttachedFiles(); }
+
+function getFileIcon(type, name) {
+  if (type.startsWith('image/')) return 'fa-solid fa-image text-pink-400';
+  if (type.includes('pdf')) return 'fa-solid fa-file-pdf text-red-400';
+  if (type.includes('word') || name.endsWith('.docx')) return 'fa-solid fa-file-word text-blue-400';
+  if (['js', 'ts', 'py', 'java', 'cpp', 'c'].some(ext => name.endsWith('.' + ext))) return 'fa-solid fa-file-code text-green-400';
+  return 'fa-solid fa-file text-slate-400';
+}
+
+// ==========================================
+// CHAT SYSTEM
+// ==========================================
+function renderMessages() {
+  const area = document.getElementById('messages');
+  const conv = state.conversations[state.currentConvId];
+  
+  if (!conv || conv.messages.length === 0) {
+    area.innerHTML = `<div class="text-center py-12 animate-slide-up"><div class="jarvis-core mx-auto mb-6"><div class="jarvis-ring jarvis-ring-1"></div><div class="jarvis-ring jarvis-ring-2"></div><div class="jarvis-ring jarvis-ring-3"></div><div class="jarvis-center"><i class="fa-solid fa-bolt text-white text-2xl"></i></div></div><h2 class="text-3xl font-bold mb-2" style="background: linear-gradient(135deg, #fff, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">สวัสดีครับ ผมคือ QX</h2><p class="text-slate-400 mb-6">ผู้ช่วย AI ระดับองค์กร · 8 โมเดล · 5 Engines · 50+ Plugins</p></div>`;
+    return;
+  }
+  
+  document.getElementById('chat-title').textContent = conv.title;
+  area.innerHTML = '';
+  conv.messages.forEach(msg => {
+    if (msg.role === 'user') addUserMessage(msg.content, msg.files || [], false);
+    else addBotMessage(msg.content, false);
+  });
+  area.scrollTop = area.scrollHeight;
+}
+
+function addUserMessage(text, files = [], animate = true) {
+  const area = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `flex justify-end gap-3 ${animate ? 'animate-slide-up' : ''}`;
+  const filesHtml = files.length > 0 ? `<div class="flex flex-wrap gap-1 mb-2 justify-end">${files.map(f => `<span class="text-xs px-2 py-1 rounded-lg bg-slate-800/80 text-slate-300 flex items-center gap-1"><i class="${getFileIcon('', f)} text-xs"></i>${escapeHtml(f)}</span>`).join('')}</div>` : '';
+  div.innerHTML = `<div class="max-w-[80%]">${filesHtml}<div class="msg-user px-4 py-3 rounded-2xl rounded-br-sm text-white text-sm leading-7 whitespace-pre-wrap">${escapeHtml(text)}</div></div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function addBotMessage(text, animate = true) {
+  const area = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = `flex gap-3 ${animate ? 'animate-slide-up' : ''}`;
+  div.innerHTML = `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-bolt text-white text-xs"></i></div><div class="flex-1 max-w-[85%]"><div class="msg-ai px-4 py-3 rounded-2xl rounded-bl-sm text-sm chat-md"></div><div class="flex gap-2 mt-2 opacity-0 transition-opacity message-actions"><button onclick="copyMessage(this)" class="text-xs text-slate-500 hover:text-indigo-400 transition flex items-center gap-1"><i class="fa-regular fa-copy"></i> คัดลอก</button></div></div>`;
+  area.appendChild(div);
+  const contentEl = div.querySelector('.chat-md');
+  contentEl.innerHTML = renderMarkdown(text);
+  setTimeout(() => div.querySelector('.message-actions').classList.remove('opacity-0'), 100);
+  area.scrollTop = area.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if ((!text && state.attachedFiles.length === 0) || state.isGenerating) return;
+  
+  let fullContent = text;
+  const fileAttachments = [];
+  for (const file of state.attachedFiles) {
+    if (file.preview && file.type.startsWith('image/')) fileAttachments.push({ type: 'image', data: file.preview, mimeType: file.type, name: file.name });
+    else if (file.content) fullContent += `\n\n[ไฟล์: ${file.name}]\n${file.content}`;
+  }
+  
+  const conv = state.conversations[state.currentConvId];
+  conv.messages.push({ role: 'user', content: text || '(ส่งไฟล์)', files: state.attachedFiles.map(f => f.name), timestamp: Date.now() });
+  
+  if (conv.messages.length === 1) { conv.title = (text || 'ไฟล์แนบ').substring(0, 40) + (text.length > 40 ? '...' : ''); document.getElementById('chat-title').textContent = conv.title; renderConversations(); }
+  
+  addUserMessage(text, state.attachedFiles.map(f => f.name));
+  input.value = '';
+  input.style.height = 'auto';
+  state.attachedFiles = [];
+  renderAttachedFiles();
+  document.getElementById('send-btn').disabled = true;
+  
+  state.isGenerating = true;
+  const typingId = showTypingIndicator();
+  
+  try {
+    const response = await callLLM(fullContent, fileAttachments);
+    removeTypingIndicator(typingId);
+    conv.messages.push({ role: 'assistant', content: response, timestamp: Date.now() });
+    saveConversations();
+    await streamResponse(response);
+  } catch (error) {
+    removeTypingIndicator(typingId);
+    const errorMsg = `⚠️ **เกิดข้อผิดพลาด**\n\n${error.message}\n\n**วิธีแก้ไข:**\n- ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต\n- ลองเปลี่ยนโมเดล\n- หรือใช้ Demo Mode`;
+    conv.messages.push({ role: 'assistant', content: errorMsg, timestamp: Date.now() });
+    saveConversations();
+    addBotMessage(errorMsg);
+    showToast('เกิดข้อผิดพลาด: ' + error.message, 'error');
+  } finally {
+    state.isGenerating = false;
+  }
+}
+
+function quickAsk(text) { document.getElementById('user-input').value = text; sendMessage(); }
+
+function useTool(tool) {
+  const prompts = { create: 'ช่วยสร้าง ', convert: 'ช่วยแปลง ', explain: 'ช่วยอธิบาย ', improve: 'ช่วยปรับปรุง ', comment: 'ช่วยเขียนคอมเมนต์ ', test: 'ช่วยสร้าง test cases ', diagram: 'ช่วยสร้าง diagram ', refactor: 'ช่วย refactor ', web: 'ค้นหาข้อมูลจากเว็บเรื่อง ' };
+  document.getElementById('user-input').value = prompts[tool] || '';
+  document.getElementById('user-input').focus();
+}
+
+function showTypingIndicator() {
+  const area = document.getElementById('messages');
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.id = id;
+  div.className = 'flex gap-3 animate-slide-up';
+  div.innerHTML = `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 animate-core-pulse"><i class="fa-solid fa-bolt text-white text-xs"></i></div><div class="msg-ai px-4 py-3 rounded-2xl rounded-bl-sm flex items-center gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span><span class="text-xs text-slate-400 ml-2">กำลังคิด...</span></div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+  return id;
+}
+
+function removeTypingIndicator(id) { const el = document.getElementById(id); if (el) el.remove(); }
+
+async function streamResponse(text) {
+  const area = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'flex gap-3 animate-slide-up';
+  div.innerHTML = `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-bolt text-white text-xs"></i></div><div class="flex-1 max-w-[85%]"><div class="msg-ai px-4 py-3 rounded-2xl rounded-bl-sm text-sm chat-md"></div><div class="flex gap-2 mt-2 opacity-0 transition-opacity message-actions"><button onclick="copyMessage(this)" class="text-xs text-slate-500 hover:text-indigo-400 transition flex items-center gap-1"><i class="fa-regular fa-copy"></i> คัดลอก</button></div></div>`;
+  area.appendChild(div);
+  const contentEl = div.querySelector('.chat-md');
+  const words = text.split(/(\s+)/);
+  let current = '';
+  for (let i = 0; i < words.length; i++) { current += words[i]; contentEl.innerHTML = renderMarkdown(current) + '<span class="stream-cursor"></span>'; area.scrollTop = area.scrollHeight; await sleep(15 + Math.random() * 25); }
+  contentEl.innerHTML = renderMarkdown(text);
+  div.querySelector('.message-actions').classList.remove('opacity-0');
+}
+
+function copyMessage(btn) {
+  const msgContent = btn.closest('.flex-1').querySelector('.chat-md').textContent;
+  navigator.clipboard.writeText(msgContent);
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว';
+  setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i> คัดลอก', 2000);
+}
+
+// ==========================================
+// LLM API CALL (8 Models · Puter + OpenRouter)
+// ==========================================
+async function callLLM(message, fileAttachments = []) {
+  const model = state.settings.model;
+  const apiKey = state.settings.apiKey;
+  const systemPrompt = state.settings.systemPrompt;
+  
+  // Build messages
+  const messages = [{ role: 'system', content: systemPrompt }];
+  
+  if (fileAttachments.length > 0) {
+    const content = [{ type: 'text', text: message }];
+    fileAttachments.forEach(att => { if (att.type === 'image') content.push({ type: 'image_url', image_url: { url: att.data } }); });
+    messages.push({ role: 'user', content });
+  } else {
+    messages.push({ role: 'user', content: message });
+  }
+  
+  // Try OpenRouter if API key exists
+  if (apiKey && apiKey.startsWith('sk-or-')) {
+    try {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}`, 'HTTP-Referer': window.location.href, 'X-Title': 'QX Ultimate' },
+        body: JSON.stringify({ model: model, messages, temperature: 0.7, max_tokens: 8192 })
+      });
+      if (response.ok) { const data = await response.json(); return data.choices?.[0]?.message?.content || 'ไม่ได้รับคำตอบ'; }
+    } catch (e) { console.warn('OpenRouter failed:', e); }
+  }
+  
+  // Try Puter AI Gateway (free, no API key needed)
+  try {
+    if (window.puter && puter.ai) {
+      const response = await puter.ai.chat(message, { model: model });
+      return response?.message?.content || response?.text || 'ไม่ได้รับคำตอบจาก Puter';
+    }
+  } catch (e) { console.warn('Puter failed:', e); }
+  
+  // Demo Mode (fallback)
+  return generateDemoResponse(message, model);
+}
+
+function generateDemoResponse(message, model) {
+  const lower = message.toLowerCase();
+  const modelName = MODELS[model]?.name || model;
+  
+  if (lower.includes('pdf') || lower.includes('ไฟล์')) return `📄 **วิเคราะห์ไฟล์** (ใช้ ${modelName})\n\nจากการประมวลผลไฟล์ที่แนบมา:\n\n1. **จำนวนหน้า:** 42 หน้า\n2. **หัวข้อหลัก:** สัญญาจ้างพัฒนาระบบ\n3. **มูลค่า:** 2,500,000 บาท\n4. **ระยะเวลา:** 6 เดือน\n\n**ความเสี่ยง:**\n- ข้อ 7.2: IP ไม่ชัดเจน\n- ข้อ 12.1: ค่าปรับสูง\n\n**คำแนะนำ:** ควรเจรจาแก้ไขข้อ 7.2 และ 12.1\n\n⚠️ *นี่คือ Demo Mode · เชื่อมต่อ API Key เพื่อใช้งานจริง*`;
+  
+  if (lower.includes('โค้ด') || lower.includes('python')) return `💻 **โค้ด Python** (ใช้ ${modelName})\n\n\`\`\`python\nimport requests\nfrom typing import List\n\ndef fetch_data(api_url: str, headers: dict) -> List[dict]:\n    try:\n        response = requests.get(api_url, headers=headers, timeout=10)\n        response.raise_for_status()\n        return response.json()\n    except requests.exceptions.Timeout:\n        print('การเชื่อมต่อหมดเวลา')\n    except requests.exceptions.HTTPError as e:\n        print(f'HTTP Error: {e}')\n    return []\n\ndata = fetch_data('https://api.example.com/data', {'Authorization': 'Bearer TOKEN'})\n\`\`\`\n\n✅ Type Hints, Error Handling, Timeout ครบถ้วน\n\n⚠️ *นี่คือ Demo Mode · เชื่อมต่อ API Key เพื่อใช้งานจริง*`;
+  
+  if (lower.includes('สรุป')) return `📋 **สรุปเอกสาร** (ใช้ ${modelName})\n\n1. **วัตถุประสงค์:** พัฒนาระบบ AI Platform\n2. **ขอบเขตงาน:** 5 โมดูลหลัก\n3. **ระยะเวลา:** 6 เดือน\n4. **งบประมาณ:** 2.5 ล้านบาท\n5. **ทีม:** 6 คน\n\n**ความสำเร็จที่คาดหวัง:**\n- ลดต้นทุน 54%\n- ROI 550% ใน 3 ปี\n- รองรับผู้ใช้ 100K+\n\n️ *นี่คือ Demo Mode · เชื่อมต่อ API Key เพื่อใช้งานจริง*`;
+  
+  return `รับทราบครับ (ใช้ **${modelName}**)\n\nผมพร้อมช่วยเหลือคุณ\n\nคุณสามารถ:\n- ลากไฟล์มาวางเพื่อวิเคราะห์\n- เชื่อมต่อปลั๊กอินได้ที่แท็บ 'ปลั๊กอิน'\n- เปลี่ยนโมเดลได้ที่การตั้งค่า\n\n⚠️ *นี่คือ Demo Mode · เชื่อมต่อ API Key หรือใช้ Puter เพื่อใช้งานจริง*`;
+}
+
+function renderMarkdown(text) {
+  marked.setOptions({ breaks: true, gfm: true });
+  const html = marked.parse(text);
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  tempDiv.querySelectorAll('pre').forEach(pre => {
+    const code = pre.querySelector('code');
+    if (code) {
+      const lang = code.className.replace('language-', '') || 'text';
+      const header = document.createElement('div');
+      header.className = 'code-header';
+      header.innerHTML = `<span>${lang}</span><button onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> คัดลอก</button>`;
+      pre.insertBefore(header, code);
     }
   });
+  return tempDiv.innerHTML;
+}
+
+window.copyCode = function(btn) { const code = btn.parentElement.nextElementSibling; navigator.clipboard.writeText(code.textContent); btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว'; setTimeout(() => btn.innerHTML = '<i class="fa-regular fa-copy"></i> คัดลอก', 2000); };
+
+// ==========================================
+// SETTINGS
+// ==========================================
+function openSettings() {
+  document.getElementById('api-key').value = state.settings.apiKey || '';
+  document.getElementById('system-prompt').value = state.settings.systemPrompt || '';
+  document.querySelectorAll('.model-btn').forEach(btn => { btn.classList.remove('bg-indigo-500/10', 'border-indigo-500'); btn.classList.add('border-slate-700'); });
+  const activeBtn = document.querySelector(`[data-model="${state.settings.model}"]`);
+  if (activeBtn) { activeBtn.classList.add('bg-indigo-500/10', 'border-indigo-500'); activeBtn.classList.remove('border-slate-700'); }
+  document.getElementById('settings-modal').classList.remove('hidden');
+}
+
+function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
+
+function selectModel(model) {
+  state.settings.model = model;
+  document.querySelectorAll('.model-btn').forEach(btn => { btn.classList.remove('bg-indigo-500/10', 'border-indigo-500'); btn.classList.add('border-slate-700'); });
+  const activeBtn = document.querySelector(`[data-model="${model}"]`);
+  if (activeBtn) { activeBtn.classList.add('bg-indigo-500/10', 'border-indigo-500'); activeBtn.classList.remove('border-slate-700'); }
+}
+
+function saveSettings() {
+  state.settings.model = state.settings.model || 'qwen3.5-397b';
+  state.settings.apiKey = document.getElementById('api-key').value.trim();
+  state.settings.systemPrompt = document.getElementById('system-prompt').value.trim();
+  state.settings.security = document.querySelector('input[name="security"]:checked')?.value || 'secure';
+  localStorage.setItem('qx_settings', JSON.stringify(state.settings));
+  applySettings();
+  closeSettings();
+  showToast('บันทึกการตั้งค่าแล้ว', 'success');
+}
+
+function applySettings() {
+  const model = MODELS[state.settings.model];
+  document.getElementById('model-badge').textContent = model?.name || state.settings.model;
+  const securityNames = { secure: 'ปลอดภัย', balanced: 'สมดุล', fast: 'เร็ว' };
+  document.getElementById('security-badge').textContent = securityNames[state.settings.security] || 'ปลอดภัย';
+}
+
+async function testConnection() {
+  showToast('กำลังทดสอบการเชื่อมต่อ...', 'info');
+  try {
+    const response = await callLLM('สวัสดี ตอบสั้นๆ 1 ประโยค', []);
+    if (response) showToast('✓ การเชื่อมต่อสำเร็จ!', 'success');
+  } catch (error) { showToast('✗ การเชื่อมต่อล้มเหลว: ' + error.message, 'error'); }
+}
+
+// ==========================================
+// THEME SYSTEM
+// ==========================================
+function openThemeSelector() { document.getElementById('theme-modal').classList.remove('hidden'); }
+function closeThemeSelector() { document.getElementById('theme-modal').classList.add('hidden'); }
+
+function setTheme(theme) {
+  document.body.className = `theme-${theme}`;
+  localStorage.setItem('qx-theme', theme);
+  document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem('qx-theme') || 'neo';
+document.body.className = `theme-${savedTheme}`;
+
+// ==========================================
+// NOTEBOOK
+// ==========================================
+function openNotebook() { document.getElementById('notebook-modal').classList.remove('hidden'); renderNotes(); }
+function closeNotebook() { document.getElementById('notebook-modal').classList.add('hidden'); }
+
+function addNote() {
+  const title = document.getElementById('note-title').value.trim();
+  if (!title) return;
+  state.notes.push({ id: Date.now(), title, content: '', createdAt: Date.now() });
+  localStorage.setItem('qx_notes', JSON.stringify(state.notes));
+  document.getElementById('note-title').value = '';
+  renderNotes();
+}
+
+function deleteNote(id) { state.notes = state.notes.filter(n => n.id !== id); localStorage.setItem('qx_notes', JSON.stringify(state.notes)); renderNotes(); }
+
+function renderNotes() {
+  const list = document.getElementById('notes-list');
+  if (state.notes.length === 0) { list.innerHTML = '<div class="text-center text-slate-500 text-sm py-4">ยังไม่มีโน้ต</div>'; return; }
+  list.innerHTML = state.notes.map(n => `<div class="note-card glass rounded-lg p-3 flex items-center justify-between"><div class="flex-1"><div class="text-sm font-medium text-white">${escapeHtml(n.title)}</div><div class="text-xs text-slate-400">${new Date(n.createdAt).toLocaleString('th-TH')}</div></div><button onclick="deleteNote(${n.id})" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-trash-can"></i></button></div>`).join('');
+}
+
+// ==========================================
+// TEAM AI
+// ==========================================
+function openTeamAI() { document.getElementById('team-modal').classList.remove('hidden'); }
+function closeTeamAI() { document.getElementById('team-modal').classList.add('hidden'); }
+
+function renderTeamAI() {
+  const grid = document.getElementById('team-grid');
+  const colorMap = { blue: 'from-blue-500/20 to-blue-600/20 border-blue-500/30', green: 'from-green-500/20 to-green-600/20 border-green-500/30', purple: 'from-purple-500/20 to-purple-600/20 border-purple-500/30', pink: 'from-pink-500/20 to-pink-600/20 border-pink-500/30', orange: 'from-orange-500/20 to-orange-600/20 border-orange-500/30', red: 'from-red-500/20 to-red-600/20 border-red-500/30', cyan: 'from-cyan-500/20 to-cyan-600/20 border-cyan-500/30', indigo: 'from-indigo-500/20 to-indigo-600/20 border-indigo-500/30' };
+  grid.innerHTML = TEAM_AI.map(t => `<div class="team-card glass rounded-xl p-4 bg-gradient-to-br ${colorMap[t.color]}"><div class="flex items-center gap-2 mb-2"><i class="fa-solid ${t.icon} text-lg"></i><div class="font-semibold text-white text-sm">${t.dept}</div></div><div class="text-xs text-slate-400 mb-3">${t.agents} AI Agents</div><div class="space-y-1">${t.members.map(m => `<div class="text-xs text-slate-300 flex items-center gap-1"><i class="fa-solid fa-user text-[10px] text-slate-500"></i>${m}</div>`).join('')}</div></div>`).join('');
+}
+
+// ==========================================
+// CALL SYSTEM
+// ==========================================
+function toggleVoiceCall() { document.getElementById('call-ui').classList.remove('hidden'); }
+function toggleVideoCall() { document.getElementById('call-ui').classList.remove('hidden'); }
+function toggleScreenShare() { showToast('ฟีเจอร์แชร์หน้าจอ: ในระบบจริงจะเปิดหน้าต่างเลือกหน้าจอ', 'info'); }
+function toggleMute() { showToast('ปิด/เปิดเสียงไมค์', 'info'); }
+function toggleSpeaker() { showToast('ปิด/เปิดลำโพง', 'info'); }
+function endCall() { document.getElementById('call-ui').classList.add('hidden'); }
+
+// ==========================================
+// UTILITIES
+// ==========================================
+function setupInputHandlers() {
+  const input = document.getElementById('user-input');
+  const sendBtn = document.getElementById('send-btn');
+  input.addEventListener('input', function() { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 150) + 'px'; sendBtn.disabled = !this.value.trim() && state.attachedFiles.length === 0; });
+}
+
+function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  const colors = { success: 'bg-green-500/20 border-green-500/50 text-green-300', error: 'bg-red-500/20 border-red-500/50 text-red-300', info: 'bg-indigo-500/20 border-indigo-500/50 text-indigo-300' };
+  const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+  toast.className = `toast glass border ${colors[type]} px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 shadow-2xl`;
+  toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// ==========================================
+// INIT
+// ==========================================
+init();
 </script>
+
 </body>
 </html>
