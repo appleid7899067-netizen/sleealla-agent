@@ -1,128 +1,70 @@
-# สลี่ออลา — Sleealla Agent
+#  QX Ultimate - Enterprise AI Platform
 
-เว็บแชต AI แบบหน้าเดียวสำหรับทดลองผู้ช่วยภาษาไทยที่รองรับการเลือกโมเดล, การจดจำบทสนทนาในเบราว์เซอร์, เสียงพูด/การรู้จำเสียง และการแนบไฟล์ตามความสามารถของหน้าเว็บ
+แพลตฟอร์ม AI ระดับองค์กรที่รวมจุดแข็งจาก SILELO + AETHER + QX
 
-> **สถานะโปรเจกต์:** ต้นแบบฝั่ง Frontend แบบไฟล์เดียว (`index.html`) เหมาะสำหรับการทดลองและการ deploy แบบ static site
+## ⚡ คุณสมบัติหลัก
 
-## ความสามารถ
+- **8 โมเดล AI** - Qwen3.5, DeepSeek, Gemini, Grok, Kimi, GLM, MiniMax, GPT-OSS
+- **50+ Plugins** - เชื่อมต่อ Gmail, GitHub, Slack, Jira, Notion และอื่นๆ
+- **Team AI** - 8 ฝ่าย 50 AI Agents
+- **Multi-Language** - รองรับ 30+ ภาษา พร้อม Voice
+- **Enterprise Security** - Zero Data Retention, OAuth 2.0
 
-- อินเทอร์เฟซภาษาไทยธีมม่วง–ดำ–ทอง
-- เลือกโมเดล AI จากรายการที่กำหนดในหน้า Settings
-- เรียกใช้งาน OpenRouter Chat Completions API
-- บันทึกประวัติการสนทนาไว้ใน `localStorage` ของเบราว์เซอร์
-- ล้างและ export ประวัติแชตเป็นไฟล์ JSON
-- รองรับ Text-to-Speech และ Speech Recognition หากเบราว์เซอร์รองรับ
-- แนบรูปภาพ, PDF และไฟล์โค้ดตามตัวเลือกในหน้าเว็บ
-- Responsive สำหรับหน้าจอมือถือและเดสก์ท็อป
-- คลังทักษะ 400 รายการ: 20 หมวดหมู่ x 20 แบบฝึก พร้อมค้นหา กรองหมวดหมู่ และส่งโจทย์ให้ Agent
+## 📋 ข้อกำหนดระบบ
 
-## โครงสร้างไฟล์
+- Node.js >= 18.0.0
+- npm >= 9.0.0
+- RAM 2GB+ (แนะนำ 4GB)
 
-```text
-sleealla-agent/
-├── index.html     # หน้าเว็บและตรรกะหลัก
-├── skills.js      # คลังทักษะ AI และพัฒนาตัวเอง 400 รายการ
-├── README.md      # คู่มือโครงการ
-└── .gitignore     # ไฟล์ที่ไม่ควร commit
-```
-
-## การตั้งค่า API Key อย่างปลอดภัย
-
-ไฟล์ `index.html` ที่เตรียมไว้ **ไม่มี API Key จริง** และกำหนดค่าเริ่มต้นเป็นค่าว่างเพื่อป้องกันการเผยแพร่ credential โดยไม่ตั้งใจ
-
-อย่างไรก็ตาม เว็บแบบ static ที่เรียก API จากฝั่ง browser ไม่สามารถซ่อน API Key ได้อย่างแท้จริง หากใส่คีย์ลงใน JavaScript ผู้ใช้ทุกคนสามารถเปิด Developer Tools และคัดลอกคีย์ได้ ดังนั้นสำหรับการใช้งานจริงควรใช้ backend/proxy ของตนเองดังนี้:
-
-1. เก็บ `OPENROUTER_API_KEY` เป็น environment variable บน server
-2. ให้ browser เรียก endpoint ของ backend แทนการเรียก OpenRouter โดยตรง
-3. เพิ่ม rate limit, authentication และการตรวจสอบ origin ตามความเหมาะสม
-4. หากคีย์จากไฟล์เดิมยังใช้งานอยู่ ให้ **ยกเลิกและสร้างคีย์ใหม่ทันที** เพราะคีย์ดังกล่าวถูกเปิดเผยในข้อความต้นฉบับแล้ว
-
-หากต้องการทดลองแบบ local เท่านั้น ให้แก้ค่า `CONFIG.API_KEY` ใน `index.html` ชั่วคราวบนเครื่องส่วนตัว และห้าม commit การแก้ไขนั้นขึ้น repository สาธารณะ
-
-## การเปิดใช้งานแบบ local
-
-ไม่ต้องติดตั้ง dependency สำหรับหน้าเว็บพื้นฐาน เพียงเปิด `index.html` ด้วย browser ที่ทันสมัย หรือใช้ static server เพื่อให้การโหลดไฟล์และฟีเจอร์ browser ทำงานสม่ำเสมอ:
+## 🚀 การติดตั้ง
 
 ```bash
-python3 -m http.server 8080
-```
+# 1. Clone หรือดาวน์โหลดโปรเจกต์
+git clone <repository-url>
+cd qx-ultimate
 
-จากนั้นเปิด <http://localhost:8080>
-
-## โมเดลที่มีในต้นแบบ
-
-รายการเริ่มต้นในไฟล์ปัจจุบันประกอบด้วยโมเดลฟรีต่อไปนี้:
-
-- `deepseek/deepseek-chat-v3.5:free`
-- `meta-llama/llama-3-8b-instruct:free`
-- `qwen/qwen-7b-instruct:free`
-- `google/gemma-2-9b-it:free`
-- `mistralai/mistral-7b-instruct:free`
-
-ความพร้อมใช้งาน, ชื่อรุ่น และโควตาของโมเดลขึ้นอยู่กับ OpenRouter และอาจเปลี่ยนแปลงได้ ควรตรวจสอบ Model ID ปัจจุบันก่อนใช้งานจริง
-
-## การเพิ่มโมเดล
-
-แก้ไขสองจุดใน `index.html`:
-
-1. เพิ่ม `<option value="PROVIDER/MODEL_ID">...</option>` ใน select ของ Settings
-2. เพิ่ม Model ID ใน `CONFIG.MODELS.fallback` หรือเปลี่ยน `CONFIG.MODELS.primary`
-
-ควรใช้ Model ID ที่ตรงกับเอกสารของผู้ให้บริการและทดสอบการตอบกลับก่อน deploy
-
-## ความเป็นส่วนตัวและข้อจำกัด
-
-- ประวัติแชตถูกเก็บใน `localStorage` ของ browser เครื่องนั้น และอาจถูกลบเมื่อผู้ใช้ล้างข้อมูลเว็บไซต์
-- ข้อความและไฟล์ที่ส่งไปยังโมเดลจะถูกประมวลผลโดยผู้ให้บริการ API ตามนโยบายของผู้ให้บริการ
-- ไม่ควรส่งข้อมูลลับ, ข้อมูลส่วนบุคคล, token, password หรือเอกสารที่มีข้อมูลอ่อนไหว
-- ฟีเจอร์เสียงและการอ่านไฟล์ขึ้นกับความสามารถและ permission ของ browser
-- โปรเจกต์นี้ยังไม่มีระบบผู้ใช้, backend, database, audit log หรือการควบคุมค่าใช้จ่ายระดับ production
-
-## การตรวจสอบก่อนขึ้น repository
-
-```bash
-git init
-git status
-# ตรวจสอบว่าไม่มี API key หรือไฟล์ลับหลุดเข้าไปก่อน
-grep -RInE 'sk-or-v1-|OPENROUTER_API_KEY|API_KEY[[:space:]]*[:=]' . --exclude-dir=.git
-```
-
-คำสั่งตรวจสอบข้างต้นควรไม่พบ credential จริง หากพบให้ลบออกและ rotate key ก่อน commit
-
-## License
-
-ยังไม่ได้กำหนด license อย่างเป็นทางการ หากจะเผยแพร่เป็น Public Repository ควรเลือก license ที่เหมาะสมก่อน เช่น MIT หรือ All Rights Reserved ตามความต้องการของเจ้าของโครงการ
-
-# Sleealla Agent — Deploy
-
-## Render Web Service
-
-This repository contains an Express server, so deploy it as a Render Web Service.
-
-- Build Command: `npm install`
-- Start Command: `npm start`
-- Health Check: `/health`
-- Runtime port: `$PORT`
-
-The server binds to `0.0.0.0` and defaults to port `10000`, matching Render's web-service requirements. citeturn0search0turn0search1
-
-## Environment variables
-
-Set provider credentials in Render Environment Variables. Do not commit real API keys.
-
-- `OPENROUTER_API_KEY`
-- `OPENROUTER_MODEL` (optional)
-- `DASHSCOPE_API_KEY`
-- `DASHSCOPE_MODEL` (optional)
-- `NVIDIA_API_KEY`
-- `NVIDIA_MODEL` (optional)
-
-## Local verification
-
-```bash
+# 2. ติดตั้ง dependencies
 npm install
-PORT=10000 npm start
+
+# 3. ตั้งค่า environment variables
+cp .env.example .env
+# แก้ไข .env และใส่ API Keys
+
+# 4. เริ่มเซิร์ฟเวอร์
+npm start
 ```
 
-Then check `http://localhost:10000/health`.
+## 🔧 การใช้งาน
 
+เปิดเบราว์เซอร์: `http://localhost:10000`
+
+### ตั้งค่า API Keys
+
+1. **OpenRouter** (แนะนำ):
+   - ลงทะเบียนที่ https://openrouter.ai
+   - รับ API Key
+   - ใส่ใน `.env`: `OPENROUTER_API_KEY=sk-or-xxx`
+
+2. **DashScope (Qwen)**:
+   - ลงทะเบียนที่ https://dashscope.aliyun.com
+   - ใส่ใน `.env`: `DASHSCOPE_API_KEY=sk-xxx`
+
+##  เอกสารเพิ่มเติม
+
+- [README-DEPLOY.md](./README-DEPLOY.md) - คู่มือ Deploy
+- [REPO-PREP.md](./REPO-PREP.md) - การเตรียม Repository
+
+## 🛡️ ความปลอดภัย
+
+- API Keys เก็บใน `.env` เท่านั้น
+- ไม่เก็บข้อมูลผู้ใช้ในเซิร์ฟเวอร์
+- รองรับ OAuth 2.0 สำหรับ Plugins
+
+##  ติดต่อ
+
+- Email: support@qx-enterprise.com
+- Documentation: https://docs.qx-enterprise.com
+
+## 📄 License
+
+MIT License - See [LICENSE](./LICENSE) file
