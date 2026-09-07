@@ -1,7 +1,29 @@
 services:
   - type: web
-    name: sleealla-agent
-    runtime: node
+    name: qx-platform
+    env: node
     buildCommand: npm install
-    startCommand: npm start
-    healthCheckPath: /health
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: MOONSHOT_API_KEY
+        sync: false
+      - key: MODEL_POOL
+        sync: false
+      - key: LLM_MAX_TOTAL_ATTEMPTS
+        value: 8
+      - key: FETCH_TIMEOUT_MS
+        value: 30000
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+databases:
+  - name: qx-db
+    databaseName: qx_platform
+    user: qx_user
+    plan: free
