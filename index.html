@@ -1,11 +1,9 @@
-
-```html
 <!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>QX Ultimate — All-in-One Mobile</title>
+  <title>QX Ultimate — All-in-One AI</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -16,15 +14,15 @@
   <script src="https://js.puter.com/v2/"></script>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
-    html,body { height:100%; overflow:hidden; touch-action:manipulation; background:#f8fafc; color:#1e293b; }
-    body.theme-neo { --primary:#3b82f6; --accent:#6366f1; --bg:#f8fafc; --surface:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0; }
-    body.theme-dusty { --primary:#a78b7a; --accent:#8b7355; --bg:#f5f0eb; --surface:#faf7f4; --text:#3d2e1f; --muted:#8b7d6b; --border:#e8dfd4; }
-    body.theme-jarvis { --primary:#06b6d4; --accent:#0ea5e9; --bg:#0a1929; --surface:#0f2439; --text:#e2e8f0; --muted:#94a3b8; --border:#1e3a5f; }
-    body.theme-cyber { --primary:#ec4899; --accent:#f43f5e; --bg:#1a0a1f; --surface:#2d1533; --text:#f8fafc; --muted:#c084fc; --border:#4a1d5a; }
-    body.theme-matrix { --primary:#10b981; --accent:#22c55e; --bg:#051a0f; --surface:#0a2818; --text:#e2e8f0; --muted:#86efac; --border:#1a4d2e; }
-    body.theme-aurora { --primary:#8b5cf6; --accent:#d946ef; --bg:#1a0a2e; --surface:#2d1b4e; --text:#f8fafc; --muted:#c4b5fd; --border:#4c1d95; }
-    body.theme-sunset { --primary:#f97316; --accent:#ef4444; --bg:#2a0f0a; --surface:#3d1810; --text:#fef2f2; --muted:#fca5a5; --border:#7f1d1d; }
-    body { background:var(--bg); color:var(--text); }
+    html,body { height:100%; overflow:hidden; touch-action:manipulation; }
+    body.theme-neo { --bg:#f8fafc; --surface:#ffffff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0; --primary:#3b82f6; --accent:#6366f1; --success:#10b981; --danger:#ef4444; --warning:#f59e0b; }
+    body.theme-dusty { --bg:#f5f0eb; --surface:#faf7f4; --text:#3d2e1f; --muted:#8b7d6b; --border:#e8dfd4; --primary:#a78b7a; --accent:#8b7355; --success:#84a98c; --danger:#bc6c5c; --warning:#d4a373; }
+    body.theme-jarvis { --bg:#0a1929; --surface:#0f2439; --text:#e2e8f0; --muted:#94a3b8; --border:#1e3a5f; --primary:#06b6d4; --accent:#0ea5e9; --success:#10b981; --danger:#f87171; --warning:#fbbf24; }
+    body.theme-cyber { --bg:#1a0a1f; --surface:#2d1533; --text:#f8fafc; --muted:#c084fc; --border:#4a1d5a; --primary:#ec4899; --accent:#f43f5e; --success:#22d3ee; --danger:#fb7185; --warning:#fbbf24; }
+    body.theme-matrix { --bg:#051a0f; --surface:#0a2818; --text:#e2e8f0; --muted:#86efac; --border:#1a4d2e; --primary:#10b981; --accent:#22c55e; --success:#4ade80; --danger:#f87171; --warning:#facc15; }
+    body.theme-aurora { --bg:#1a0a2e; --surface:#2d1b4e; --text:#f8fafc; --muted:#c4b5fd; --border:#4c1d95; --primary:#8b5cf6; --accent:#d946ef; --success:#a78bfa; --danger:#f472b6; --warning:#fbbf24; }
+    body.theme-sunset { --bg:#2a0f0a; --surface:#3d1810; --text:#fef2f2; --muted:#fca5a5; --border:#7f1d1d; --primary:#f97316; --accent:#ef4444; --success:#fb923c; --danger:#f87171; --warning:#facc15; }
+    body { background:var(--bg); color:var(--text); transition:background 0.3s, color 0.3s; }
 
     #app { display:flex; flex-direction:column; height:100vh; max-height:100vh; overflow:hidden; }
 
@@ -40,94 +38,125 @@
     .bottom-nav button.active i { transform:scale(1.1); }
 
     .chat-area { flex:1; overflow-y:auto; padding:12px 10px; -webkit-overflow-scrolling:touch; }
-    .chat-area .msg { margin-bottom:8px; }
-    .chat-area .msg-user { background:linear-gradient(135deg,var(--primary),var(--accent)); color:white; padding:8px 12px; border-radius:12px 12px 4px 12px; max-width:85%; margin-left:auto; font-size:14px; word-wrap:break-word; }
-    .chat-area .msg-ai { background:var(--surface); border:1px solid var(--border); padding:8px 12px; border-radius:12px 12px 12px 4px; max-width:90%; font-size:14px; word-wrap:break-word; }
+    .chat-area .msg { margin-bottom:12px; }
+    .chat-area .msg-user { background:linear-gradient(135deg,var(--primary),var(--accent)); color:white; padding:10px 14px; border-radius:16px 16px 4px 16px; max-width:85%; margin-left:auto; font-size:14px; line-height:1.5; word-wrap:break-word; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    .chat-area .msg-ai { background:var(--surface); border:1px solid var(--border); padding:10px 14px; border-radius:16px 16px 16px 4px; max-width:90%; font-size:14px; line-height:1.6; word-wrap:break-word; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
     .chat-area .msg-ai .chat-md { font-size:14px; }
-    .chat-area .msg-ai .chat-md pre { font-size:12px; }
+    .chat-area .msg-ai .chat-md pre { background:#0f172a; padding:12px; border-radius:8px; overflow-x:auto; margin:8px 0; font-size:12px; line-height:1.4; }
+    .chat-area .msg-ai .chat-md code { background:rgba(0,0,0,0.05); padding:2px 6px; border-radius:4px; font-size:13px; }
+    .chat-area .msg-ai .chat-md pre code { background:transparent; padding:0; }
+    .chat-area .msg-ai .chat-md p { margin:6px 0; }
+    .chat-area .msg-ai .chat-md ul, .chat-area .msg-ai .chat-md ol { padding-left:20px; margin:6px 0; }
 
-    .input-area { background:var(--surface); border-top:1px solid var(--border); padding:6px 8px env(safe-area-inset-bottom); flex-shrink:0; }
-    .input-row { display:flex; align-items:flex-end; gap:6px; }
-    .input-row textarea { flex:1; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:8px 10px; font-size:14px; min-height:36px; max-height:80px; resize:none; outline:none; color:var(--text); }
-    .input-row textarea:focus { border-color:var(--primary); }
-    .input-row .send-btn { width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--accent)); color:white; border:none; display:flex; align-items:center; justify-content:center; flex-shrink:0; touch-action:manipulation; }
-    .input-row .send-btn:disabled { opacity:0.4; }
-    .tool-row { display:flex; gap:4px; overflow-x:auto; padding:4px 0; -webkit-overflow-scrolling:touch; }
-    .tool-row button { flex-shrink:0; padding:3px 8px; border-radius:12px; border:1px solid var(--border); background:var(--surface); font-size:10px; color:var(--muted); white-space:nowrap; touch-action:manipulation; }
-    .tool-row button i { margin-right:2px; }
+    .input-area { background:var(--surface); border-top:1px solid var(--border); padding:8px 10px env(safe-area-inset-bottom); flex-shrink:0; }
+    .input-row { display:flex; align-items:flex-end; gap:8px; }
+    .input-row textarea { flex:1; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 14px; font-size:15px; min-height:44px; max-height:120px; resize:none; outline:none; color:var(--text); line-height:1.4; transition:border-color 0.2s; }
+    .input-row textarea:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(59,130,246,0.1); }
+    .input-row .send-btn { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--accent)); color:white; border:none; display:flex; align-items:center; justify-content:center; flex-shrink:0; touch-action:manipulation; transition:transform 0.15s; }
+    .input-row .send-btn:active { transform:scale(0.95); }
+    .input-row .send-btn:disabled { opacity:0.4; transform:none; }
+    .tool-row { display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+    .tool-row::-webkit-scrollbar { display:none; }
+    .tool-row button { flex-shrink:0; padding:6px 12px; border-radius:16px; border:1px solid var(--border); background:var(--bg); font-size:12px; color:var(--text); white-space:nowrap; touch-action:manipulation; transition:all 0.15s; }
+    .tool-row button:active { background:var(--primary); color:white; border-color:var(--primary); }
+    .tool-row button i { margin-right:4px; font-size:11px; }
 
-    .sidebar-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.5); display:none; }
+    .sidebar-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); display:none; }
     .sidebar-overlay.open { display:block; }
-    .sidebar { position:fixed; top:0; right:0; bottom:0; width:280px; max-width:80%; background:var(--surface); z-index:101; transform:translateX(100%); transition:transform 0.3s ease; overflow-y:auto; padding:12px; }
+    .sidebar { position:fixed; top:0; right:0; bottom:0; width:300px; max-width:85vw; background:var(--surface); z-index:101; transform:translateX(100%); transition:transform 0.3s cubic-bezier(0.4,0,0.2,1); overflow-y:auto; padding:16px; }
     .sidebar.open { transform:translateX(0); }
-    .sidebar .close-btn { position:absolute; top:8px; left:8px; background:none; border:none; font-size:20px; color:var(--text); touch-action:manipulation; }
-    .sidebar .menu-item { padding:10px 12px; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:14px; cursor:pointer; touch-action:manipulation; }
+    .sidebar .close-btn { position:absolute; top:12px; left:12px; background:none; border:none; font-size:20px; color:var(--text); touch-action:manipulation; padding:4px; }
+    .sidebar .menu-item { padding:12px 14px; border-radius:12px; display:flex; align-items:center; gap:12px; font-size:15px; cursor:pointer; touch-action:manipulation; transition:background 0.15s; margin-bottom:2px; }
     .sidebar .menu-item:active { background:var(--bg); }
-    .sidebar .menu-item i { width:20px; text-align:center; color:var(--muted); }
-    .sidebar .menu-item.active { background:var(--bg); color:var(--primary); }
+    .sidebar .menu-item.active { background:rgba(59,130,246,0.1); color:var(--primary); }
     .sidebar .menu-item.active i { color:var(--primary); }
+    .sidebar .menu-item i { width:20px; text-align:center; color:var(--muted); font-size:16px; }
 
-    .modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; padding:16px; }
+    .modal-overlay { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.6); backdrop-filter:blur(6px); display:none; align-items:center; justify-content:center; padding:20px; }
     .modal-overlay.open { display:flex; }
-    .modal-box { background:var(--surface); border-radius:16px; max-width:400px; width:100%; max-height:90vh; overflow-y:auto; padding:20px; }
+    .modal-box { background:var(--surface); border-radius:20px; max-width:420px; width:100%; max-height:85vh; overflow-y:auto; padding:24px; border:1px solid var(--border); box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); }
 
-    .chip-row { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin:8px 0; }
-    .chip { padding:6px 12px; border-radius:16px; border:1px solid var(--border); background:var(--surface); font-size:11px; color:var(--text); touch-action:manipulation; white-space:nowrap; }
-    .chip:active { background:var(--bg); }
+    .chip-row { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:12px 0; }
+    .chip { padding:8px 16px; border-radius:20px; border:1px solid var(--border); background:var(--bg); font-size:13px; color:var(--text); touch-action:manipulation; white-space:nowrap; transition:all 0.15s; }
+    .chip:active { background:var(--primary); color:white; border-color:var(--primary); transform:scale(0.97); }
 
-    .file-chip { display:inline-flex; align-items:center; gap:4px; background:var(--bg); padding:2px 6px 2px 8px; border-radius:12px; font-size:11px; margin:2px; }
-    .file-chip .remove { background:none; border:none; color:var(--muted); font-size:12px; touch-action:manipulation; }
+    .file-chip { display:inline-flex; align-items:center; gap:6px; background:var(--bg); padding:4px 10px; border-radius:16px; font-size:12px; margin:4px; border:1px solid var(--border); }
+    .file-chip .remove { background:none; border:none; color:var(--muted); font-size:14px; touch-action:manipulation; padding:0 4px; margin-left:4px; }
 
-    .status-bar { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--muted); padding:2px 8px; }
-    .status-dot { width:6px; height:6px; border-radius:50%; display:inline-block; }
-    .status-dot.online { background:#10b981; }
-    .status-dot.offline { background:#ef4444; }
+    .status-bar { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--muted); padding:4px 4px 0; flex-wrap:wrap; }
+    .status-dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+    .status-dot.online { background:var(--success); box-shadow:0 0 6px var(--success); }
+    .status-dot.offline { background:var(--danger); }
 
-    .typing-dots { display:flex; gap:3px; padding:4px 0; }
-    .typing-dots span { width:6px; height:6px; border-radius:50%; background:var(--muted); animation:bounce 1.4s infinite; }
+    .typing-dots { display:flex; gap:4px; padding:8px 0; }
+    .typing-dots span { width:8px; height:8px; border-radius:50%; background:var(--muted); animation:bounce 1.4s infinite; }
     .typing-dots span:nth-child(2) { animation-delay:0.2s; }
     .typing-dots span:nth-child(3) { animation-delay:0.4s; }
-    @keyframes bounce { 0%,80%,100% { transform:scale(0.6); } 40% { transform:scale(1); } }
+    @keyframes bounce { 0%,80%,100% { transform:translateY(0) scale(0.8); } 40% { transform:translateY(-6px) scale(1); } }
 
-    ::-webkit-scrollbar { width:3px; }
+    ::-webkit-scrollbar { width:4px; height:4px; }
     ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+    ::-webkit-scrollbar-track { background:transparent; }
 
-    .welcome { text-align:center; padding:20px 10px; }
-    .welcome .icon { font-size:40px; margin-bottom:8px; }
-    .welcome h2 { font-size:20px; font-weight:700; margin-bottom:4px; }
-    .welcome p { font-size:13px; color:var(--muted); }
+    .welcome { text-align:center; padding:32px 16px; }
+    .welcome .icon { font-size:56px; margin-bottom:12px; }
+    .welcome h2 { font-size:24px; font-weight:700; margin-bottom:6px; }
+    .welcome p { font-size:14px; color:var(--muted); margin-bottom:8px; }
 
-    .plugin-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .plugin-card { padding:10px; border-radius:10px; border:1px solid var(--border); background:var(--surface); touch-action:manipulation; }
-    .plugin-card:active { transform:scale(0.97); }
-    .plugin-card .p-icon { font-size:24px; }
-    .plugin-card .p-name { font-size:12px; font-weight:600; margin-top:4px; }
-    .plugin-card .p-desc { font-size:10px; color:var(--muted); }
-    .plugin-card .p-status { font-size:9px; color:#10b981; }
+    .plugin-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+    .plugin-card { padding:14px; border-radius:14px; border:1px solid var(--border); background:var(--surface); touch-action:manipulation; transition:all 0.15s; }
+    .plugin-card:active { transform:scale(0.97); background:var(--bg); }
+    .plugin-card .p-icon { font-size:28px; margin-bottom:8px; }
+    .plugin-card .p-name { font-size:14px; font-weight:600; margin-bottom:2px; }
+    .plugin-card .p-desc { font-size:11px; color:var(--muted); margin-bottom:6px; }
+    .plugin-card .p-status { font-size:11px; color:var(--success); font-weight:500; }
 
-    .setting-group { margin-bottom:12px; }
-    .setting-group label { font-size:12px; font-weight:600; display:block; margin-bottom:4px; }
-    .setting-group select, .setting-group input, .setting-group textarea { width:100%; padding:8px 10px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:13px; }
-    .setting-group textarea { min-height:60px; resize:vertical; }
+    .setting-group { margin-bottom:16px; }
+    .setting-group label { font-size:13px; font-weight:600; display:block; margin-bottom:6px; color:var(--text); }
+    .setting-group select, .setting-group input, .setting-group textarea { width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-size:14px; outline:none; transition:border-color 0.2s; }
+    .setting-group select:focus, .setting-group input:focus, .setting-group textarea:focus { border-color:var(--primary); }
+    .setting-group textarea { min-height:80px; resize:vertical; line-height:1.5; }
 
-    .team-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-    .team-card { padding:8px; border-radius:8px; border:1px solid var(--border); background:var(--surface); }
-    .team-card .t-name { font-size:12px; font-weight:600; }
-    .team-card .t-role { font-size:10px; color:var(--muted); }
+    .team-grid { display:grid; gap:12px; }
+    .team-card { padding:14px; border-radius:12px; border:1px solid var(--border); background:var(--surface); }
+    .team-card .t-name { font-size:14px; font-weight:600; margin-bottom:4px; }
+    .team-card .t-role { font-size:12px; color:var(--muted); }
 
-    .note-item { padding:10px; border-radius:8px; border-left:3px solid var(--primary); background:var(--surface); margin-bottom:6px; }
-    .note-item .n-title { font-size:14px; font-weight:600; }
-    .note-item .n-preview { font-size:12px; color:var(--muted); }
+    .note-item { padding:14px; border-radius:12px; border-left:3px solid var(--primary); background:var(--surface); margin-bottom:10px; cursor:pointer; transition:all 0.15s; border:1px solid var(--border); border-left-width:3px; }
+    .note-item:active { transform:scale(0.98); background:var(--bg); }
+    .note-item .n-title { font-size:15px; font-weight:600; margin-bottom:4px; }
+    .note-item .n-preview { font-size:13px; color:var(--muted); line-height:1.4; }
 
-    .puter-status { font-size:12px; color:var(--muted); padding:8px 0; }
-    .puter-status .online { color:#10b981; }
-    .puter-status .offline { color:#ef4444; }
+    .puter-status { font-size:13px; color:var(--muted); padding:10px 0; line-height:1.5; }
+    .puter-status .online { color:var(--success); }
+    .puter-status .offline { color:var(--muted); }
+
+    .btn-primary { padding:10px 16px; border-radius:10px; border:none; background:var(--primary); color:white; font-size:14px; font-weight:500; cursor:pointer; transition:all 0.15s; touch-action:manipulation; }
+    .btn-primary:active { transform:scale(0.97); }
+    .btn-secondary { padding:10px 16px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text); font-size:14px; cursor:pointer; transition:all 0.15s; touch-action:manipulation; }
+    .btn-secondary:active { background:var(--bg); }
+    .btn-danger { padding:10px 16px; border-radius:10px; border:1px solid var(--danger); background:transparent; color:var(--danger); font-size:14px; cursor:pointer; transition:all 0.15s; touch-action:manipulation; }
+    .btn-danger:active { background:rgba(239,68,68,0.1); }
+
+    .tab-content { display:none; flex:1; overflow-y:auto; padding:16px; background:var(--bg); }
+    .tab-content.active { display:block; }
+    .section-title { font-size:18px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+    .section-subtitle { font-size:13px; color:var(--muted); margin-bottom:16px; }
+
+    .copy-btn { font-size:11px; padding:2px 8px; border-radius:6px; border:none; background:rgba(255,255,255,0.1); color:#94a3b8; cursor:pointer; margin-left:auto; }
+    .copy-btn:hover { background:rgba(255,255,255,0.2); color:white; }
+
+    .divider { height:1px; background:var(--border); margin:20px 0; }
+
+    #dropOverlay { display:none; position:fixed; inset:0; z-index:50; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); align-items:center; justify-content:center; flex-direction:column; color:white; gap:16px; }
+    #dropOverlay i { font-size:64px; }
+    #dropOverlay h3 { font-size:20px; font-weight:600; }
+    #dropOverlay p { font-size:14px; color:#ccc; }
   </style>
 </head>
 <body>
 
 <div id="app">
-
   <!-- HEADER -->
   <header class="app-header">
     <div class="logo">
@@ -135,62 +164,172 @@
       <span>QX</span>
       <span class="badge" id="model-badge">Auto</span>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
+    <div style="display:flex;align-items:center;gap:10px;">
       <span class="status-dot online" id="status-dot"></span>
-      <span style="font-size:10px;color:var(--muted);" id="status-text">พร้อม</span>
-      <button onclick="toggleSidebar()" style="background:none;border:none;font-size:18px;color:var(--text);touch-action:manipulation;padding:4px;">
+      <span style="font-size:11px;color:var(--muted);" id="status-text">พร้อม</span>
+      <button onclick="toggleSidebar()" style="background:none;border:none;font-size:20px;color:var(--text);touch-action:manipulation;padding:6px;">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
   </header>
 
   <!-- CHAT AREA -->
-  <div class="chat-area" id="chatArea">
-    <div id="messages">
-      <div class="welcome" id="welcome">
-        <div class="icon">🤖</div>
-        <h2>QX Ultimate</h2>
-        <p>30 โมเดล · Smart Router · ☁️ Puter</p>
-        <div class="chip-row">
-          <button class="chip" onclick="quickAsk('ช่วยเขียนโค้ด Python')">🐍 โค้ด</button>
-          <button class="chip" onclick="quickAsk('วิเคราะห์ SWOT')">📊 SWOT</button>
-          <button class="chip" onclick="quickAsk('อธิบาย PDF')">📄 PDF</button>
-          <button class="chip" onclick="quickAsk('สรุปสั้นๆ')">📝 สรุป</button>
+  <div class="tab-content active" id="tab-chat">
+    <div class="chat-area" id="chatArea">
+      <div id="messages">
+        <div class="welcome" id="welcome">
+          <div class="icon">🤖</div>
+          <h2>QX Ultimate</h2>
+          <p>AI ทุกระบบ · ตอบไว · ใช้ฟรีตลอดไป 💜</p>
+          <div class="chip-row">
+            <button class="chip" onclick="quickAsk('ช่วยเขียนโค้ด Python')">🐍 เขียนโค้ด</button>
+            <button class="chip" onclick="quickAsk('วิเคราะห์ SWOT')">📊 วิเคราะห์</button>
+            <button class="chip" onclick="quickAsk('อธิบายเนื้อหา PDF')">📄 อ่านไฟล์</button>
+            <button class="chip" onclick="quickAsk('สรุปบทความสั้นๆ')">📝 สรุป</button>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- INPUT -->
+    <div class="input-area">
+      <div class="tool-row" id="toolRow">
+        <button onclick="useTool('create')"><i class="fa-solid fa-wand-magic-sparkles"></i>สร้าง</button>
+        <button onclick="useTool('explain')"><i class="fa-solid fa-book"></i>อธิบาย</button>
+        <button onclick="useTool('improve')"><i class="fa-solid fa-arrow-up"></i>ปรับปรุง</button>
+        <button onclick="useTool('test')"><i class="fa-solid fa-vial"></i>ทดสอบ</button>
+        <button onclick="useTool('web')"><i class="fa-solid fa-globe"></i>ค้นหา</button>
+        <button onclick="toggleDropZone()"><i class="fa-solid fa-paperclip"></i>แนบไฟล์</button>
+      </div>
+
+      <div id="attached-files" style="display:flex;flex-wrap:wrap;gap:6px;padding:4px 0;"></div>
+
+      <div class="input-row">
+        <textarea id="userInput" rows="1" placeholder="พิมพ์คำถามหรือคำสั่งของคุณ..." oninput="autoResize(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+
+      <div class="status-bar">
+        <span id="api-badge">⚡ Auto</span>
+        <span>·</span>
+        <span id="model-count">หลายโมเดล</span>
+        <span>·</span>
+        <span id="puter-badge" style="color:var(--muted);">☁️</span>
       </div>
     </div>
   </div>
 
-  <!-- INPUT -->
-  <div class="input-area">
-    <div class="tool-row" id="toolRow">
-      <button onclick="useTool('create')"><i class="fa-solid fa-wand-magic-sparkles"></i>สร้าง</button>
-      <button onclick="useTool('explain')"><i class="fa-solid fa-book"></i>อธิบาย</button>
-      <button onclick="useTool('improve')"><i class="fa-solid fa-arrow-up"></i>ปรับปรุง</button>
-      <button onclick="useTool('test')"><i class="fa-solid fa-vial"></i>Test</button>
-      <button onclick="useTool('web')"><i class="fa-solid fa-globe"></i>ค้นหา</button>
-      <button onclick="toggleDropZone()"><i class="fa-solid fa-paperclip"></i>ไฟล์</button>
+  <!-- PLUGINS TAB -->
+  <div class="tab-content" id="tab-plugins">
+    <h3 class="section-title"><i class="fa-solid fa-plug"></i> ปลั๊กอิน & การเชื่อมต่อ</h3>
+    <p class="section-subtitle">เชื่อมต่อบริการภายนอกเพื่อขยายความสามารถ</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+      <button class="chip" onclick="filterPlugin('all')">ทั้งหมด</button>
+      <button class="chip" onclick="filterPlugin('communication')">สื่อสาร</button>
+      <button class="chip" onclick="filterPlugin('developer')">พัฒนา</button>
+      <button class="chip" onclick="filterPlugin('business')">ธุรกิจ</button>
+      <button class="chip" onclick="filterPlugin('productivity')">ประสิทธิภาพ</button>
+    </div>
+    <div class="plugin-grid" id="pluginGrid"></div>
+  </div>
+
+  <!-- TEAM TAB -->
+  <div class="tab-content" id="tab-team">
+    <h3 class="section-title"><i class="fa-solid fa-users"></i> ทีม AI</h3>
+    <p class="section-subtitle">บทบาทและความสามารถที่มีให้เลือกใช้งาน</p>
+    <div id="teamGrid"></div>
+  </div>
+
+  <!-- NOTES TAB -->
+  <div class="tab-content" id="tab-notes">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 class="section-title" style="margin:0;"><i class="fa-solid fa-book"></i> โน้ต</h3>
+      <button onclick="newNote()" class="btn-primary">+ สร้างใหม่</button>
+    </div>
+    <div id="notesGrid"></div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div class="tab-content" id="tab-settings">
+    <h3 class="section-title"><i class="fa-solid fa-gear"></i> ตั้งค่าระบบ</h3>
+
+    <div class="setting-group">
+      <label>🎯 โมเดล AI</label>
+      <select id="modelSelect" onchange="saveSettings()">
+        <option value="auto">🤖 เลือกอัตโนมัติ (เร็วสุด)</option>
+        <option value="ensemble">🔀 รวมหลายโมเดล</option>
+        <option value="groq">⚡ Groq — เร็วที่สุด</option>
+        <option value="openai">🧠 OpenAI (GPT)</option>
+        <option value="gemini">🔷 Google Gemini</option>
+        <option value="deepseek">🔮 DeepSeek</option>
+        <option value="ollama">💻 Ollama (เครื่องตัวเอง)</option>
+      </select>
     </div>
 
-    <div id="attached-files" style="display:flex;flex-wrap:wrap;gap:4px;padding:2px 0;"></div>
-
-    <div class="input-row">
-      <textarea id="userInput" rows="1" placeholder="ถาม QX..." oninput="autoResize(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-        <i class="fa-solid fa-paper-plane"></i>
-      </button>
+    <div class="setting-group">
+      <label>🎨 ธีมสี</label>
+      <select id="themeSelect" onchange="setTheme(this.value)">
+        <option value="neo">NEO — สะอาด สดใส</option>
+        <option value="dusty">DUSTY — นุ่มนวล</option>
+        <option value="jarvis">JARVIS — น้ำเงินเข้ม</option>
+        <option value="cyber">CYBER — ชมพู-ม่วง</option>
+        <option value="matrix">MATRIX — เขียวดำ</option>
+        <option value="aurora">AURORA — ม่วง-ชมพู</option>
+        <option value="sunset">SUNSET — ส้ม-แดง</option>
+      </select>
     </div>
 
-    <div class="status-bar">
-      <span id="api-badge">⚡ Auto</span>
-      <span>·</span>
-      <span id="model-count">30 โมเดล</span>
-      <span>·</span>
-      <span id="puter-badge" style="color:var(--muted);">☁️</span>
+    <div class="setting-group">
+      <label>📋 บทบาทระบบ (System Prompt)</label>
+      <textarea id="systemPrompt" onchange="saveSettings()">คุณคือ QX ผู้ช่วย AI อัจฉริยะ ตอบคำถามเป็นภาษาไทยอย่างชัดเจน ถูกต้อง และเป็นประโยชน์ มีความเป็นมิตร อธิบายละเอียดให้เข้าใจง่าย</textarea>
+    </div>
+
+    <div class="divider"></div>
+
+    <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;">🔑 API Keys (ใส่เพื่อใช้โมเดลจริง)</h4>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">คีย์ของคุณจะถูกบันทึกในเครื่องเท่านั้น ไม่ส่งไปที่อื่น</p>
+
+    <div class="setting-group">
+      <label>Groq API Key</label>
+      <input id="keyGroq" type="password" placeholder="gsk_..." oninput="saveAPIKeys()">
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;">ฟรี — เร็วสุด 🔥</div>
+    </div>
+
+    <div class="setting-group">
+      <label>OpenAI API Key</label>
+      <input id="keyOpenAI" type="password" placeholder="sk-..." oninput="saveAPIKeys()">
+    </div>
+
+    <div class="setting-group">
+      <label>Google Gemini API Key</label>
+      <input id="keyGemini" type="password" placeholder="AIza..." oninput="saveAPIKeys()">
+    </div>
+
+    <div class="setting-group">
+      <label>DeepSeek API Key</label>
+      <input id="keyDeepSeek" type="password" placeholder="sk-..." oninput="saveAPIKeys()">
+    </div>
+
+    <button onclick="saveAPIKeys()" class="btn-primary" style="width:100%;margin-top:8px;">💾 บันทึกคีย์ทั้งหมด</button>
+
+    <div class="divider"></div>
+
+    <h4 style="font-size:15px;font-weight:600;margin-bottom:12px;">☁️ Puter Cloud — พื้นที่เก็บข้อมูลฟรี</h4>
+    <div id="puterStatus" class="puter-status">⚪ ยังไม่ได้ล็อกอิน</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+      <button onclick="puterLogin()" class="btn-primary">🔑 ล็อกอิน</button>
+      <button onclick="puterLogout()" class="btn-danger">🚪 ออกจากระบบ</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+      <button onclick="syncToPuter()" class="btn-secondary">📤 อัปโหลดโน้ต</button>
+      <button onclick="loadFromPuter()" class="btn-secondary">📥 ดาวน์โหลดโน้ต</button>
+      <button onclick="openPuter()" class="btn-secondary">🌐 เปิด Puter.com</button>
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
+  <!-- BOTTOM NAVIGATION -->
   <nav class="bottom-nav" id="bottomNav">
     <button class="active" data-tab="chat" onclick="switchTab('chat')">
       <i class="fa-solid fa-comments"></i> แชท
@@ -213,7 +352,7 @@
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
   <div class="sidebar" id="sidebar">
     <button class="close-btn" onclick="toggleSidebar()">✕</button>
-    <div style="margin-top:30px;">
+    <div style="margin-top:40px;">
       <div class="menu-item active" onclick="switchTab('chat');toggleSidebar();">
         <i class="fa-solid fa-comments"></i> แชท
       </div>
@@ -229,152 +368,24 @@
       <div class="menu-item" onclick="switchTab('settings');toggleSidebar();">
         <i class="fa-solid fa-gear"></i> ตั้งค่า
       </div>
-      <hr style="border-color:var(--border);margin:12px 0;">
+      <hr style="border-color:var(--border);margin:16px 0;">
       <div class="menu-item" onclick="newChat();toggleSidebar();">
         <i class="fa-solid fa-plus-circle"></i> แชทใหม่
       </div>
-      <div class="menu-item" onclick="if(confirm('ลบแชททั้งหมด?')){clearAllChats();toggleSidebar();}">
-        <i class="fa-solid fa-trash"></i> ล้างแชท
+      <div class="menu-item" onclick="if(confirm('ลบประวัติแชททั้งหมด?')){clearAllChats();toggleSidebar();}">
+        <i class="fa-solid fa-trash"></i> ล้างประวัติ
       </div>
-      <hr style="border-color:var(--border);margin:12px 0;">
-      <div style="font-size:11px;font-weight:600;color:var(--muted);padding:4px 12px;">☁️ Puter Cloud</div>
-      <div class="menu-item" onclick="puterLogin();toggleSidebar();">
-        <i class="fa-solid fa-right-to-bracket"></i> ล็อกอิน Puter
+      <hr style="border-color:var(--border);margin:16px 0;">
+      <div style="font-size:11px;font-weight:600;color:var(--muted);padding:4px 14px;">ข้อมูลทั้งหมดอยู่ในเครื่อง</div>
+      <div class="menu-item" onclick="exportAllData();toggleSidebar();">
+        <i class="fa-solid fa-download"></i> ส่งออกข้อมูล
       </div>
-      <div class="menu-item" onclick="syncToPuter();toggleSidebar();">
-        <i class="fa-solid fa-upload"></i> ซิงก์โน้ตขึ้น Puter
-      </div>
-      <div class="menu-item" onclick="loadFromPuter();toggleSidebar();">
-        <i class="fa-solid fa-download"></i> โหลดโน้ตจาก Puter
-      </div>
-      <div class="menu-item" onclick="openPuter();toggleSidebar();">
-        <i class="fa-solid fa-cloud"></i> เปิด Puter.com
+      <div class="menu-item" onclick="importData();toggleSidebar();">
+        <i class="fa-solid fa-upload"></i> นำเข้าข้อมูล
       </div>
     </div>
-    <div style="position:absolute;bottom:12px;left:12px;right:12px;font-size:10px;color:var(--muted);text-align:center;">
-      QX Ultimate · 30 Models · ☁️ Puter Ready
-    </div>
-  </div>
-
-  <!-- PLUGINS TAB -->
-  <div id="tab-plugins" style="display:none;flex:1;overflow-y:auto;padding:10px;background:var(--bg);">
-    <h3 style="font-size:16px;font-weight:700;margin-bottom:8px;"><i class="fa-solid fa-plug"></i> ปลั๊กอิน</h3>
-    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;">
-      <button class="chip" onclick="filterPlugin('all')">ทั้งหมด</button>
-      <button class="chip" onclick="filterPlugin('communication')">สื่อสาร</button>
-      <button class="chip" onclick="filterPlugin('developer')">พัฒนา</button>
-      <button class="chip" onclick="filterPlugin('business')">ธุรกิจ</button>
-      <button class="chip" onclick="filterPlugin('productivity')">ประสิทธิภาพ</button>
-    </div>
-    <div class="plugin-grid" id="pluginGrid"></div>
-  </div>
-
-  <!-- TEAM TAB -->
-  <div id="tab-team" style="display:none;flex:1;overflow-y:auto;padding:10px;background:var(--bg);">
-    <h3 style="font-size:16px;font-weight:700;margin-bottom:4px;"><i class="fa-solid fa-users"></i> ทีม AI</h3>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:10px;">8 ฝ่าย · 50 คน</p>
-    <div id="teamGrid"></div>
-  </div>
-
-  <!-- NOTES TAB -->
-  <div id="tab-notes" style="display:none;flex:1;overflow-y:auto;padding:10px;background:var(--bg);">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <h3 style="font-size:16px;font-weight:700;"><i class="fa-solid fa-book"></i> โน้ต</h3>
-      <button onclick="newNote()" style="padding:4px 12px;border-radius:12px;border:none;background:var(--primary);color:white;font-size:12px;">+ ใหม่</button>
-    </div>
-    <div id="notesGrid"></div>
-  </div>
-
-  <!-- SETTINGS TAB -->
-  <div id="tab-settings" style="display:none;flex:1;overflow-y:auto;padding:10px;background:var(--bg);">
-    <h3 style="font-size:16px;font-weight:700;margin-bottom:10px;"><i class="fa-solid fa-gear"></i> ตั้งค่า</h3>
-
-    <div class="setting-group">
-      <label>โมเดลหลัก</label>
-      <select id="modelSelect" onchange="saveSettings()">
-        <option value="auto">🤖 Auto</option>
-        <option value="ensemble">🔀 Ensemble</option>
-        <option value="qwen3:14b">🐋 Qwen 3 14B</option>
-        <option value="deepseek-r1:14b">🧠 DeepSeek R1 14B</option>
-        <option value="llama3.1:8b">🦙 Llama 3.1 8B</option>
-        <option value="gemma3:4b">🔮 Gemma 3 4B</option>
-        <option value="phi4:14b">📱 Phi 4 14B</option>
-        <option value="mistral:7b">⚡ Mistral 7B</option>
-        <option value="codellama:13b">💻 CodeLlama 13B</option>
-      </select>
-    </div>
-
-    <div class="setting-group">
-      <label>โหมดความปลอดภัย</label>
-      <select id="securitySelect" onchange="saveSettings()">
-        <option value="secure">🔒 ปลอดภัย (Local)</option>
-        <option value="balanced">⚖️ สมดุล</option>
-        <option value="fast">⚡ เร็ว</option>
-      </select>
-    </div>
-
-    <div class="setting-group">
-      <label>ธีม</label>
-      <select id="themeSelect" onchange="setTheme(this.value)">
-        <option value="neo">NEO</option>
-        <option value="dusty">DUSTY</option>
-        <option value="jarvis">JARVIS</option>
-        <option value="cyber">CYBER</option>
-        <option value="matrix">MATRIX</option>
-        <option value="aurora">AURORA</option>
-        <option value="sunset">SUNSET</option>
-      </select>
-    </div>
-
-    <div class="setting-group">
-      <label>Hub URL</label>
-      <input id="hubUrl" value="http://localhost:8080" onchange="saveSettings()">
-    </div>
-
-    <div class="setting-group">
-      <label>System Prompt</label>
-      <textarea id="systemPrompt" onchange="saveSettings()">คุณคือ QX ผู้ช่วย AI ระดับองค์กร ตอบกลับภาษาไทย</textarea>
-    </div>
-
-    <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px;">
-      <label style="font-size:12px;font-weight:600;">🔑 API Keys (ใส่เพื่อความเร็ว)</label>
-      <div class="setting-group">
-        <input id="keyGroq" type="password" placeholder="Groq: gsk_..." onchange="saveAPIKeys()" style="font-size:12px;">
-        <div style="font-size:9px;color:var(--muted);">Groq เร็วสุด ฟรี 30 req/นาที</div>
-      </div>
-      <div class="setting-group">
-        <input id="keyOpenAI" type="password" placeholder="OpenAI: sk-..." onchange="saveAPIKeys()" style="font-size:12px;">
-      </div>
-      <div class="setting-group">
-        <input id="keyGemini" type="password" placeholder="Gemini: AIza..." onchange="saveAPIKeys()" style="font-size:12px;">
-      </div>
-      <div class="setting-group">
-        <input id="keyDeepSeek" type="password" placeholder="DeepSeek: sk-..." onchange="saveAPIKeys()" style="font-size:12px;">
-      </div>
-      <button onclick="saveAPIKeys()" style="width:100%;padding:8px;border-radius:8px;border:none;background:var(--primary);color:white;font-size:13px;">💾 บันทึก Keys</button>
-    </div>
-
-    <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:8px;">
-      <h4 style="font-size:14px;font-weight:600;margin-bottom:6px;">
-        <i class="fa-solid fa-cloud" style="color:var(--primary);"></i> Puter Cloud Sync
-      </h4>
-      <div id="puterStatus" class="puter-status">⚪ ยังไม่ได้ล็อกอิน</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button onclick="puterLogin()" style="flex:1;padding:8px;border-radius:8px;border:none;background:var(--primary);color:white;font-size:13px;">
-          🔑 ล็อกอิน Puter
-        </button>
-        <button onclick="puterLogout()" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ef4444;background:transparent;color:#ef4444;font-size:13px;">
-          🚪 ออกจากระบบ
-        </button>
-      </div>
-      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
-        <button onclick="syncToPuter()" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px;">
-          📤 ซิงก์โน้ตขึ้น Puter
-        </button>
-        <button onclick="loadFromPuter()" style="flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px;">
-          📥 โหลดโน้ตจาก Puter
-        </button>
-      </div>
+    <div style="position:absolute;bottom:16px;left:16px;right:16px;font-size:11px;color:var(--muted);text-align:center;line-height:1.5;">
+      QX Ultimate · AI ทุกระบบ · ไม่มีวันหมดอายุ 💜
     </div>
   </div>
 
@@ -385,766 +396,177 @@
     </div>
   </div>
 
-  <!-- DROP ZONE -->
-  <div id="dropOverlay" style="display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;flex-direction:column;color:white;">
-    <i class="fa-solid fa-cloud-arrow-up" style="font-size:48px;margin-bottom:12px;"></i>
+  <!-- FILE DROP OVERLAY -->
+  <div id="dropOverlay" onclick="document.getElementById('fileInput').click()">
+    <i class="fa-solid fa-cloud-arrow-up"></i>
     <h3>วางไฟล์ที่นี่</h3>
-    <p style="font-size:12px;color:#ccc;">PDF, DOCX, Images, Code</p>
+    <p>PDF, DOCX, รูปภาพ, โค้ด, ข้อความ</p>
     <input type="file" id="fileInput" multiple style="display:none;" onchange="handleFiles(event)">
-    <button onclick="document.getElementById('fileInput').click()" style="margin-top:12px;padding:8px 20px;border-radius:12px;border:none;background:var(--primary);color:white;">เลือกไฟล์</button>
+    <button onclick="event.stopPropagation();document.getElementById('fileInput').click()" class="btn-primary" style="margin-top:8px;">เลือกไฟล์จากเครื่อง</button>
+    <button onclick="event.stopPropagation();toggleDropZone()" class="btn-secondary" style="margin-top:8px;">ยกเลิก</button>
   </div>
-
 </div>
 
 <script>
 // ==========================================
-// STATE
+// STATE MANAGEMENT
 // ==========================================
-let conversations = [{ id: Date.now(), title: 'แชทใหม่', messages: [] }];
-let currentConv = conversations[0];
+let conversations = JSON.parse(localStorage.getItem('qx_conversations') || '[{"id":' + Date.now() + ',"title":"แชทใหม่","messages":[]}]');
+let currentConvId = localStorage.getItem('qx_current_conv') || conversations[0].id;
+let currentConv = conversations.find(c => c.id == currentConvId) || conversations[0];
 let attachedFiles = [];
 let notes = JSON.parse(localStorage.getItem('qx_notes') || '[]');
 let connectedPlugins = JSON.parse(localStorage.getItem('qx_plugins') || '{}');
-let settings = JSON.parse(localStorage.getItem('qx_settings') || '{"model":"auto","security":"secure","theme":"neo","hubUrl":"http://localhost:8080","systemPrompt":"คุณคือ QX ผู้ช่วย AI ระดับองค์กร ตอบกลับภาษาไทย"}');
+let settings = JSON.parse(localStorage.getItem('qx_settings') || '{"model":"auto","theme":"neo","systemPrompt":"คุณคือ QX ผู้ช่วย AI อัจฉริยะ ตอบคำถามเป็นภาษาไทยอย่างชัดเจน ถูกต้อง และเป็นประโยชน์ มีความเป็นมิตร อธิบายละเอียดให้เข้าใจง่าย"}');
 let isProcessing = false;
 let currentTab = 'chat';
 let pluginFilter = 'all';
 let puterUser = null;
 
 // ==========================================
-// API KEYS
+// API KEYS MANAGEMENT
 // ==========================================
 function getAPIKeys() {
   return {
-    groq: localStorage.getItem('QX_GROQ') || '',
-    openai: localStorage.getItem('QX_OPENAI') || '',
-    gemini: localStorage.getItem('QX_GEMINI') || '',
-    deepseek: localStorage.getItem('QX_DEEPSEEK') || '',
+    groq: localStorage.getItem('QX_GROQ_KEY') || '',
+    openai: localStorage.getItem('QX_OPENAI_KEY') || '',
+    gemini: localStorage.getItem('QX_GEMINI_KEY') || '',
+    deepseek: localStorage.getItem('QX_DEEPSEEK_KEY') || '',
   };
 }
 
 function saveAPIKeys() {
-  localStorage.setItem('QX_GROQ', document.getElementById('keyGroq').value.trim());
-  localStorage.setItem('QX_OPENAI', document.getElementById('keyOpenAI').value.trim());
-  localStorage.setItem('QX_GEMINI', document.getElementById('keyGemini').value.trim());
-  localStorage.setItem('QX_DEEPSEEK', document.getElementById('keyDeepSeek').value.trim());
+  localStorage.setItem('QX_GROQ_KEY', document.getElementById('keyGroq').value.trim());
+  localStorage.setItem('QX_OPENAI_KEY', document.getElementById('keyOpenAI').value.trim());
+  localStorage.setItem('QX_GEMINI_KEY', document.getElementById('keyGemini').value.trim());
+  localStorage.setItem('QX_DEEPSEEK_KEY', document.getElementById('keyDeepSeek').value.trim());
   updateAPIBadge();
-  showToast('✅ บันทึก Keys แล้ว');
+  showToast('✅ บันทึก API Keys เรียบร้อยแล้ว');
 }
 
 function updateAPIBadge() {
   const keys = getAPIKeys();
   const badge = document.getElementById('api-badge');
   if (keys.groq) { badge.textContent = '⚡ Groq'; }
-  else if (keys.openai) { badge.textContent = '⚡ OpenAI'; }
-  else if (keys.gemini) { badge.textContent = '⚡ Gemini'; }
-  else if (keys.deepseek) { badge.textContent = '⚡ DeepSeek'; }
-  else { badge.textContent = '⚡ Auto'; }
+  else if (keys.openai) { badge.textContent = '🧠 OpenAI'; }
+  else if (keys.gemini) { badge.textContent = '🔷 Gemini'; }
+  else if (keys.deepseek) { badge.textContent = '🔮 DeepSeek'; }
+  else { badge.textContent = '⚡ Auto (Demo)'; }
 }
 
 // ==========================================
-// SMART ROUTER
+// AI SMART ROUTER — เลือกโมเดลอัตโนมัติ
 // ==========================================
-async function selectFastest() {
+async function selectBestModel() {
   const keys = getAPIKeys();
   const candidates = [];
-  if (keys.groq) candidates.push({ id: 'groq', name: 'Groq', endpoint: 'https://api.groq.com/openai/v1/chat/completions', key: keys.groq, model: 'llama3-70b-8192' });
-  if (keys.openai) candidates.push({ id: 'openai', name: 'OpenAI', endpoint: 'https://api.openai.com/v1/chat/completions', key: keys.openai, model: 'gpt-4o-mini' });
-  if (keys.gemini) candidates.push({ id: 'gemini', name: 'Gemini', endpoint: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent', key: keys.gemini, model: 'gemini-pro' });
-  if (keys.deepseek) candidates.push({ id: 'deepseek', name: 'DeepSeek', endpoint: 'https://api.deepseek.com/v1/chat/completions', key: keys.deepseek, model: 'deepseek-chat' });
+  
+  if (keys.groq) candidates.push({
+    id: 'groq', name: 'Groq', 
+    endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+    key: keys.groq,
+    model: 'llama-3.1-70b-versatile',
+    speed: 'fastest'
+  });
+  if (keys.openai) candidates.push({
+    id: 'openai', name: 'OpenAI',
+    endpoint: 'https://api.openai.com/v1/chat/completions',
+    key: keys.openai,
+    model: 'gpt-4o-mini',
+    speed: 'fast'
+  });
+  if (keys.gemini) candidates.push({
+    id: 'gemini', name: 'Gemini',
+    endpoint: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${keys.gemini}`,
+    key: keys.gemini,
+    model: 'gemini-2.0-flash',
+    speed: 'fast'
+  });
+  if (keys.deepseek) candidates.push({
+    id: 'deepseek', name: 'DeepSeek',
+    endpoint: 'https://api.deepseek.com/v1/chat/completions',
+    key: keys.deepseek,
+    model: 'deepseek-chat',
+    speed: 'fast'
+  });
+
+  if (candidates.length === 0) return { id: 'demo', name: 'Demo Mode', type: 'demo' };
+  if (settings.model !== 'auto' && settings.model !== 'ensemble') {
+    const selected = candidates.find(c => c.id === settings.model);
+    if (selected) return { ...selected, type: 'api' };
+  }
+  return { ...candidates[0], type: 'api' };
+}
+
+// ==========================================
+// CALL AI API
+// ==========================================
+async function callAI(message) {
+  const model = await selectBestModel();
+  showToast(`🚀 ใช้: ${model.name}`);
+
+  if (model.type === 'demo') {
+    return generateDemoResponse(message);
+  }
+
   try {
-    const res = await fetch('http://localhost:11434/api/ps', { signal: AbortSignal.timeout(1000) });
-    if (res.ok) candidates.push({ id: 'ollama', name: 'Ollama', endpoint: 'http://localhost:8080/v1/chat/completions', key: null, model: 'auto' });
-  } catch {}
-  if (candidates.length === 0) return { id: 'mock', name: 'Mock', type: 'mock' };
-  if (candidates.length === 1) return { ...candidates[0], type: 'api' };
-  const results = await Promise.all(candidates.map(async c => {
-    const start = performance.now();
-    try { await fetch(c.endpoint, { method: 'HEAD', signal: AbortSignal.timeout(1500) }); }
-    catch { return { ...c, speed: Infinity }; }
-    return { ...c, speed: performance.now() - start };
-  }));
-  const fastest = results.reduce((a, b) => a.speed < b.speed ? a : b);
-  return { ...fastest, type: 'api' };
-}
+    const systemPrompt = settings.systemPrompt || 'คุณคือ QX ผู้ช่วย AI';
+    let response;
 
-// ==========================================
-// CALL LLM
-// ==========================================
-async function callLLM(message) {
-  const model = await selectFastest();
-  showToast(`🚀 ใช้ ${model.name}`);
-  if (model.id === 'mock') return generateMock(message);
-  try {
-    const payload = {
-      model: model.model,
-      messages: [
-        { role: 'system', content: settings.systemPrompt || 'คุณคือ QX ผู้ช่วย AI' },
-        { role: 'user', content: message }
-      ],
-      temperature: 0.7,
-      max_tokens: 2048
-    };
-    const headers = { 'Content-Type': 'application/json' };
-    if (model.key) headers['Authorization'] = `Bearer ${model.key}`;
-    const res = await fetch(model.endpoint, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(30000)
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return data.choices[0].message.content;
-  } catch (e) {
-    console.error(e);
-    return generateMock(message);
-  }
-}
-
-function generateMock(msg) {
-  const l = msg.toLowerCase();
-  if (l.includes('โค้ด') || l.includes('python')) {
-    return '```python\ndef factorial(n):\n    return 1 if n <= 1 else n * factorial(n-1)\n\nprint(factorial(5))  # 120\n```';
-  }
-  if (l.includes('swot')) {
-    return '📊 **SWOT**\n✅ แข็งแกร่ง: ภาษาไทย, Plugin 50+\n❌ อ่อนแอ: แบรนด์ใหม่\n🌟 โอกาส: ตลาด AI โต 40%/ปี\n⚠️ อุปสรรค: คู่แข่งใหญ่';
-  }
-  if (l.includes('pdf')) {
-    return '📄 วิเคราะห์ PDF: 42 หน้า, มูลค่า 2.5M, ระยะเวลา 6 เดือน, ความเสี่ยงข้อ 7.2 และ 12.1';
-  }
-  return `🤖 QX: รับทราบครับ!\n\nคุณถาม: "${msg}"\n\n💡 ลองใช้คำสั่งเหล่านี้:\n- "ช่วยเขียนโค้ด Python"\n- "วิเคราะห์ SWOT"\n- "อธิบาย PDF"\n- "สรุปสั้นๆ"`;
-}
-
-// ==========================================
-// CHAT FUNCTIONS
-// ==========================================
-function newChat() {
-  const id = Date.now();
-  conversations.unshift({ id, title: 'แชทใหม่', messages: [] });
-  currentConv = conversations[0];
-  renderChat();
-}
-
-function renderChat() {
-  const container = document.getElementById('messages');
-  if (!currentConv || currentConv.messages.length === 0) {
-    container.innerHTML = `
-      <div class="welcome" id="welcome">
-        <div class="icon">🤖</div>
-        <h2>QX Ultimate</h2>
-        <p>30 โมเดล · Smart Router · ☁️ Puter</p>
-        <div class="chip-row">
-          <button class="chip" onclick="quickAsk('ช่วยเขียนโค้ด Python')">🐍 โค้ด</button>
-          <button class="chip" onclick="quickAsk('วิเคราะห์ SWOT')">📊 SWOT</button>
-          <button class="chip" onclick="quickAsk('อธิบาย PDF')">📄 PDF</button>
-          <button class="chip" onclick="quickAsk('สรุปสั้นๆ')">📝 สรุป</button>
-        </div>
-      </div>
-    `;
-    return;
-  }
-  container.innerHTML = currentConv.messages.map(m => {
-    if (m.role === 'user') {
-      return `<div class="msg" style="display:flex;justify-content:flex-end;"><div class="msg-user">${escapeHtml(m.content)}</div></div>`;
-    } else {
-      return `<div class="msg"><div class="msg-ai"><div class="chat-md">${renderMarkdown(m.content)}</div></div></div>`;
-    }
-  }).join('');
-  document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
-}
-
-function addMessage(role, content) {
-  if (!currentConv) return;
-  currentConv.messages.push({ role, content, timestamp: Date.now() });
-  if (currentConv.messages.length === 1 && role === 'user') {
-    currentConv.title = content.substring(0, 30) + (content.length > 30 ? '...' : '');
-  }
-  renderChat();
-}
-
-async function sendMessage() {
-  if (isProcessing) return;
-  const input = document.getElementById('userInput');
-  const text = input.value.trim();
-  if (!text && attachedFiles.length === 0) return;
-  isProcessing = true;
-  document.getElementById('sendBtn').disabled = true;
-  let fullMsg = text;
-  for (const f of attachedFiles) {
-    fullMsg += `\n\n[ไฟล์: ${f.name}]\n${f.content || ''}`;
-  }
-  addMessage('user', text || '(ไฟล์)');
-  input.value = '';
-  attachedFiles = [];
-  renderAttachedFiles();
-  const container = document.getElementById('messages');
-  const typingDiv = document.createElement('div');
-  typingDiv.id = 'typing';
-  typingDiv.className = 'msg';
-  typingDiv.innerHTML = `<div class="msg-ai"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
-  container.appendChild(typingDiv);
-  document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
-  try {
-    const response = await callLLM(fullMsg);
-    document.getElementById('typing')?.remove();
-    addMessage('assistant', response);
-  } catch (e) {
-    document.getElementById('typing')?.remove();
-    addMessage('assistant', `⚠️ Error: ${e.message}`);
-  }
-  isProcessing = false;
-  document.getElementById('sendBtn').disabled = false;
-}
-
-function quickAsk(text) {
-  document.getElementById('userInput').value = text;
-  sendMessage();
-}
-
-function useTool(tool) {
-  const prompts = {
-    create: 'ช่วยสร้าง ',
-    explain: 'ช่วยอธิบาย ',
-    improve: 'ช่วยปรับปรุง ',
-    test: 'ช่วยสร้าง test cases ',
-    web: 'ค้นหาข้อมูลจากเว็บเรื่อง '
-  };
-  document.getElementById('userInput').value = prompts[tool] || '';
-  document.getElementById('userInput').focus();
-}
-
-function clearAllChats() {
-  conversations = [{ id: Date.now(), title: 'แชทใหม่', messages: [] }];
-  currentConv = conversations[0];
-  renderChat();
-  showToast('🗑️ ล้างแชทแล้ว');
-}
-
-// ==========================================
-// FILE HANDLING
-// ==========================================
-function toggleDropZone() {
-  const overlay = document.getElementById('dropOverlay');
-  if (overlay.style.display === 'flex') {
-    overlay.style.display = 'none';
-  } else {
-    overlay.style.display = 'flex';
-  }
-}
-
-function handleFiles(event) {
-  const files = Array.from(event.target.files);
-  processFiles(files);
-  event.target.value = '';
-  document.getElementById('dropOverlay').style.display = 'none';
-}
-
-async function processFiles(files) {
-  for (const file of files) {
-    if (file.size > 50 * 1024 * 1024) {
-      showToast(`ไฟล์ ${file.name} ใหญ่เกิน 50MB`);
-      continue;
-    }
-    try {
-      const content = await readFile(file);
-      attachedFiles.push({ id: Date.now() + '_' + Math.random().toString(36).substr(2,4), name: file.name, content });
-      showToast(`✅ ${file.name}`);
-    } catch (e) {
-      showToast(`❌ ${file.name}: ${e.message}`);
-    }
-  }
-  renderAttachedFiles();
-}
-
-async function readFile(file) {
-  const ext = file.name.split('.').pop().toLowerCase();
-  if (['txt','md','js','ts','py','java','html','css','json','xml','yaml','sh','sql'].includes(ext)) {
-    return await file.text();
-  }
-  if (ext === 'pdf') {
-    const buf = await file.arrayBuffer();
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-    let text = '';
-    for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
-      const page = await pdf.getPage(i);
-      const tc = await page.getTextContent();
-      text += tc.items.map(item => item.str).join(' ') + '\n';
-    }
-    return text;
-  }
-  if (ext === 'docx') {
-    const buf = await file.arrayBuffer();
-    const result = await mammoth.extractRawText({ arrayBuffer: buf });
-    return result.value;
-  }
-  if (file.type.startsWith('image/')) return '[Image: ' + file.name + ']';
-  return await file.text();
-}
-
-function renderAttachedFiles() {
-  const container = document.getElementById('attached-files');
-  if (attachedFiles.length === 0) { container.innerHTML = ''; return; }
-  container.innerHTML = attachedFiles.map(f => `
-    <span class="file-chip">
-      <i class="fa-regular fa-file"></i> ${f.name}
-      <button class="remove" onclick="removeFile('${f.id}')">✕</button>
-    </span>
-  `).join('');
-}
-
-function removeFile(id) {
-  attachedFiles = attachedFiles.filter(f => f.id !== id);
-  renderAttachedFiles();
-}
-
-// ==========================================
-// PLUGINS
-// ==========================================
-const PLUGINS = [
-  { id: 'gmail', name: 'Gmail', icon: 'fa-envelope', cat: 'communication' },
-  { id: 'slack', name: 'Slack', icon: 'fa-slack', cat: 'communication' },
-  { id: 'github', name: 'GitHub', icon: 'fa-github', cat: 'developer' },
-  { id: 'jira', name: 'Jira', icon: 'fa-jira', cat: 'developer' },
-  { id: 'hubspot', name: 'HubSpot', icon: 'fa-hubspot', cat: 'business' },
-  { id: 'shopify', name: 'Shopify', icon: 'fa-shopify', cat: 'business' },
-  { id: 'notion', name: 'Notion', icon: 'fa-notion', cat: 'productivity' },
-  { id: 'trello', name: 'Trello', icon: 'fa-trello', cat: 'productivity' },
-  { id: 'zoom', name: 'Zoom', icon: 'fa-video', cat: 'communication' },
-  { id: 'teams', name: 'Teams', icon: 'fa-users', cat: 'communication' },
-  { id: 'gitlab', name: 'GitLab', icon: 'fa-gitlab', cat: 'developer' },
-  { id: 'linear', name: 'Linear', icon: 'fa-layer-group', cat: 'developer' },
-];
-
-function renderPlugins() {
-  const grid = document.getElementById('pluginGrid');
-  const filtered = pluginFilter === 'all' ? PLUGINS : PLUGINS.filter(p => p.cat === pluginFilter);
-  grid.innerHTML = filtered.map(p => `
-    <div class="plugin-card" onclick="togglePlugin('${p.id}')">
-      <div class="p-icon"><i class="fa-brands ${p.icon}"></i></div>
-      <div class="p-name">${p.name}</div>
-      <div class="p-desc">${p.cat}</div>
-      <div class="p-status">${connectedPlugins[p.id] ? '✅ เชื่อมต่อ' : '🔌 เชื่อมต่อ'}</div>
-    </div>
-  `).join('');
-}
-
-function filterPlugin(cat) {
-  pluginFilter = cat;
-  renderPlugins();
-}
-
-function togglePlugin(id) {
-  if (connectedPlugins[id]) {
-    delete connectedPlugins[id];
-    showToast(`❌ ตัด ${PLUGINS.find(p=>p.id===id).name}`);
-  } else {
-    connectedPlugins[id] = { connectedAt: Date.now() };
-    showToast(`✅ เชื่อมต่อ ${PLUGINS.find(p=>p.id===id).name}`);
-  }
-  localStorage.setItem('qx_plugins', JSON.stringify(connectedPlugins));
-  renderPlugins();
-}
-
-// ==========================================
-// TEAM
-// ==========================================
-const TEAM = [
-  { dept: 'วิเคราะห์ข้อมูล', members: ['Data Analyst', 'ML Engineer', 'BI Specialist'] },
-  { dept: 'พัฒนา', members: ['Frontend', 'Backend', 'DevOps', 'QA'] },
-  { dept: 'เนื้อหา', members: ['Copywriter', 'Content Writer', 'Translator'] },
-  { dept: 'ออกแบบ', members: ['UI Designer', 'UX Researcher', 'Graphic'] },
-  { dept: 'การตลาด', members: ['SEO', 'Social Media', 'Content Marketing'] },
-  { dept: 'ความปลอดภัย', members: ['Security Analyst', 'Pen Tester'] },
-  { dept: 'วิจัย', members: ['Data Researcher', 'Market Researcher'] },
-  { dept: 'บริหาร', members: ['Project Manager', 'Product Manager', 'Scrum Master'] },
-];
-
-function renderTeam() {
-  const grid = document.getElementById('teamGrid');
-  grid.innerHTML = TEAM.map(t => `
-    <div style="margin-bottom:8px;">
-      <div style="font-size:13px;font-weight:600;color:var(--text);">${t.dept}</div>
-      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;">
-        ${t.members.map(m => `<span style="font-size:11px;padding:2px 8px;border-radius:10px;background:var(--surface);border:1px solid var(--border);">${m}</span>`).join('')}
-      </div>
-    </div>
-  `).join('');
-}
-
-// ==========================================
-// NOTES
-// ==========================================
-function renderNotes() {
-  const grid = document.getElementById('notesGrid');
-  if (notes.length === 0) {
-    grid.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">ยังไม่มีโน้ต</div>';
-    return;
-  }
-  grid.innerHTML = notes.map((n, i) => `
-    <div class="note-item" onclick="editNote(${i})">
-      <div class="n-title">${escapeHtml(n.title || 'โน้ต')}</div>
-      <div class="n-preview">${escapeHtml((n.content || '').substring(0, 60))}</div>
-    </div>
-  `).join('');
-}
-
-function newNote() {
-  notes.unshift({ title: 'โน้ตใหม่', content: '', updatedAt: Date.now() });
-  localStorage.setItem('qx_notes', JSON.stringify(notes));
-  renderNotes();
-  showModal(`
-    <h3 style="font-size:16px;font-weight:700;margin-bottom:8px;">✏️ โน้ตใหม่</h3>
-    <input id="noteTitle" value="โน้ตใหม่" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);margin-bottom:8px;">
-    <textarea id="noteContent" rows="4" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);"></textarea>
-    <button onclick="saveNote()" style="width:100%;padding:8px;border-radius:8px;border:none;background:var(--primary);color:white;font-size:13px;">💾 บันทึก</button>
-  `);
-}
-
-function editNote(idx) {
-  const n = notes[idx];
-  showModal(`
-    <h3 style="font-size:16px;font-weight:700;margin-bottom:8px;">✏️ แก้ไขโน้ต</h3>
-    <input id="noteTitle" value="${escapeHtml(n.title)}" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);margin-bottom:8px;">
-    <textarea id="noteContent" rows="4" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);">${escapeHtml(n.content)}</textarea>
-    <div style="display:flex;gap:6px;margin-top:8px;">
-      <button onclick="saveNote(${idx})" style="flex:1;padding:8px;border-radius:8px;border:none;background:var(--primary);color:white;font-size:13px;">💾 บันทึก</button>
-      <button onclick="deleteNote(${idx})" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ef4444;background:transparent;color:#ef4444;font-size:13px;">🗑️ ลบ</button>
-    </div>
-  `);
-}
-
-function saveNote(idx) {
-  const title = document.getElementById('noteTitle').value;
-  const content = document.getElementById('noteContent').value;
-  if (idx !== undefined) {
-    notes[idx] = { ...notes[idx], title, content, updatedAt: Date.now() };
-  } else {
-    notes[0] = { title, content, updatedAt: Date.now() };
-  }
-  localStorage.setItem('qx_notes', JSON.stringify(notes));
-  renderNotes();
-  closeModal();
-  showToast('✅ บันทึกแล้ว');
-}
-
-function deleteNote(idx) {
-  if (confirm('ลบโน้ตนี้?')) {
-    notes.splice(idx, 1);
-    localStorage.setItem('qx_notes', JSON.stringify(notes));
-    renderNotes();
-    closeModal();
-    showToast('🗑️ ลบแล้ว');
-  }
-}
-
-// ==========================================
-// PUTER CLOUD
-// ==========================================
-async function checkPuterStatus() {
-  try {
-    if (typeof puter !== 'undefined' && puter.auth) {
-      const user = await puter.auth.getUser();
-      if (user) {
-        puterUser = user;
-        document.getElementById('puterStatus').innerHTML = `
-          ✅ ล็อกอินแล้ว: ${user.username || user.email}
-          <br><span style="font-size:10px;color:var(--muted);">Puter Cloud · 1GB ฟรี</span>
-        `;
-        document.getElementById('puter-badge').innerHTML = '☁️ ' + (user.username || 'Puter');
-        return true;
-      }
-    }
-  } catch (e) {}
-  document.getElementById('puterStatus').innerHTML = '⚪ ยังไม่ได้ล็อกอิน';
-  document.getElementById('puter-badge').innerHTML = '☁️';
-  return false;
-}
-
-async function puterLogin() {
-  try {
-    if (typeof puter !== 'undefined' && puter.auth) {
-      const user = await puter.auth.signIn();
-      if (user) {
-        puterUser = user;
-        document.getElementById('puterStatus').innerHTML = `
-          ✅ ล็อกอินแล้ว: ${user.username || user.email}
-          <br><span style="font-size:10px;color:var(--muted);">Puter Cloud · 1GB ฟรี</span>
-        `;
-        document.getElementById('puter-badge').innerHTML = '☁️ ' + (user.username || 'Puter');
-        showToast('✅ ล็อกอิน Puter สำเร็จ!');
-        return;
-      }
-    }
-    const username = prompt('👤 กรอกชื่อผู้ใช้ Puter:');
-    if (username) {
-      puterUser = { username, email: username + '@puter.ai' };
-      document.getElementById('puterStatus').innerHTML = `
-        ✅ ล็อกอินแล้ว (Demo): ${username}
-        <br><span style="font-size:10px;color:var(--muted);">⚠️ โหมดทดสอบ (ไม่ซิงก์จริง)</span>
-      `;
-      document.getElementById('puter-badge').innerHTML = '☁️ ' + username;
-      showToast('✅ ล็อกอินสำเร็จ (Demo Mode)');
-    }
-  } catch (e) {
-    showToast('❌ ล็อกอินไม่สำเร็จ: ' + e.message);
-  }
-}
-
-function puterLogout() {
-  puterUser = null;
-  document.getElementById('puterStatus').innerHTML = '⚪ ยังไม่ได้ล็อกอิน';
-  document.getElementById('puter-badge').innerHTML = '☁️';
-  showToast('🚪 ออกจากระบบแล้ว');
-}
-
-function openPuter() {
-  if (puterUser) {
-    window.open('https://puter.com/', '_blank');
-  } else {
-    showToast('⚠️ กรุณาล็อกอิน Puter ก่อน');
-    puterLogin();
-  }
-}
-
-async function syncToPuter() {
-  if (!puterUser) {
-    showToast('⚠️ กรุณาล็อกอิน Puter ก่อน');
-    await puterLogin();
-    if (!puterUser) return;
-  }
-  try {
-    const data = JSON.stringify(notes, null, 2);
-    if (typeof puter !== 'undefined' && puter.fs) {
-      await puter.fs.writeFile('/qx_notes_backup.json', data);
-      showToast('✅ ซิงก์โน้ตขึ้น Puter เรียบร้อย!');
-    } else {
-      const blob = new Blob([data], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'qx_notes_backup.json';
-      a.click();
-      showToast('📥 ดาวน์โหลดไฟล์สำรองแล้ว (Puter ไม่พร้อม)');
-    }
-  } catch (e) {
-    showToast('❌ ซิงก์ไม่สำเร็จ: ' + e.message);
-  }
-}
-
-async function loadFromPuter() {
-  if (!puterUser) {
-    showToast('⚠️ กรุณาล็อกอิน Puter ก่อน');
-    await puterLogin();
-    if (!puterUser) return;
-  }
-  try {
-    let data;
-    if (typeof puter !== 'undefined' && puter.fs) {
-      data = await puter.fs.readFile('/qx_notes_backup.json', { encoding: 'utf-8' });
-    } else {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.json';
-      input.onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          try {
-            const loaded = JSON.parse(ev.target.result);
-            if (Array.isArray(loaded) && loaded.length > 0) {
-              notes = loaded;
-              localStorage.setItem('qx_notes', JSON.stringify(notes));
-              renderNotes();
-              showToast('✅ โหลดโน้ตสำเร็จ!');
-            } else {
-              showToast('❌ ไฟล์ไม่ถูกต้อง');
-            }
-          } catch (err) {
-            showToast('❌ JSON ไม่ถูกต้อง');
-          }
-        };
-        reader.readAsText(file);
+    if (model.id === 'gemini') {
+      const payload = {
+        contents: [{ parts: [{ text: systemPrompt + '\n\nผู้ใช้: ' + message }] }]
       };
-      input.click();
-      return;
-    }
-    const loaded = JSON.parse(data);
-    if (Array.isArray(loaded) && loaded.length > 0) {
-      notes = loaded;
-      localStorage.setItem('qx_notes', JSON.stringify(notes));
-      renderNotes();
-      showToast('✅ โหลดโน้ตจาก Puter เรียบร้อย!');
+      const res = await fetch(model.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(60000)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      response = data.candidates?.[0]?.content?.parts?.[0]?.text || 'ไม่ได้รับคำตอบ';
     } else {
-      showToast('❌ ไม่มีข้อมูลใน Puter');
+      const payload = {
+        model: model.model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: message }
+        ],
+        temperature: 0.7,
+        max_tokens: 2048
+      };
+      const headers = { 'Content-Type': 'application/json' };
+      if (model.key) headers['Authorization'] = `Bearer ${model.key}`;
+      
+      const res = await fetch(model.endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(60000)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      response = data.choices?.[0]?.message?.content || 'ไม่ได้รับคำตอบ';
     }
+    return response;
   } catch (e) {
-    showToast('❌ โหลดไม่สำเร็จ: ' + e.message);
+    console.error('API Error:', e);
+    showToast(`⚠️ เชื่อมต่อไม่ได้: ${model.name} — ใช้โหมดสาธิตแทน`);
+    return generateDemoResponse(message);
   }
 }
 
-// ==========================================
-// SETTINGS
-// ==========================================
-function saveSettings() {
-  settings.model = document.getElementById('modelSelect').value;
-  settings.security = document.getElementById('securitySelect').value;
-  settings.theme = document.getElementById('themeSelect').value;
-  settings.hubUrl = document.getElementById('hubUrl').value;
-  settings.systemPrompt = document.getElementById('systemPrompt').value;
-  localStorage.setItem('qx_settings', JSON.stringify(settings));
-  applySettings();
-  showToast('✅ บันทึกแล้ว');
-}
-
-function applySettings() {
-  if (settings.theme) document.body.className = `theme-${settings.theme}`;
-  document.getElementById('modelSelect').value = settings.model || 'auto';
-  document.getElementById('securitySelect').value = settings.security || 'secure';
-  document.getElementById('themeSelect').value = settings.theme || 'neo';
-  document.getElementById('hubUrl').value = settings.hubUrl || 'http://localhost:8080';
-  document.getElementById('systemPrompt').value = settings.systemPrompt || '';
-  document.getElementById('model-badge').textContent = settings.model || 'Auto';
-}
-
-function setTheme(theme) {
-  document.body.className = `theme-${theme}`;
-  settings.theme = theme;
-  localStorage.setItem('qx_settings', JSON.stringify(settings));
-  showToast(`เปลี่ยนธีมเป็น ${theme.toUpperCase()}`);
-}
-
-// ==========================================
-// UI HELPERS
-// ==========================================
-function switchTab(tab) {
-  currentTab = tab;
-  const tabs = ['chat', 'plugins', 'team', 'notes', 'settings'];
-  const contents = {
-    chat: document.getElementById('chatArea'),
-    plugins: document.getElementById('tab-plugins'),
-    team: document.getElementById('tab-team'),
-    notes: document.getElementById('tab-notes'),
-    settings: document.getElementById('tab-settings'),
-  };
-  tabs.forEach(t => {
-    if (contents[t]) contents[t].style.display = t === tab ? 'block' : 'none';
-  });
-  document.querySelectorAll('.bottom-nav button').forEach(b => {
-    b.classList.toggle('active', b.dataset.tab === tab);
-  });
-  if (tab === 'chat') renderChat();
-  if (tab === 'plugins') renderPlugins();
-  if (tab === 'team') renderTeam();
-  if (tab === 'notes') renderNotes();
-}
-
-function toggleSidebar() {
-  const overlay = document.getElementById('sidebarOverlay');
-  const sidebar = document.getElementById('sidebar');
-  overlay.classList.toggle('open');
-  sidebar.classList.toggle('open');
-}
-
-function showModal(html) {
-  document.getElementById('modalContent').innerHTML = html;
-  document.getElementById('modalOverlay').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-}
-
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:300;background:var(--surface);color:var(--text);padding:8px 16px;border-radius:12px;border:1px solid var(--border);font-size:13px;max-width:90%;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2000);
-}
-
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 80) + 'px';
-}
-
-function escapeHtml(t) {
-  const d = document.createElement('div');
-  d.textContent = t;
-  return d.innerHTML;
-}
-
-function renderMarkdown(t) {
-  marked.setOptions({ breaks: true, gfm: true });
-  const html = marked.parse(t);
-  const temp = document.createElement('div');
-  temp.innerHTML = html;
-  temp.querySelectorAll('pre').forEach(pre => {
-    const code = pre.querySelector('code');
-    if (code) {
-      const header = document.createElement('div');
-      header.style.cssText = 'background:#1e293b;padding:4px 10px;display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;border-bottom:1px solid #334155;';
-      header.innerHTML = `<span>${code.className.replace('language-','') || 'code'}</span><button onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)" style="background:none;border:none;color:#94a3b8;">📋 คัดลอก</button>`;
-      pre.insertBefore(header, code);
-    }
-  });
-  return temp.innerHTML;
-}
-
-// ==========================================
-// DRAG & DROP
-// ==========================================
-document.addEventListener('dragover', e => e.preventDefault());
-document.addEventListener('drop', e => {
-  e.preventDefault();
-  if (e.dataTransfer.files.length > 0) {
-    document.getElementById('dropOverlay').style.display = 'flex';
-    processFiles(Array.from(e.dataTransfer.files));
-    document.getElementById('dropOverlay').style.display = 'none';
+function generateDemoResponse(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('โค้ด') || m.includes('python') || m.includes('เขียนโปรแกรม')) {
+    return '```python\n# ตัวอย่างโค้ด Python\ndef hello_world():\n    print("สวัสดีจาก QX! 🤖")\n    return "พร้อมช่วยเหลือทุกงานครับ"\n\n# เรียกใช้งาน\nhello_world()\n```\n\n💡 คำแนะนำ: ใส่ API Key ในหน้าตั้งค่าเพื่อใช้ AI จริงๆ ได้เลยครับ!';
   }
-});
-
-// ==========================================
-// INIT
-// ==========================================
-applySettings();
-updateAPIBadge();
-checkPuterStatus();
-switchTab('chat');
-renderChat();
-renderPlugins();
-renderTeam();
-renderNotes();
-
-setInterval(() => {
-  const dot = document.getElementById('status-dot');
-  const text = document.getElementById('status-text');
-  fetch('http://localhost:8080/health', { signal: AbortSignal.timeout(2000) })
-    .then(() => { dot.className = 'status-dot online'; text.textContent = 'พร้อม'; })
-    .catch(() => { dot.className = 'status-dot offline'; text.textContent = 'ออฟไลน์'; });
-}, 10000);
-
-console.log('✅ QX Ultimate Mobile + Puter Ready!');
-</script>
-</body>
-</html>
-```
-
----
-
-✅ สรุปฟีเจอร์ทั้งหมด (ครบทุกอย่าง)
-
-หมวด ฟีเจอร์
-💬 แชท ส่งข้อความ, Markdown, Code Highlight, ไฟล์แนบ
-🧠 AI 30 โมเดล, Smart Router, API Keys (Groq/OpenAI/Gemini/DeepSeek)
-🔌 ปลั๊กอิน 12 ตัว, เชื่อมต่อ/ตัด, 4 หมวด
-👥 ทีม 8 ฝ่าย, 50 คน
-📝 โน้ต สร้าง/แก้ไข/ลบ, บันทึกในเครื่อง
-☁️ Puter ล็อกอิน, ซิงก์โน้ต, โหลดโน้ต, เปิด Puter.com
-⚙️ ตั้งค่า โมเดล, ความปลอดภัย, ธีม 7 แบบ, Hub URL, System Prompt, API Keys
-📱 Mobile Responsive, touch-friendly, bottom nav, sidebar
-
----
-
-เขียนใหม่ทั้งหมดแล้ว! ทุกฟีเจอร์ครบ + Puter กลับมา + พอดีจอมือถือ ✨
+  if (m.includes('swot') || m.includes('วิเคราะห์')) {
+    return '📊 **การวิเคราะห์ SWOT**\n\n✅ **จุดแข็ง**\n- ตอบภาษาไทยได้ดีเยี่ยม\n- รองรับหลายโมเดล AI\n- ใช้งานฟรี ไม่มีขีดจำกัด\n\n❌ **จุดอ่อน**\n- ยังไม่มีแอปพลิเคชันมือถือ\n- ต้องใส่ API Key เอง\n\n🌟 **โอกาส**\n- ตลาด AI เติบโตเร็วมาก\n- สามารถขยายความสามารถได้อีกเยอะ\n\n⚠️ **ภัยคุกคาม**\n- คู่แข่งมีเยอะ\n- ค่าใช้จ่าย API อาจเปลี่ยนแปลง';
+  }
+  if (m.includes('pdf') || m.includes('ไฟล์') || m.includes('อ่าน')) {
+    return '📄 **การอ่านไฟล์**\n\nรองรับไฟล์ประเภทต่อไปนี้:\n- 📄 PDF — แปลงเป็นข้อความอัตโนมัติ (สูงสุด 10 หน้า)\n- 📝 DOCX — แปลงเป็นข้อความ\n- 🖼️ รูปภาพ — แนบและส่งให้ AI วิเคราะห์\n- 💻 โค้ด — ทุกภาษา (JS, Python, HTML, CSS, JSON...)\n\n💡 ลองลากไฟล์มาวางที่ช่องพิมพ์ หรือกดปุ่ม 📎 แนบไฟล์ได้เลยครับ!';
+  }
+  if (m.includes('สรุป') || m.includes('สรุปความ')) {
+    return '📝 **สรุปความ**\n\nระบบสามารถสรุปเนื้อหาได้สั้นกระชับ ตรงประเด็นครับ! เพียงแค่ส่งข
